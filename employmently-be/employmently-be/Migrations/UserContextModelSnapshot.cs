@@ -10,7 +10,7 @@ using employmently_be.DbContexts;
 
 namespace employmentlybe.Migrations
 {
-    [DbContext(typeof(UserContext))]
+    [DbContext(typeof(dbContext))]
     partial class UserContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -66,22 +66,22 @@ namespace employmentlybe.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0",
-                            ConcurrencyStamp = "7148499b-f9cc-4537-88d9-9a448a025632",
+                            Id = "1",
+                            ConcurrencyStamp = "43c1797a-6161-477a-a643-17b89676b710",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "1",
-                            ConcurrencyStamp = "04e12c9f-b87c-4bbf-a7fe-4bb0dc26d069",
+                            Id = "2",
+                            ConcurrencyStamp = "b342a62f-1f09-4c46-9dcc-a2bcf76c715f",
                             Name = "Company",
                             NormalizedName = "COMPANY"
                         },
                         new
                         {
-                            Id = "2",
-                            ConcurrencyStamp = "9da79914-077e-45d2-9099-3314b2de57cf",
+                            Id = "3",
+                            ConcurrencyStamp = "0e733eb4-ed97-42d6-a0e0-7851e4a817ba",
                             Name = "Candidate",
                             NormalizedName = "CANDIDATE"
                         });
@@ -176,8 +176,8 @@ namespace employmentlybe.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "0",
-                            RoleId = "0"
+                            UserId = "1",
+                            RoleId = "1"
                         });
                 });
 
@@ -217,6 +217,23 @@ namespace employmentlybe.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("employmently_be.Data.Entities.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Company");
+                });
+
             modelBuilder.Entity("employmently_be.Data.Entities.Listing", b =>
                 {
                     b.Property<int>("Id")
@@ -224,6 +241,9 @@ namespace employmentlybe.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -237,6 +257,8 @@ namespace employmentlybe.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Listings");
                 });
 
@@ -246,6 +268,9 @@ namespace employmentlybe.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -294,6 +319,8 @@ namespace employmentlybe.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -307,31 +334,31 @@ namespace employmentlybe.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0",
+                            Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d0b41f93-cd23-4f8e-893e-a6bd5642eeab",
+                            ConcurrencyStamp = "10929973-04db-4e64-8291-e3514095b2a5",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMINUSER",
-                            PasswordHash = "admin123",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "46a3ebdc-a3df-43bb-8cae-0d61151e4d5f",
+                            SecurityStamp = "04184d23-0b85-4407-a216-9f7185a23248",
                             TwoFactorEnabled = false,
                             UserName = "adminuser"
                         },
                         new
                         {
-                            Id = "1",
+                            Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "19995b85-489b-457b-8ef2-dfd028132761",
+                            ConcurrencyStamp = "20f351b6-a185-4454-b5d1-8950a17156b6",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "HRI",
                             PasswordHash = "Pa$$w0rd",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e8b4bd1a-12ec-478c-a3b4-8fffba58018e",
+                            SecurityStamp = "de5e3dc7-615b-490a-b714-bc59bbe544f9",
                             TwoFactorEnabled = false,
                             UserName = "Hri"
                         });
@@ -401,6 +428,29 @@ namespace employmentlybe.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("employmently_be.Data.Entities.Listing", b =>
+                {
+                    b.HasOne("employmently_be.Entities.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("employmently_be.Entities.User", b =>
+                {
+                    b.HasOne("employmently_be.Data.Entities.Company", "Company")
+                        .WithMany("Users")
+                        .HasForeignKey("CompanyId");
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("employmently_be.Data.Entities.Company", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

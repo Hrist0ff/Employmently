@@ -11,7 +11,7 @@ using employmently_be.DbContexts;
 
 namespace employmentlybe.Migrations
 {
-    [DbContext(typeof(UserContext))]
+    [DbContext(typeof(dbContext))]
     [Migration("20221130213211_Initializer")]
     partial class Initializer
     {

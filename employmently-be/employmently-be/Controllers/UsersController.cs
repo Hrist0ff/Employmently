@@ -1,31 +1,38 @@
 ﻿using employmently_be.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace employmently_be.Controllers
 {
     [Route("/User")]
     [ApiController]
+
+    
     public class UsersController : Controller
     {
-        private readonly UserContext _userContext;
+        private readonly dbContext _dbContext;
 
-        public UsersController(UserContext userContext)
+        public UsersController(dbContext dbContext)
         {
-            _userContext = userContext;
+            _dbContext = dbContext;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public IActionResult GetUsers()
         {
-            var users = _userContext.Users;
+            var users = _dbContext.Users;
             return Ok(users);
+           
         }
 
         [HttpGet("{id}")]
         public IActionResult GetUser(string id)
         {
-            var user = _userContext.Users.FirstOrDefault(x => x.Id == id);
+            var user = _dbContext.Users.FirstOrDefault(x => x.Id == id);
             return Ok(user);
         }
     }
+
+   
 }

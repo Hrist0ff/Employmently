@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using employmently_be.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace employmently_be.Data.Models
 {
-    public class RegisterDto
+    public class RegisterCompanyDto
     {
         public string Username { get; set; }
         [Required(ErrorMessage = "Email is required")]
@@ -14,5 +15,8 @@ namespace employmently_be.Data.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public string CompanyId { get; set; }
+        public Company Company { get; set; }
     }
 }

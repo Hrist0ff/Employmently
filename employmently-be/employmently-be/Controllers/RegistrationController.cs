@@ -10,12 +10,12 @@ namespace employmently_be.Controllers
     [ApiController]
     public class RegistrationController : Controller
     {
-        private readonly UserContext _userContext;
+        private readonly dbContext _dbContext;
         private readonly UserManager<User> _userManager;
 
-        public RegistrationController(UserContext userContext, UserManager<User> userManager)
+        public RegistrationController(dbContext dbContext, UserManager<User> userManager)
         {
-            _userContext = userContext;
+            _dbContext = dbContext;
             _userManager = userManager;
 
         }
@@ -30,7 +30,7 @@ namespace employmently_be.Controllers
 
             var userToAdd = new User();
             userToAdd.Email = rdt.Email;
-            userToAdd.UserName = rdt.username;
+            userToAdd.UserName = rdt.Username;
 
             var result = await _userManager.CreateAsync(userToAdd, rdt.Password);
             if (!result.Succeeded)
@@ -54,7 +54,7 @@ namespace employmently_be.Controllers
 
             var userToAdd = new User();
             userToAdd.Email = rdt.Email;
-            userToAdd.UserName = rdt.username;
+            userToAdd.UserName = rdt.Username;
 
             var result = await _userManager.CreateAsync(userToAdd, rdt.Password);
             if (!result.Succeeded)
@@ -64,6 +64,7 @@ namespace employmently_be.Controllers
 
             var UserFromDb = await _userManager.FindByNameAsync(userToAdd.UserName);
             await _userManager.AddToRoleAsync(UserFromDb, "Company");
+            // To add EIK as user's property and make another DTO here with the EIK
             return Ok();
         }
 

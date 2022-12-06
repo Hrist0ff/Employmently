@@ -97,3 +97,4 @@ C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Sy
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.Net.Http.Formatting.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.Web.Http.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.Web.Http.Cors.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

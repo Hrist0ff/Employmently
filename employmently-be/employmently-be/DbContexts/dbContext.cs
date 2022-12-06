@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace employmently_be.DbContexts
 {
-    public class UserContext : IdentityDbContext<User>
+    public class dbContext : IdentityDbContext<User>
     {
         public DbSet<Listing> Listings { get; set; }
 
@@ -17,37 +17,38 @@ namespace employmently_be.DbContexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "0", Name = "Administrator", NormalizedName = "ADMINISTRATOR".ToUpper() });
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "1", Name = "Company", NormalizedName = "COMPANY".ToUpper() });
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "2", Name = "Candidate", NormalizedName = "CANDIDATE".ToUpper() });
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "1", Name = "Administrator", NormalizedName = "ADMINISTRATOR".ToUpper() });
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "2", Name = "Company", NormalizedName = "COMPANY".ToUpper() });
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "3", Name = "Candidate", NormalizedName = "CANDIDATE".ToUpper() });
             modelBuilder.Entity<User>()
                 .ToTable("AspNetUsers");
-            
+
 
 
             modelBuilder.Entity<User>().HasData(
-                new User    
+                new User
                 {
-                    Id = "0", // primary key
+                    Id = "1", // primary key
                     UserName = "adminuser",
                     Email = "admin@admin.com",
                     NormalizedEmail = "ADMIN@ADMIN.COM",
                     NormalizedUserName = "ADMINUSER",
-                    PasswordHash = "admin123"
+                    PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg=="
+                    // Admin123@
                 },
                 new User
                 {
-                    Id = "1",
+                    Id = "2",
                     UserName = "Hri",
                     NormalizedUserName = "HRI",
                     PasswordHash = "Pa$$w0rd"
                 }
-            );
+            ) ;
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                new IdentityUserRole<string>
                {
-                   RoleId = "0",
-                   UserId = "0"
+                   RoleId = "1",
+                   UserId = "1"
                }
             );
         }

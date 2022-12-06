@@ -12,8 +12,8 @@ using employmently_be.DbContexts;
 namespace employmentlybe.Migrations
 {
     [DbContext(typeof(dbContext))]
-    [Migration("20221130000638_FirstDb")]
-    partial class FirstDb
+    [Migration("20221205115644_userextended")]
+    partial class userextended
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace employmentlybe.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CategoryListing", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ListingsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoriesId", "ListingsId");
+
+                    b.HasIndex("ListingsId");
+
+                    b.ToTable("CategoryListing");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -50,6 +65,29 @@ namespace employmentlybe.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            ConcurrencyStamp = "84c08bd1-ec3e-40f3-a806-a44d7ff9ff9a",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            ConcurrencyStamp = "1f017ec5-e94d-4b77-8928-b21de343001c",
+                            Name = "Company",
+                            NormalizedName = "COMPANY"
+                        },
+                        new
+                        {
+                            Id = "3",
+                            ConcurrencyStamp = "804aca74-d672-4d85-983b-4da308cf59df",
+                            Name = "Candidate",
+                            NormalizedName = "CANDIDATE"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -137,6 +175,13 @@ namespace employmentlybe.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "1",
+                            RoleId = "1"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -158,6 +203,40 @@ namespace employmentlybe.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("employmently_be.Data.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("employmently_be.Data.Entities.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Company");
+                });
+
             modelBuilder.Entity("employmently_be.Data.Entities.Listing", b =>
                 {
                     b.Property<int>("Id")
@@ -165,6 +244,10 @@ namespace employmentlybe.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -178,6 +261,8 @@ namespace employmentlybe.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorID");
+
                     b.ToTable("Listings");
                 });
 
@@ -188,6 +273,12 @@ namespace employmentlybe.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CompanyyId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -235,6 +326,8 @@ namespace employmentlybe.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -244,6 +337,53 @@ namespace employmentlybe.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "98433601-8c97-4346-8a33-c950860fd3ae",
+                            Email = "admin@admin.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN.COM",
+                            NormalizedUserName = "ADMINUSER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "60588e69-6583-49ce-b4a4-711d01d3ca78",
+                            TwoFactorEnabled = false,
+                            UserName = "adminuser"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8a095b00-0ce0-4e03-bc80-7366696157a0",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "HRI",
+                            PasswordHash = "Pa$$w0rd",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "3722386e-9b09-4ee8-884e-3e6f922b4d62",
+                            TwoFactorEnabled = false,
+                            UserName = "Hri"
+                        });
+                });
+
+            modelBuilder.Entity("CategoryListing", b =>
+                {
+                    b.HasOne("employmently_be.Data.Entities.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("employmently_be.Data.Entities.Listing", null)
+                        .WithMany()
+                        .HasForeignKey("ListingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -295,6 +435,36 @@ namespace employmentlybe.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("employmently_be.Data.Entities.Listing", b =>
+                {
+                    b.HasOne("employmently_be.Entities.User", "Author")
+                        .WithMany("Listings")
+                        .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("employmently_be.Entities.User", b =>
+                {
+                    b.HasOne("employmently_be.Data.Entities.Company", "Company")
+                        .WithMany("Users")
+                        .HasForeignKey("CompanyId");
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("employmently_be.Data.Entities.Company", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("employmently_be.Entities.User", b =>
+                {
+                    b.Navigation("Listings");
                 });
 #pragma warning restore 612, 618
         }
