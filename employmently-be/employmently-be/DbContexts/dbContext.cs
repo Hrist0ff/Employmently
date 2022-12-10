@@ -10,6 +10,7 @@ namespace employmently_be.DbContexts
     public class dbContext : IdentityDbContext<User>
     {
         public DbSet<Listing> Listings { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,7 +23,6 @@ namespace employmently_be.DbContexts
             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "3", Name = "Candidate", NormalizedName = "CANDIDATE".ToUpper() });
             modelBuilder.Entity<User>()
                 .ToTable("AspNetUsers");
-
 
 
             modelBuilder.Entity<User>().HasData(

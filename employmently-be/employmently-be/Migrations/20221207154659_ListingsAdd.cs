@@ -5,18 +5,30 @@
 namespace employmentlybe.Migrations
 {
     /// <inheritdoc />
-    public partial class workingListings : Migration
+    public partial class ListingsAdd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_CategoryListing_Category_CategoriesId",
+                table: "CategoryListing");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Listings_AspNetUsers_AuthorID",
                 table: "Listings");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Category",
+                table: "Category");
 
             migrationBuilder.DropColumn(
                 name: "CompanyyId",
                 table: "AspNetUsers");
+
+            migrationBuilder.RenameTable(
+                name: "Category",
+                newName: "Categories");
 
             migrationBuilder.RenameColumn(
                 name: "AuthorID",
@@ -36,40 +48,53 @@ namespace employmentlybe.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(450)");
 
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Categories",
+                table: "Categories",
+                column: "Id");
+
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "1",
                 column: "ConcurrencyStamp",
-                value: "43c1797a-6161-477a-a643-17b89676b710");
+                value: "83f25997-843a-462f-b7ab-fb93863c3dd4");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "2",
                 column: "ConcurrencyStamp",
-                value: "b342a62f-1f09-4c46-9dcc-a2bcf76c715f");
+                value: "838c1aa7-a572-41de-9a40-7d4ace9aa15e");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "3",
                 column: "ConcurrencyStamp",
-                value: "0e733eb4-ed97-42d6-a0e0-7851e4a817ba");
+                value: "4c78b6f3-5331-4906-a9cd-1420e53327e0");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "1",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "10929973-04db-4e64-8291-e3514095b2a5", "04184d23-0b85-4407-a216-9f7185a23248" });
+                values: new object[] { "87908a23-9941-427c-b549-40238d849d73", "e8dedad1-f02e-4d75-905b-f159070fc666" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "2",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "20f351b6-a185-4454-b5d1-8950a17156b6", "de5e3dc7-615b-490a-b714-bc59bbe544f9" });
+                values: new object[] { "c8112c67-314f-4c84-bd09-58c47e220bd9", "9b8feeb3-ade8-43c9-a44f-356cd7d46faa" });
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CategoryListing_Categories_CategoriesId",
+                table: "CategoryListing",
+                column: "CategoriesId",
+                principalTable: "Categories",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Listings_AspNetUsers_AuthorId",
@@ -83,8 +108,20 @@ namespace employmentlybe.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_CategoryListing_Categories_CategoriesId",
+                table: "CategoryListing");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Listings_AspNetUsers_AuthorId",
                 table: "Listings");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Categories",
+                table: "Categories");
+
+            migrationBuilder.RenameTable(
+                name: "Categories",
+                newName: "Category");
 
             migrationBuilder.RenameColumn(
                 name: "AuthorId",
@@ -111,6 +148,11 @@ namespace employmentlybe.Migrations
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
                 nullable: true);
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Category",
+                table: "Category",
+                column: "Id");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
@@ -146,6 +188,14 @@ namespace employmentlybe.Migrations
                 keyValue: "2",
                 columns: new[] { "CompanyyId", "ConcurrencyStamp", "SecurityStamp" },
                 values: new object[] { null, "8a095b00-0ce0-4e03-bc80-7366696157a0", "3722386e-9b09-4ee8-884e-3e6f922b4d62" });
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CategoryListing_Category_CategoriesId",
+                table: "CategoryListing",
+                column: "CategoriesId",
+                principalTable: "Category",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Listings_AspNetUsers_AuthorID",

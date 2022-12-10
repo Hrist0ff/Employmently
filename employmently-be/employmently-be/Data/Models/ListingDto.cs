@@ -13,7 +13,7 @@ namespace employmently_be.Data.Models
 
         public DateTime CreatedDate { get; set; }
         
-        //public virtual ICollection<Category> Categories { get; set; }
+        public IList<String> Categories { get; set; }
 
 
     }

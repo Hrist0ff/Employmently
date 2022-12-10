@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace employmently_be.Controllers
@@ -25,9 +26,9 @@ namespace employmently_be.Controllers
             }
 
 
-        [HttpPost]
+            [HttpPost]
             [Authorize(Roles = "Company")]
-            public async Task<ActionResult> List(ListingDto rdt)
+            public async Task<ActionResult> List(ListingDto ldt)
             {
                 if (!ModelState.IsValid)
                 {
@@ -36,12 +37,35 @@ namespace employmently_be.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 var listingToAdd = new Listing()
                 {
-                    Name = rdt.Name,
-                    Description = rdt.Description,
-                    CreatedDate = DateTime.Now,
-                    Author = user
+                        Name = ldt.Name,
+                        Description = ldt.Description,
+                        CreatedDate = DateTime.Now,
+                        Author = user
                 };
+                var flag = 0;
 
+                foreach (string categoryToAdd in ldt.Categories)
+                {
+                  flag = 0;
+                  foreach(Category existingCategories in _dbContext.Categories)
+                    {
+                        if(existingCategories.Name == categoryToAdd)
+                        {
+                           existingCategories.Listings.Add(listingToAdd);
+                           flag = 1;
+                        }   
+                    }
+                    if (flag == 0)
+                    {
+                    var newCategory = new Category()
+                        {
+                            Name = categoryToAdd
+                        };
+                        newCategory.Listings.Add(listingToAdd);
+                        _dbContext.Categories.Add(newCategory);
+                }
+            }
+           
                 _dbContext.Listings.Add(listingToAdd);
                 
                 _dbContext.SaveChanges();

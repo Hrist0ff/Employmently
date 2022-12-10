@@ -10,8 +10,8 @@ namespace employmently_be.Data.Entities
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
         public string? Description   { get; set; }
-        
-        public virtual ICollection<Category> Categories { get; set; }
+
+        public virtual IList<Category> Categories { get; set; } = new List<Category>();
         public User Author { get; set; }
 
 

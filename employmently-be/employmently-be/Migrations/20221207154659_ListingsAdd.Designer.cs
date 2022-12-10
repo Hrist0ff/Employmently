@@ -12,8 +12,8 @@ using employmently_be.DbContexts;
 namespace employmentlybe.Migrations
 {
     [DbContext(typeof(dbContext))]
-    [Migration("20221206222948_workingListings")]
-    partial class workingListings
+    [Migration("20221207154659_ListingsAdd")]
+    partial class ListingsAdd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,21 +70,21 @@ namespace employmentlybe.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "43c1797a-6161-477a-a643-17b89676b710",
+                            ConcurrencyStamp = "83f25997-843a-462f-b7ab-fb93863c3dd4",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "b342a62f-1f09-4c46-9dcc-a2bcf76c715f",
+                            ConcurrencyStamp = "838c1aa7-a572-41de-9a40-7d4ace9aa15e",
                             Name = "Company",
                             NormalizedName = "COMPANY"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "0e733eb4-ed97-42d6-a0e0-7851e4a817ba",
+                            ConcurrencyStamp = "4c78b6f3-5331-4906-a9cd-1420e53327e0",
                             Name = "Candidate",
                             NormalizedName = "CANDIDATE"
                         });
@@ -217,7 +217,7 @@ namespace employmentlybe.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("employmently_be.Data.Entities.Company", b =>
@@ -339,7 +339,7 @@ namespace employmentlybe.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "10929973-04db-4e64-8291-e3514095b2a5",
+                            ConcurrencyStamp = "87908a23-9941-427c-b549-40238d849d73",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -347,7 +347,7 @@ namespace employmentlybe.Migrations
                             NormalizedUserName = "ADMINUSER",
                             PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "04184d23-0b85-4407-a216-9f7185a23248",
+                            SecurityStamp = "e8dedad1-f02e-4d75-905b-f159070fc666",
                             TwoFactorEnabled = false,
                             UserName = "adminuser"
                         },
@@ -355,13 +355,13 @@ namespace employmentlybe.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "20f351b6-a185-4454-b5d1-8950a17156b6",
+                            ConcurrencyStamp = "c8112c67-314f-4c84-bd09-58c47e220bd9",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "HRI",
                             PasswordHash = "Pa$$w0rd",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "de5e3dc7-615b-490a-b714-bc59bbe544f9",
+                            SecurityStamp = "9b8feeb3-ade8-43c9-a44f-356cd7d46faa",
                             TwoFactorEnabled = false,
                             UserName = "Hri"
                         });

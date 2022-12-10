@@ -1,19 +1,24 @@
 using employmently_be.Data;
 using employmently_be.DbContexts;
 using employmently_be.Entities;
+using employmently_be.Services;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
+using System.Text;
+using Newtonsoft.Json;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
+var emailPass = builder.Configuration["emailPassword"];
 
 // Add services to the container.
 builder.Services.AddControllers(options =>
@@ -46,8 +51,13 @@ builder.Services.AddSwaggerGen(c => {
 
 builder.Services.AddDbContext<dbContext>();
 builder.Services.AddIdentity<User, IdentityRole>()
-    .AddRoles<IdentityRole>() // <--------
-    .AddEntityFrameworkStores<dbContext>();
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<dbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddMvc().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+);
 
 builder.Services.AddCors(options =>
 {
@@ -60,12 +70,12 @@ builder.Services.AddCors(options =>
                           });
 });
 
-builder.Services.AddAuthentication(x =>
+builder.Services.AddAuthentication(options =>
 {
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
 }
 )
     .AddJwtBearer(options => {
@@ -80,6 +90,16 @@ builder.Services.AddAuthentication(x =>
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
             };
 });
+
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = true;
+});
+
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 var app = builder.Build();
 app.UseCors(MyAllowSpecificOrigins);

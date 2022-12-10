@@ -1,9 +1,11 @@
-﻿namespace employmently_be.Data.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace employmently_be.Data.Entities
 {
     public class Category
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<Listing> Listings { get; set;}
+        public virtual ICollection<Listing> Listings { get; set;} = new List<Listing>();
     }
 }

@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import '../styles/login.css';
+import jwt from 'jwt-decode';
+
 
 
 function Login() {
@@ -17,7 +19,9 @@ function Login() {
         axios.post(`${process.env.REACT_APP_BACKEND}/Login`, { email, password })
             .then(response => {
                 const token = response.data;
-                console.log(token);
+                const decodedToken = jwt(token);
+                localStorage.setItem("token", token);
+                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             })
             .catch(error => {
                 console.log(error)

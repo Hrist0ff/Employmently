@@ -8,7 +8,7 @@ namespace employmently_be.Entities
 {
     public class User : IdentityUser
     {
-
+        public string? EmailConfirmationToken { get; set; }
         public virtual Company? Company { get; set; }
 
     }

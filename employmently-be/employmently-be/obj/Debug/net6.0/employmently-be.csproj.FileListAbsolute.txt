@@ -98,3 +98,8 @@ C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Sy
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.Web.Http.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.Web.Http.Cors.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Embedded.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\MailKit.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\MimeKit.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\BouncyCastle.Crypto.dll
