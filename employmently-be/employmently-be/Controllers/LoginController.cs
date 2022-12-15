@@ -33,16 +33,21 @@ namespace employmently_be.Controllers
             var user = await _userManager.FindByEmailAsync(input.Email);
             if (user == null)
             {
-                ModelState.AddModelError("Email Error", "There's no such a user");
+                ModelState.AddModelError("Error", "There's no such a user");
                 return BadRequest(ModelState);
             }
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, input.Password);
 
-            
             if (!passwordValid)
             {
-                ModelState.AddModelError("Password Error", "Error in password");
+                ModelState.AddModelError("Error", "Error in password");
+                return BadRequest(ModelState);
+            }
+
+            if (!user.EmailConfirmed)
+            {
+                ModelState.AddModelError("Error", "Email is not confirmed! Please check your email and confirm it.");
                 return BadRequest(ModelState);
             }
             var role = await _userManager.GetRolesAsync(user);

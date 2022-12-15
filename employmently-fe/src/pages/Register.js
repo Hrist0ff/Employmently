@@ -5,19 +5,19 @@ import '../styles/login.css';
 
 
 
-function Login() {
+function Register() {
     const emailField = useRef();
     const passwordField = useRef();
 
     const [errorMessage, setErrorMessage] = React.useState("");
 
-    const loginAction = (event) => {
+    const registerAction = (event) => {
         event.preventDefault();
         const email = emailField.current.value;
         const password = passwordField.current.value;
 
 
-        axios.post(`${process.env.REACT_APP_BACKEND}/Login`, { email, password })
+        axios.post(`${process.env.REACT_APP_BACKEND}/Register`, { email, password })
             .then(response => {
                 const token = response.data;
                 localStorage.setItem("token", token);
@@ -30,7 +30,7 @@ function Login() {
 
     return (
         <div>
-
+            
             <div className="container">
                 <div className="log-container">
                     {errorMessage && <div className="err"> Error: {errorMessage} </div>}
@@ -58,7 +58,7 @@ function Login() {
                                 required
                             />
                         </div>
-                        <button className="btn" type="submit" onClick={loginAction}>Sign in</button>
+                        <button className="btn" type="submit" onClick={registerAction}>Sign in</button>
                     </form>
                     <p>
                         <Link to={'/ForgotPassword'} className="btn-frgtpass">Forgot your Password?</Link>
@@ -78,4 +78,4 @@ function Login() {
     );
 };
 
-export default Login;
+export default Register;

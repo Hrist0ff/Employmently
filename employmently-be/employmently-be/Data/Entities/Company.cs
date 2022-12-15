@@ -6,6 +6,7 @@ namespace employmently_be.Data.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        public string UniqueIdentifier { get; set; }
+        public virtual ICollection<User> Users { get; set; } = new List<User>();
     }
 }

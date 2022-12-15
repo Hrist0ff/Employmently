@@ -11,6 +11,7 @@ namespace employmently_be.DbContexts
     {
         public DbSet<Listing> Listings { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,13 +36,6 @@ namespace employmently_be.DbContexts
                     NormalizedUserName = "ADMINUSER",
                     PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg=="
                     // Admin123@
-                },
-                new User
-                {
-                    Id = "2",
-                    UserName = "Hri",
-                    NormalizedUserName = "HRI",
-                    PasswordHash = "Pa$$w0rd"
                 }
             ) ;
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(

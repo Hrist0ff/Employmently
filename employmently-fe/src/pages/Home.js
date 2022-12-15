@@ -3,11 +3,10 @@ import { Nav } from 'react-bootstrap';
 import '../styles/home.css';
 import Logo from "../images/employment.png";
 import jwt from 'jwt-decode';
+import ExpiredTokenCheck from '../components/ExpiredTokenCheck';
 
 function Home() {
     const token = localStorage.getItem("token");
-    const decodedToken = jwt(token);
-    let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
 
     const haveProfile = () => {
         if (token) {
@@ -20,8 +19,12 @@ function Home() {
     }
 
     const isCompany = () => {
-        if (role === 'Company') {
-            return <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Listing`}>Създай обява</Nav.Link>;
+        if (token) {
+            const decodedToken = jwt(token);
+            let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            if (role === 'Company') {
+                return <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Listing`}>Създай обява</Nav.Link>;
+            }
         }
     }
 
@@ -34,6 +37,7 @@ function Home() {
                     <label for="toggle">&#9776;</label>
                     <input type="checkbox" id="toggle" />
                     <div class="menu">
+                        {ExpiredTokenCheck()}
                         {haveProfile()}
                         {isCompany()}
                     </div>

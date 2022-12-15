@@ -103,3 +103,11 @@ C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Mi
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\MailKit.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\MimeKit.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.Private.ServiceModel.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.ServiceModel.Duplex.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.ServiceModel.Http.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.ServiceModel.NetTcp.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.ServiceModel.Primitives.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.ServiceModel.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.ServiceModel.Security.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Connected Services\ServiceReference1\ConnectedService.json

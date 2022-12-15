@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using employmently_be.DbContexts;
 
@@ -11,9 +12,11 @@ using employmently_be.DbContexts;
 namespace employmentlybe.Migrations
 {
     [DbContext(typeof(dbContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20221212151458_AddCompanyRegisterAndForgotPassword")]
+    partial class AddCompanyRegisterAndForgotPassword
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,21 +70,21 @@ namespace employmentlybe.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "e78dd934-9be2-4ab9-b1ef-fad3beaaa2b0",
+                            ConcurrencyStamp = "fc434277-9a0c-4d4f-822b-76d40034e50c",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "3770c9d8-0ec0-485d-979d-a03c20bffb62",
+                            ConcurrencyStamp = "456e760b-662a-4ead-a21a-928e00bee42e",
                             Name = "Company",
                             NormalizedName = "COMPANY"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "fdcbcd33-3ef4-4a9c-b222-17154f2e3f2c",
+                            ConcurrencyStamp = "2b2da478-5398-463d-91d1-90953cbfe6be",
                             Name = "Candidate",
                             NormalizedName = "CANDIDATE"
                         });
@@ -235,7 +238,7 @@ namespace employmentlybe.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Company");
                 });
 
             modelBuilder.Entity("employmently_be.Data.Entities.Listing", b =>
@@ -343,7 +346,7 @@ namespace employmentlybe.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a63b453b-2746-4d15-aed0-c84a5bd9b1d1",
+                            ConcurrencyStamp = "a645587c-f4d1-4872-aa08-1ef4f8daf229",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -351,9 +354,23 @@ namespace employmentlybe.Migrations
                             NormalizedUserName = "ADMINUSER",
                             PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8c49916e-7531-4250-88ea-045dda306bce",
+                            SecurityStamp = "63a31a63-958d-4b11-8c4e-0c3c56aef3df",
                             TwoFactorEnabled = false,
                             UserName = "adminuser"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "dd73b7cf-5d73-4479-8075-38af6999cde0",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "HRI",
+                            PasswordHash = "Pa$$w0rd",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "9bb6fefb-174c-486b-940f-5de078e91a53",
+                            TwoFactorEnabled = false,
+                            UserName = "Hri"
                         });
                 });
 

@@ -104,3 +104,16 @@ a.btn-frgtpass {
 a.btn:hover {
     font-size: 18px;
 }
+
+.err {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+    border: 1.7px solid red;
+    border-radius: 6%;
+    padding: 3%;
+    background-color: red;
+    color: white;
+}

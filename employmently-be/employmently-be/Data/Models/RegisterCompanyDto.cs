@@ -17,6 +17,5 @@ namespace employmently_be.Data.Models
         public string ConfirmPassword { get; set; }
 
         public string CompanyId { get; set; }
-        public Company Company { get; set; }
     }
 }
