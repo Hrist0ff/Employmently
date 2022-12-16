@@ -36,6 +36,8 @@ namespace employmently_be.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterDto rdt)
         {
+            Console.WriteLine(rdt.ConfirmPassword);
+            Console.WriteLine(rdt.Password);
             if (!ModelState.IsValid)
             {
             
@@ -131,13 +133,20 @@ namespace employmently_be.Controllers
 
             if(flag == 0)
             {
-                var newCompany = new Company()
+                if (blnValid == true)
                 {
-                    UniqueIdentifier = UIC,
-                    Name = companyName
-                };
-                newCompany.Users.Add(userFromDb);
-                _dbContext.Companies.Add(newCompany);
+                    var newCompany = new Company()
+                    {
+                        UniqueIdentifier = UIC,
+                        Name = companyName
+                    };
+                    newCompany.Users.Add(userFromDb);
+                    _dbContext.Companies.Add(newCompany);
+                }
+                else
+                {
+
+                }
             }
             await _dbContext.SaveChangesAsync();
 

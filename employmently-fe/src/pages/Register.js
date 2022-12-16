@@ -1,23 +1,84 @@
 import React, { useRef } from "react";
+import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import '../styles/login.css';
+import FormInput from '../components/FormInput';
+
+
 
 
 
 function Register() {
-    const emailField = useRef();
-    const passwordField = useRef();
+
+    const [values, setValues] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
+    const inputs = [
+        {
+            id: 1,
+            name: "username",
+            type: "text",
+            placeholder: "Username",
+            errorMessage:
+                "Username should be 3-16 characters and shouldn't include any special character!",
+            label: "Username",
+            pattern: "^[A-Za-z0-9]{3,16}$",
+            required: true,
+        },
+        {
+            id: 2,
+            name: "email",
+            type: "email",
+            placeholder: "Email",
+            errorMessage: "It should be a valid email address!",
+            label: "Email",
+            required: true,
+        },
+        {
+            id: 4,
+            name: "password",
+            type: "password",
+            placeholder: "Password",
+            errorMessage:
+                "Password should be at least 6 characters and include at least 1 letter, 1 number and 1 special character!",
+            label: "Password",
+            pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$`,
+            required: true,
+        },
+        {
+            id: 5,
+            name: "confirmPassword",
+            type: "password",
+            placeholder: "Confirm Password",
+            errorMessage: "Passwords don't match!",
+            label: "Confirm Password",
+            pattern: values.password,
+            required: true,
+        },
+    ];
 
     const [errorMessage, setErrorMessage] = React.useState("");
 
+
+
+    const onChange = (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+    };
+
     const registerAction = (event) => {
         event.preventDefault();
-        const email = emailField.current.value;
-        const password = passwordField.current.value;
+        const username = values.username;
+        const email = values.email;
+        const password = values.password;
+        const confirmPassword = values.confirmPassword;
 
 
-        axios.post(`${process.env.REACT_APP_BACKEND}/Register`, { email, password })
+        axios.post(`${process.env.REACT_APP_BACKEND}/Register`, { username, email, password, confirmPassword })
             .then(response => {
                 const token = response.data;
                 localStorage.setItem("token", token);
@@ -30,34 +91,20 @@ function Register() {
 
     return (
         <div>
-            
             <div className="container">
                 <div className="log-container">
                     {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-                    <h1>Sign in</h1>
-                    <p>fb   google</p>
+                    <Link to={'/RegisterCompany'} className="btn-reg">Register a company?</Link>
+                    <h1>Sign up</h1>
                     <form>
-                        <div>
-                            <input
-                                className="form-control"
-                                type="email"
-                                placeholder="Enter email"
-                                name="email"
-                                ref={emailField}
-                                required
+                        {inputs.map((input) => (
+                            <FormInput
+                                key={input.id}
+                                {...input}
+                                value={values[input.name]}
+                                onChange={onChange}
                             />
-                        </div>
-                        <div>
-                            <input
-                                className="form-control"
-                                type="password"
-                                placeholder="Enter password"
-                                name="password"
-                                minLength='8'
-                                ref={passwordField}
-                                required
-                            />
-                        </div>
+                        ))}
                         <button className="btn" type="submit" onClick={registerAction}>Sign in</button>
                     </form>
                     <p>
@@ -65,11 +112,11 @@ function Register() {
                     </p>
                 </div>
                 <div className="signup-container">
-                    <h1>Sign up</h1>
-                    <p>Sign up here if you don't have account.</p>
+                    <h1>Sign in</h1>
+                    <p>Sign in here if you already have an account.</p>
                     <p></p>
                     <p>
-                        <Link to={'/Register'} className="btn">Sign up</Link>
+                        <Link to={'/Login'} className="btn">Sign in</Link>
                     </p>
                 </div>
 

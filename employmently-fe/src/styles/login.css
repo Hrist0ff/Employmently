@@ -90,6 +90,18 @@ a.btn {
     text-decoration: none;
 }
 
+a.btn-reg {
+    background-color: var(--lighter-hover-color);
+    color: white;
+    padding: 10px 25px;
+    margin: 15px 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    border: 1px solid var(--hover-color);
+    text-decoration: none;
+}
+
 a.btn-frgtpass {
     color: black;
     padding: 10px 25px;
@@ -116,4 +128,34 @@ a.btn:hover {
     padding: 3%;
     background-color: red;
     color: white;
+}
+
+.suc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    font-family: 'Roboto', sans-serif;
+    border: 1.7px solid rgb(64, 255, 0);
+    border-radius: 6%;
+    padding: 3%;
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: rgb(64, 255, 0);
+    color: white;
+}
+
+span {
+    font-size: 12px;
+    padding: 3px;
+    color: red;
+    display: none;
+}
+
+input:invalid[focused="true"] {
+    border: 1px solid red;
+}
+
+input:invalid[focused="true"]~span {
+    display: block;
 }

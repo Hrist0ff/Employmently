@@ -1,20 +1,50 @@
 import React, { useRef } from "react";
-import { Link } from 'react-router-dom'
+import { useState } from "react";
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/login.css';
-
+import FormInput from '../components/FormInput';
 
 
 function Login() {
-    const emailField = useRef();
-    const passwordField = useRef();
-
     const [errorMessage, setErrorMessage] = React.useState("");
+
+    const [values, setValues] = useState({
+        email: "",
+        password: "",
+    });
+
+
+    const inputs = [
+        {
+            id: 1,
+            name: "email",
+            type: "email",
+            placeholder: "Email",
+            errorMessage: "It should be a valid email address!",
+            label: "Email",
+            required: true,
+        },
+        {
+            id: 2,
+            name: "password",
+            type: "password",
+            placeholder: "Password",
+            errorMessage:
+                "Password is required!",
+            label: "Password",
+            required: true,
+        }
+    ];
+
+    const onChange = (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+    };
 
     const loginAction = (event) => {
         event.preventDefault();
-        const email = emailField.current.value;
-        const password = passwordField.current.value;
+        const email = values.email;
+        const password = values.password;
 
 
         axios.post(`${process.env.REACT_APP_BACKEND}/Login`, { email, password })
@@ -22,6 +52,7 @@ function Login() {
                 const token = response.data;
                 localStorage.setItem("token", token);
                 axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
             })
             .catch(error => {
                 setErrorMessage(error.response.data.Error[0]);
@@ -30,34 +61,19 @@ function Login() {
 
     return (
         <div>
-
             <div className="container">
                 <div className="log-container">
                     {errorMessage && <div className="err"> Error: {errorMessage} </div>}
                     <h1>Sign in</h1>
-                    <p>fb   google</p>
                     <form>
-                        <div>
-                            <input
-                                className="form-control"
-                                type="email"
-                                placeholder="Enter email"
-                                name="email"
-                                ref={emailField}
-                                required
+                        {inputs.map((input) => (
+                            <FormInput
+                                key={input.id}
+                                {...input}
+                                value={values[input.name]}
+                                onChange={onChange}
                             />
-                        </div>
-                        <div>
-                            <input
-                                className="form-control"
-                                type="password"
-                                placeholder="Enter password"
-                                name="password"
-                                minLength='8'
-                                ref={passwordField}
-                                required
-                            />
-                        </div>
+                        ))}
                         <button className="btn" type="submit" onClick={loginAction}>Sign in</button>
                     </form>
                     <p>

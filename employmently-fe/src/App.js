@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import Register from "./pages/Register";
+import ChangePassword from "./pages/ChangePassword";
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Login" element={<Login />} />
-        {/* <Route path="/ForgotPassword" element={<ForgotPassword />} /> */}
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/Register" element={<Register />} />
+        <Route path="Changepassword/id=:id" element={<ChangePassword />} />
       </Routes>
     </BrowserRouter>
   );

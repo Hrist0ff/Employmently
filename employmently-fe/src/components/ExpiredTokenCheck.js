@@ -9,7 +9,9 @@ function ExpiredTokenCheck() {
         const decodedToken = jwt(token);
         let exp = decodedToken['exp'];
         let date = new Date();
-        let current = date.getTime();
+        let current = date.getTime() / 1000;
+        console.log(current);
+        console.log(exp);
         if (exp < current) {
             localStorage.removeItem("token");
             return window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
