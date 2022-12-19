@@ -1,4 +1,6 @@
-﻿using employmently_be.DbContexts;
+﻿using employmently_be.Data.Models;
+using employmently_be.DbContexts;
+using employmently_be.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +32,21 @@ namespace employmently_be.Controllers
         public IActionResult GetUser(string id)
         {
             var user = _dbContext.Users.FirstOrDefault(x => x.Id == id);
-            return Ok(user);
+
+            var result = new GetUserByIdDto()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                UserName = user.UserName,
+                UniqueIdentifierCompany = user.UniqueIdentifierCompany,
+                Description = user.Description,
+            };
+
+            Console.WriteLine(result);  
+
+            
+            return Ok(result);
         }
     }
 

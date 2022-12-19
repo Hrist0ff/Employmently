@@ -19,7 +19,7 @@ function Home() {
             let username = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'];
             return [
                 <Nav.Link disabled> Hello, {username}</Nav.Link>,
-                <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Login`}>My Profile</Nav.Link>,
+                <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/MyProfile`}>My Profile</Nav.Link>,
                 <Nav.Link onClick={logout}>Log Out</Nav.Link>
 
             ]

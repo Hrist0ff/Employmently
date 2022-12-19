@@ -35,7 +35,7 @@ function ChangePassword() {
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage(error.response.data.Error[0]);
+                setErrorMessage("Couldn't change password.");
             })
     }
 
@@ -52,6 +52,7 @@ function ChangePassword() {
             type: "password",
             placeholder: "Old Password",
             label: "Password",
+            errorMessage: "Password is required.",
             required: true,
         },
         {
@@ -76,7 +77,6 @@ function ChangePassword() {
             required: true,
         },
     ];
-    console.log(values)
 
     return (
         <div className="fp-container">

@@ -111,3 +111,6 @@ C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Sy
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.ServiceModel.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.ServiceModel.Security.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Connected Services\ServiceReference1\ConnectedService.json
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Azure.Storage.Blobs.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Azure.Storage.Common.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\System.IO.Hashing.dll
