@@ -72,6 +72,18 @@
               "target": "Package",
               "version": "[6.0.11, )"
             },
+            "Microsoft.Azure.WebJobs": {
+              "target": "Package",
+              "version": "[3.0.33, )"
+            },
+            "Microsoft.Azure.WebJobs.Extensions.Http": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "Microsoft.Azure.WebJobs.Extensions.OpenApi": {
+              "target": "Package",
+              "version": "[1.4.0, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[7.0.0, )"
@@ -95,6 +107,10 @@
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
               "version": "[6.25.1, )"
+            },
+            "NSwag.Annotations": {
+              "target": "Package",
+              "version": "[13.18.2, )"
             },
             "NSwag.ApiDescription.Client": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",

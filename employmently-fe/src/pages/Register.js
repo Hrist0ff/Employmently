@@ -63,6 +63,7 @@ function Register() {
     ];
 
     const [errorMessage, setErrorMessage] = React.useState("");
+    const [successMessage, setSuccessMessage] = React.useState("");
 
 
 
@@ -83,6 +84,9 @@ function Register() {
                 const token = response.data;
                 localStorage.setItem("token", token);
                 axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                setSuccessMessage("Account created successfully, check your email to confirm it.");
+                setTimeout(() => { window.location.href = "/Login" }, 3000);
+
             })
             .catch(error => {
                 setErrorMessage(error.response.data.Error[0]);
@@ -94,6 +98,7 @@ function Register() {
             <div className="container">
                 <div className="log-container">
                     {errorMessage && <div className="err"> Error: {errorMessage} </div>}
+                    {successMessage && <div className="suc"> Success: {successMessage} </div>}
                     <Link to={'/RegisterCompany'} className="btn-reg">Register a company?</Link>
                     <h1>Sign up</h1>
                     <form>
@@ -105,7 +110,7 @@ function Register() {
                                 onChange={onChange}
                             />
                         ))}
-                        <button className="btn" type="submit" onClick={registerAction}>Sign in</button>
+                        <button className="btn" type="submit" onClick={registerAction}>Sign up</button>
                     </form>
                     <p>
                         <Link to={'/ForgotPassword'} className="btn-frgtpass">Forgot your Password?</Link>

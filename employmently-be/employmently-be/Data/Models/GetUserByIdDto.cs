@@ -8,5 +8,6 @@
         public string PhoneNumber { get; set;}
         public string? UniqueIdentifierCompany { get; set;}
         public string? Description { get; set;}
+        public string ProfilePicture { get; set;}
     }
 }

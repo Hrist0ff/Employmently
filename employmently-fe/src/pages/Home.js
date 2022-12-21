@@ -40,6 +40,16 @@ function Home() {
         }
     }
 
+    const isAdmin = () => {
+        if (token) {
+            const decodedToken = jwt(token);
+            let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            if (role === 'Administrator') {
+                return <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Listing`}>Admin Panel</Nav.Link>;
+            }
+        }
+    }
+
     return (
         <body>
             <div class="nav">
@@ -52,6 +62,7 @@ function Home() {
                         {ExpiredTokenCheck()}
                         {haveProfile()}
                         {isCompany()}
+                        {isAdmin()}
                     </div>
                 </div>
             </div>

@@ -67,21 +67,21 @@ namespace employmentlybe.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "e97b1ba3-7496-4669-8828-a3fab392d60e",
+                            ConcurrencyStamp = "54f4fc5c-6a22-4bd9-8207-507e0b2b129e",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "5d62db4e-ba7e-4ba0-9db8-81e0b0b7ed14",
+                            ConcurrencyStamp = "5eaf7a1e-af31-409d-bb1b-297711669641",
                             Name = "Company",
                             NormalizedName = "COMPANY"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "3813adb5-6ffb-4012-953b-a93f8dc2fbdd",
+                            ConcurrencyStamp = "5d4e3879-1984-45fd-9797-1e58896800a9",
                             Name = "Candidate",
                             NormalizedName = "CANDIDATE"
                         });
@@ -225,12 +225,18 @@ namespace employmentlybe.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UniqueIdentifier")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("YearCreated")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -314,6 +320,10 @@ namespace employmentlybe.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -346,15 +356,16 @@ namespace employmentlybe.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "343a4821-060d-4ed2-a19f-6bc3a091e64c",
+                            ConcurrencyStamp = "fe3177b2-b2e7-4eac-a283-f1d34ba3af00",
                             Email = "admin@admin.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMINUSER",
                             PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c3e14ea7-d406-4f20-8045-2a9e5fe5b9d6",
+                            ProfilePicture = "https://employmentlystorage.blob.core.windows.net/fileupload/default_profilepic.png",
+                            SecurityStamp = "54e844d8-63fd-435c-aab2-5c8b9eac3881",
                             TwoFactorEnabled = false,
                             UserName = "adminuser"
                         });

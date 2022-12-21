@@ -8,5 +8,7 @@ namespace employmently_be.Data.Entities
         public string Name { get; set; }
         public string UniqueIdentifier { get; set; }
         public virtual ICollection<User> Users { get; set; } = new List<User>();
+        public string? Description { get; set; }
+        public string? YearCreated { get; set; }
     }
 }
