@@ -46,6 +46,24 @@ namespace employmently_be.DbContexts
                    UserId = "1"
                }
             );
+            modelBuilder.Entity<Category>().HasData(
+                new Category() { Id = 1, Name = "Python" },
+                new Category() { Id = 2, Name = "Java" },
+                new Category() { Id = 3, Name = "C++" },
+                new Category() { Id = 4, Name = "C#" },
+                new Category() { Id = 5, Name = "JavaScript" },
+                new Category() { Id = 6, Name = "Ruby" },
+                new Category() { Id = 7, Name = "Swift" },
+                new Category() { Id = 8, Name = "Go" },
+                new Category() { Id = 9, Name = "PHP" },
+                new Category() { Id = 10, Name = "Kotlin" },
+                new Category() { Id = 11, Name = "R" },
+                new Category() { Id = 12, Name = "PERL" },
+                new Category() { Id = 13, Name = "Assembly" },
+                new Category() { Id = 14, Name = "Haskell" },
+                new Category() { Id = 15, Name = "Elixir" },
+                new Category() { Id = 16, Name = "C" }
+            );
         }
 
 

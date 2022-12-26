@@ -14,6 +14,8 @@ namespace employmently_be.Data.Entities
         public virtual IList<Category> Categories { get; set; } = new List<Category>();
         public User Author { get; set; }
 
+        public ListingStatus Status { get; set; } = ListingStatus.Pending;
+
 
     }
 }

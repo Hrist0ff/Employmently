@@ -36,7 +36,8 @@
     display: inline-block;
     background-color: var(--text-color);
     margin: 0 10px -1px;
-    height: 0.6em;
+    height: 0.8em;
+    width: 5px;
 }
 
 .justify-end {

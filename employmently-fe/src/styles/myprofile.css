@@ -1,0 +1,47 @@
+.my-profile {
+    width: 45%;
+    margin: 0 auto;
+    background-color: rgb(154, 225, 244);
+    border-radius: 5%;
+    margin-top: 5%;
+}
+
+.heading {
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.profile-header {
+    text-align: center;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+}
+
+.profile-picture {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-left: 20px;
+    border: 1px solid red;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.personal-info {
+    flex: 1;
+}
+
+.personal-info h2 {
+    margin-bottom: 10px;
+}
+

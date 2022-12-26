@@ -3,24 +3,21 @@ import jwt from 'jwt-decode';
 import axios from 'axios';
 import ExpiredTokenCheck from '../components/ExpiredTokenCheck';
 import { Nav } from "react-bootstrap";
+import '../styles/myprofile.css';
+import { FileUploader } from "react-drag-drop-files";
+
 
 function MyProfile() {
     const token = localStorage.getItem("token");
+    
     const [user, setUser] = React.useState({});
     const [getRequest, setGetRequest] = React.useState(false);
+
     const [errorMessage, setErrorMessage] = React.useState("");
     const [successMessage, setSuccessMessage] = React.useState("");
-
-    const [picture, setPicture] = useState({
-        selectedFile: null
-    });
+    const [file, setFile] = useState(null);
 
 
-
-    const onPhotoChange = event => {
-        setPicture(event.target.files[0]);
-        // this.setState({ selectedFile: event.target.files[0] });
-    };
 
     const onPhotoUpload = (event) => {
         event.preventDefault();
@@ -28,7 +25,7 @@ function MyProfile() {
         let id = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
         const formData = new FormData();
-        formData.append('image', picture);
+        formData.append('image', file);
 
 
         axios.post(`${process.env.REACT_APP_BACKEND}/Profile/uploadPic/${id}`, formData, {
@@ -49,7 +46,6 @@ function MyProfile() {
     }
 
 
-
     useEffect(() => {
         if (token) {
             if (!getRequest) {
@@ -67,22 +63,53 @@ function MyProfile() {
         }
     }, [token, getRequest]);
 
+    const fileTypes = ["PNG"];
+    const handleChange = (file) => {
+        setFile(file);
+    };
+
     return (
-        <div>
+        < div className="my-profile" >
+            <FileUploader handleChange={handleChange} name="file" types={fileTypes} />
             {errorMessage && <div className="err"> Error: {errorMessage} </div>}
             {successMessage && <div className="suc"> Success: {successMessage} </div>}
             {ExpiredTokenCheck()}
-            <h1>My profile</h1>
-            <p>Id : {user.id}</p>
+            <h1 className="heading">My profile</h1>
+            <br></br>
+            <img src={user.profilePicture} className="profile-picture" alt="Profile pic"></img>
+            <FileUploader
+                handleChange={handleChange}
+                name="file"
+                types={fileTypes}
+            />
+            <button onClick={onPhotoUpload}>Upload photo</button>
+            {/* <p>Id : {user.id}</p> */}
             <p>Username : {user.userName}</p>
             <p>Email : {user.email}</p>
             <p>PhoneNumber : {user.phoneNumber}</p>
-            <img src={user.profilePicture} alt="Profile pic"></img>
-            <input type="file" accept="image/png" onChange={onPhotoChange} />
-            <button onClick={onPhotoUpload}>Change profile picture</button>
+
+            {/* <input type="file" accept="image/png" onChange={onPhotoChange} /> */}
+            {/* <button onClick={onPhotoUpload}>Change profile picture</button> */}
             <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/`}>Back</Nav.Link>
         </div>
     )
+
+    // < div className = "my-profile" >
+    //     <div className="profile-header">
+    //         <h1>My Profile</h1>
+    //     </div>
+    //     <div className="profile-info">
+    //         <div className="profile-picture">
+    //             <img src={user.profilePicture} alt="Profile Picture" />
+    //         </div>
+    //         <div className="personal-info">
+    //             <h2>Personal Information</h2>
+    //             <p>Name: John Doe</p>
+    //             <p>Email: john.doe@example.com</p>
+    //             <p>Location: New York, NY</p>
+    //         </div>
+    //     </div>
+    // </div >
 
 
 

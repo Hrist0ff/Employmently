@@ -28,7 +28,7 @@ namespace employmently_be.Controllers
         }
 
         [HttpPut("changeDescription/{id}")]
-        [Authorize(Roles = "Company,Candidate")]
+        [Authorize(Roles = "Candidate")]
         public async Task<IActionResult> ChangeDesc(string id, [FromBody]string description)
         {
             var requestedUser = await _userManager.FindByIdAsync(id);

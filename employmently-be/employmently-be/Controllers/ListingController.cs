@@ -26,6 +26,7 @@ namespace employmently_be.Controllers
             }
 
 
+
             [HttpPost]
             [Authorize(Roles = "Company")]
             public async Task<ActionResult> List(ListingDto ldt)
@@ -44,12 +45,13 @@ namespace employmently_be.Controllers
                 };
                 var flag = 0;
 
+                
                 foreach (string categoryToAdd in ldt.Categories)
                 {
                   flag = 0;
                   foreach(Category existingCategories in _dbContext.Categories)
                     {
-                        if(existingCategories.Name == categoryToAdd)
+                        if(existingCategories.Name.ToLower() == categoryToAdd.ToLower())
                         {
                            existingCategories.Listings.Add(listingToAdd);
                            flag = 1;
@@ -69,7 +71,7 @@ namespace employmently_be.Controllers
                 _dbContext.Listings.Add(listingToAdd);
                 
                 _dbContext.SaveChanges();
-                return Ok(listingToAdd);
+                return Ok("Your Listing has been sent to admin. He should accept it and soon will be visible for everyone!");
 
 
             }

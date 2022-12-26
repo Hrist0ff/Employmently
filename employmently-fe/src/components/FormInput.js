@@ -10,7 +10,6 @@ function FormInput(props) {
 
     return (
         <div className="formInput">
-            <label>{label}</label>
             <input
                 {...inputProps}
                 onChange={onChange}
@@ -21,7 +20,7 @@ function FormInput(props) {
                 }
                 focused={focused.toString()}
             />
-            <span>{errorMessage}</span>
+            <span className="login-span">{errorMessage}</span>
         </div>
     );
 };
