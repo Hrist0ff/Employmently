@@ -124,7 +124,6 @@ a.btn:hover {
     font-size: 15px;
     font-family: 'Roboto', sans-serif;
     border: 1.7px solid red;
-    border-radius: 6%;
     padding: 3%;
     background-color: red;
     color: white;
@@ -137,7 +136,6 @@ a.btn:hover {
     font-size: 13px;
     font-family: 'Roboto', sans-serif;
     border: 1.7px solid rgb(64, 255, 0);
-    border-radius: 6%;
     padding: 3%;
     margin-left: 5%;
     margin-right: 5%;

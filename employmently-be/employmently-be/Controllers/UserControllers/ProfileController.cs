@@ -28,7 +28,7 @@ namespace employmently_be.Controllers
         }
 
         [HttpPut("changeDescription/{id}")]
-        [Authorize(Roles = "Candidate")]
+        [Authorize(Roles = "Candidate,Company")]
         public async Task<IActionResult> ChangeDesc(string id, [FromBody]string description)
         {
             var requestedUser = await _userManager.FindByIdAsync(id);
@@ -51,6 +51,30 @@ namespace employmently_be.Controllers
             return BadRequest();
         }
 
+        [HttpPut("changePhoneNumber/{id}")]
+        [Authorize(Roles = "Candidate,Company")]
+        public async Task<IActionResult> changePhoneNumber(string id, [FromBody] string number)
+        {
+            Console.WriteLine(number);
+            var requestedUser = await _userManager.FindByIdAsync(id);
+
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if (currentUser == null || requestedUser == null)
+            {
+                return NotFound();
+            }
+
+            if (requestedUser.Id == currentUser.Id)
+            {
+                currentUser.PhoneNumber = number;
+                await _dbContext.SaveChangesAsync();
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
         [HttpPost]
         [Route("uploadPic/{id}")]
         [Authorize(Roles = "Company,Candidate")]
@@ -60,7 +84,6 @@ namespace employmently_be.Controllers
             {
                 return BadRequest("Only PNG files are allowed");
             }
-
 
             // Connect to Azure Storage
             string connectionString = "DefaultEndpointsProtocol=https;AccountName=employmentlystorage;AccountKey=tQbLLmAfixQIMKPgvlmporcKOUaJ4phqihnrdOlm0450u9bm5iQ/HZ7/+PQ3QKc4wI6xfdIHKxDt+ASthlVoeQ==;EndpointSuffix=core.windows.net";
