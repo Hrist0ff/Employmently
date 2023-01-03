@@ -44,8 +44,6 @@ namespace employmently_be.Controllers
                 ProfilePicture = user.ProfilePicture,
             };
 
-            Console.WriteLine(result);  
-
             
             return Ok(result);
         }

@@ -17,6 +17,13 @@ function Home() {
         if (token) {
             const decodedToken = jwt(token);
             let username = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'];
+            let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            if (role === 'Company') {
+                return [
+                    <Nav.Link disabled> Hello, {username}</Nav.Link>,
+                    <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/MyProfile`}>My Profile</Nav.Link>,
+                ]
+            }
             return [
                 <Nav.Link disabled> Hello, {username}</Nav.Link>,
                 <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/MyProfile`}>My Profile</Nav.Link>,
@@ -35,7 +42,12 @@ function Home() {
             const decodedToken = jwt(token);
             let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
             if (role === 'Company') {
-                return <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Listing`}>Създай обява</Nav.Link>;
+                return [
+                    <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/myCompany`}>My Company</Nav.Link>,
+                    <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Listing`}>Създай обява</Nav.Link>,
+                    <Nav.Link onClick={logout}>Log Out</Nav.Link>
+                ]
+
             }
         }
     }
