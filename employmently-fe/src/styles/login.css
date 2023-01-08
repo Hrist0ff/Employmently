@@ -49,6 +49,16 @@ form {
     text-align: center;
 }
 
+.form-signup {
+    background-color: var(--hover-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    text-align: center;
+}
+
 input {
     background-color: #EDEDEE;
     border: none;

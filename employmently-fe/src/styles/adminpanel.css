@@ -1,0 +1,67 @@
+.admin-panel {
+    width: 90%;
+    margin: 0 auto;
+    background-color: rgb(154, 225, 244);
+    border-radius: 5%;
+    margin-top: 1%;
+    display: flex;
+    flex-direction: column;
+    height: 700px;
+    position: relative;
+}
+
+.heading-p {
+    text-align: center;
+    font-size: 26px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.listing {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+
+.p-listing {
+    max-width: 300px;
+    word-wrap: break-word;
+
+}
+
+.accept-button {
+    background-image: url('../images/acceptbutton.png');
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    width: 150px;
+    height: 35px;
+    border: none;
+    cursor: pointer;
+}
+
+.reject-button {
+    background-image: url('../images/rejectbutton.png');
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    width: 150px;
+    height: 35px;
+    border: none;
+    cursor: pointer;
+}
+
+.listing-headers {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.paragraph-center{
+    text-align: center;
+    align-items: center;
+    margin-top: 15%;
+}

@@ -13,10 +13,13 @@ function MyCompany() {
 
     const [user, setUser] = React.useState({});
     const [getRequest, setGetRequest] = React.useState(false);
+    const [selectedYear, setSelectedYear] = useState(null);
+
 
     const [errorMessage, setErrorMessage] = React.useState("");
     const [successMessage, setSuccessMessage] = React.useState("");
 
+    // Inputs for company info
     const [photoInput, setPhotoInput] = React.useState(false);
     const [phoneInput, setPhoneInput] = React.useState(false);
     const [yearInput, setYearInput] = React.useState(false);
@@ -25,9 +28,27 @@ function MyCompany() {
 
     const [employeeCount, setEmployeeCount] = useState('');
 
+
+    // File upload 
     const [file, setFile] = useState(null);
+    const fileTypes = ["PNG"];
+
+    const handleChange = (file) => {
+        setFile(file);
+    };
+
+    // Year handling
+    const yearOptions = [];
+    for (let year = 1970; year <= 2023; year++) {
+        yearOptions.push(<option key={year} value={year}>{year}</option>);
+    }
+
+    const handleChangeYear = (event) => {
+        setSelectedYear(event.target.value);
+    };
 
 
+    // Inputs handling
     const [values, setValues] = useState({
         yearCreated: "",
         description: "",
@@ -40,12 +61,12 @@ function MyCompany() {
     const inputs = [
         {
             id: 1,
-            name: "yearCreated",
+            name: "phoneNumber",
             type: "text",
-            placeholder: "Enter year of creation",
-            errorMessage: "It should be a valid year!",
-            label: "yearOfCreation",
-            pattern: "^[0-9]{4}$",
+            placeholder: "Enter your phone number",
+            errorMessage: "It should be a valid phone number!",
+            label: "Email",
+            pattern: "^[0-9]{10}$",
             required: true,
         },
         {
@@ -59,18 +80,37 @@ function MyCompany() {
         }
     ];
 
-    const fileTypes = ["PNG"];
-
-    const handleChange = (file) => {
-        setFile(file);
-    };
-
 
 
     const handleChangeEmployees = (event) => {
         setEmployeeCount(event.target.value);
     };
 
+    //Year change event
+    const onYearUpload = (event) => {
+        event.preventDefault();
+        const decodedToken = jwt(token);
+        let id = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+
+        axios.put(`${process.env.REACT_APP_BACKEND}/Company/changeYearOfCreation/${id}`, selectedYear, {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                setSuccessMessage("Year of creation changed successfully!");
+
+                setTimeout(() => {
+                    window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
+                }, 4000);
+            })
+            .catch(error => {
+                setErrorMessage("Couldn't change year. ");
+            })
+
+    }
+    // Picture change event
     const onPhotoUpload = (event) => {
         event.preventDefault();
         const decodedToken = jwt(token);
@@ -100,6 +140,7 @@ function MyCompany() {
             })
     }
 
+    // Employees quantity change event
     const onEmployeesUpload = (event) => {
         event.preventDefault();
         const decodedToken = jwt(token);
@@ -132,7 +173,7 @@ function MyCompany() {
         const phoneNumber = values.phoneNumber;
 
 
-        axios.put(`${process.env.REACT_APP_BACKEND}/Profile/changePhoneNumber/${id}`, phoneNumber, {
+        axios.put(`${process.env.REACT_APP_BACKEND}/Company/changePhoneNumber/${id}`, phoneNumber, {
             headers: {
                 'Content-Type': 'application/json',
                 "Authorization": `Bearer ${token}`
@@ -142,7 +183,7 @@ function MyCompany() {
                 setPhoneInput(false);
                 setSuccessMessage("Phone number changed successfully!");
                 setTimeout(() => {
-                    window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyProfile`;
+                    window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
                 }, 3000);
             })
             .catch(error => {
@@ -150,7 +191,7 @@ function MyCompany() {
             })
     }
 
-
+    // Description change event
     const onDescriptionUpload = (event) => {
         event.preventDefault();
         const decodedToken = jwt(token);
@@ -178,9 +219,12 @@ function MyCompany() {
 
 
 
+    // Checking account and getting user data
     useEffect(() => {
         if (token) {
             if (!getRequest) {
+                setEmployeeCount("1-5");
+                setSelectedYear("1970");
                 const decodedToken = jwt(token);
                 const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
                 axios.get(`${process.env.REACT_APP_BACKEND}/Company/${userId}`, {
@@ -237,6 +281,15 @@ function MyCompany() {
                 </div>
                 <div style={{ display: 'flex', gap: '370px' }}>
                     {!yearInput && <button className="edit-btn" onClick={() => setYearInput(true)}>Edit year of creation</button>}
+                    {yearInput &&
+                        (
+                            <div className="profile-header">
+                                <select id="year-dropdown" onChange={handleChangeYear} value={selectedYear} style={{ width: 200, height: 20 }}>
+                                    {yearOptions}
+                                </select>
+                                <button onClick={onYearUpload} className="upload-ph-btn">Update year</button>
+                            </div>)
+                    }
                     {!employeesInput && <button className="edit-btn" onClick={() => setEmployeesInput(true)}>Edit employees</button>}
                     {employeesInput &&
                         (
@@ -285,7 +338,7 @@ function MyCompany() {
                                 onChange={onChange}
                             />
 
-                            <button onClick={onDescriptionUpload} className="upload-ph-btn">Update description</button>
+                            <button onClick={onDescriptionUpload} className="upload-ph-btn-right">Update description</button>
                         </form>
 
                     </div>

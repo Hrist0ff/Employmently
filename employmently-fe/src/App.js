@@ -7,6 +7,8 @@ import Register from "./pages/Register";
 import ChangePassword from "./pages/ChangePassword";
 import MyProfile from "./pages/MyProfile";
 import MyCompany from "./pages/MyCompany";
+import Company from "./pages/Company";
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
   return (
@@ -20,7 +22,9 @@ function App() {
         <Route path="Changepassword/id=:id" element={<ChangePassword />} />
         <Route path="/MyProfile" element={<MyProfile />} />
         <Route path="/MyCompany" element={<MyCompany />} />
-        {/* <Route path="Company/id=:id" element={<Company />} /> */}
+        <Route path="Company/:id" element={<Company />} />
+        <Route path="AdminPanel" element={<AdminPanel />} />
+        { /* <Route path="Company/id=:id" element={<Company />} /> */}
       </Routes>
     </BrowserRouter>
   );

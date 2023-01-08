@@ -98,9 +98,9 @@ function MyProfile() {
             .then(response => {
                 setPhoneInput(false);
                 setSuccessMessage("Phone number changed successfully!");
-                // setTimeout(() => {
-                //     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyProfile`;
-                // }, 3000);
+                setTimeout(() => {
+                    window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyProfile`;
+                }, 3000);
             })
             .catch(error => {
                 setErrorMessage("Couldn't change phone number. ");

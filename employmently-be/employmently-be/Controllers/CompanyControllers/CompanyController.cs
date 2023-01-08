@@ -56,6 +56,33 @@ namespace employmently_be.Controllers.Company
                 YearCreated = company.YearCreated,
                 ProfilePicture = company.ProfilePicture,
                 Employees = company.Employees,
+                PhoneNumber = company.PhoneNumber,
+            };
+
+            return Ok(result);
+        }
+
+        [HttpGet("getCertainCompany/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCertainCompany(int id)
+        {
+            
+            var company = _dbContext.Companies.FirstOrDefault(x => x.Id == id);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            var result = new CompanyViewModel()
+            {
+                Name = company.Name,
+                UniqueIdentifier = company.UniqueIdentifier,
+                Description = company.Description,
+                YearCreated = company.YearCreated,
+                ProfilePicture = company.ProfilePicture,
+                Employees = company.Employees,
+                PhoneNumber = company.PhoneNumber,
             };
 
             return Ok(result);
@@ -94,6 +121,34 @@ namespace employmently_be.Controllers.Company
             await _dbContext.SaveChangesAsync();
             return Ok();
             
+        }
+
+        [HttpPut("changePhoneNumber/{id}")]
+        [Authorize(Roles = "Company")]
+        public async Task<IActionResult> changePhoneNumber(string id, [FromBody] string number)
+        {
+            var requestedUser = await _userManager.FindByIdAsync(id);
+
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if (currentUser == null || requestedUser == null)
+            {
+                return NotFound();
+            }
+
+            if (currentUser.Id != requestedUser.Id)
+            {
+                ModelState.AddModelError("Error", "User's not the same as requesting user");
+                return BadRequest(ModelState);
+            }
+
+            var company = _dbContext.Companies.FirstOrDefault(x => x.UniqueIdentifier == currentUser.UniqueIdentifierCompany);
+
+            company.PhoneNumber = number;
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+            
+
         }
 
         [HttpPut("changeYearOfCreation/{id}")]

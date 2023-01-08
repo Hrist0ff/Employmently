@@ -96,12 +96,12 @@ function Register() {
     return (
         <div>
             <div className="container">
-                <div className="log-container">
+                <div className="signup-container">
                     {errorMessage && <div className="err"> Error: {errorMessage} </div>}
                     {successMessage && <div className="suc"> Success: {successMessage} </div>}
                     <Link to={'/RegisterCompany'} className="btn-reg">Register a company?</Link>
                     <h1>Sign up</h1>
-                    <form>
+                    <form className="form-signup">
                         {inputs.map((input) => (
                             <FormInput
                                 key={input.id}
@@ -112,11 +112,9 @@ function Register() {
                         ))}
                         <button className="btn" type="submit" onClick={registerAction}>Sign up</button>
                     </form>
-                    <p>
-                        <Link to={'/ForgotPassword'} className="btn-frgtpass">Forgot your Password?</Link>
-                    </p>
+
                 </div>
-                <div className="signup-container">
+                <div className="log-container">
                     <h1>Sign in</h1>
                     <p>Sign in here if you already have an account.</p>
                     <p></p>

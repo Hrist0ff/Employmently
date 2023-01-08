@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, NavLink, Navbar } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import '../styles/home.css';
 import Logo from "../images/employment.png";
 import jwt from 'jwt-decode';
@@ -31,10 +31,21 @@ function Home() {
 
             ]
         }
+
         return [<Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Login`}>Вход</Nav.Link>,
         <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Register`}>Създай акаунт</Nav.Link>,
         <span className="divider" />,
         <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Listings`}>Обяви</Nav.Link>]
+    }
+
+    const isAdmin = () => {
+        if (token) {
+            const decodedToken = jwt(token);
+            let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            if (role === 'Administrator') {
+                return <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/AdminPanel`}>Admin Panel</Nav.Link>;
+            }
+        }
     }
 
     const isCompany = () => {
@@ -52,15 +63,7 @@ function Home() {
         }
     }
 
-    const isAdmin = () => {
-        if (token) {
-            const decodedToken = jwt(token);
-            let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-            if (role === 'Administrator') {
-                return <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Listing`}>Admin Panel</Nav.Link>;
-            }
-        }
-    }
+
 
     return (
         <body>

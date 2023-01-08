@@ -109,12 +109,12 @@ namespace employmently_be.Controllers
                                CreatedDate = l.CreatedDate,
                                // include other properties (Authors and Categories) of the listing here
                                AuthorId = l.Author.Id,
-                               AuthorName = l.Author.UserName,
+                               AuthorName = l.Author.Company.Name,
                                CategoryNames = l.Categories.Select(c => c.Name)
                            });
             if (!listings.Any())
             {
-                return Ok("There aren't any pending listings!");
+                return Ok();
             }
             return Ok(listings);
         }
