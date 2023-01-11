@@ -1,10 +1,10 @@
-import React, { useRef } from "react";
+import React, { useEffect } from "react";
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import '../styles/login.css';
 import FormInput from '../components/FormInput';
-
+import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
 
 
 
@@ -70,6 +70,12 @@ function Register() {
     const onChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
+
+    useEffect(() => {
+        if (ExpiredTokenCheck() === false) {
+            window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
+        }
+    })
 
     const registerAction = (event) => {
         event.preventDefault();

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import jwt from 'jwt-decode';
 import axios from 'axios';
-import ExpiredTokenCheck from '../components/ExpiredTokenCheck';
 import { Nav } from "react-bootstrap";
 import '../styles/myprofile.css';
 import { FileUploader } from "react-drag-drop-files";
 import FormInput from '../components/FormInput';
+import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
 
 function MyProfile() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
 
     const [user, setUser] = React.useState({});
     const [getRequest, setGetRequest] = React.useState(false);
@@ -60,7 +60,6 @@ function MyProfile() {
 
         const formData = new FormData();
         formData.append('image', file);
-        console.log(file);
 
 
         axios.post(`${process.env.REACT_APP_BACKEND}/Profile/uploadPic/${id}`, formData, {
@@ -138,15 +137,28 @@ function MyProfile() {
             if (!getRequest) {
                 const decodedToken = jwt(token);
                 const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-                axios.get(`${process.env.REACT_APP_BACKEND}/User/${userId}`)
+                axios.get(`${process.env.REACT_APP_BACKEND}/User/${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
                     .then(response => {
                         setUser(response.data);
+                        console.log(token);
                     })
                     .catch(error => {
-                        setErrorMessage(error.response.data.Error[0]);
+                        setErrorMessage(error.response.data);
+                        if (error.response.status === 401) {
+                            ExpiredTokenCheck()
+                        }
                     })
                 setGetRequest(true);
             }
+        }
+        else {
+            setTimeout(() => {
+                window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/Login`;
+            }, 1000);
         }
     }, [token, getRequest]);
 
@@ -157,9 +169,11 @@ function MyProfile() {
 
     return (
         < div className="my-profile" >
+            {ExpiredTokenCheck()}
+
             {errorMessage && <div className="err"> Error: {errorMessage} </div>}
             {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
-            {ExpiredTokenCheck()}
+
             <h1 className="heading">My profile</h1>
 
             <br></br>

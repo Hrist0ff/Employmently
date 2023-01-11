@@ -11,6 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using employmently_be.Services;
+using System.Security.Cryptography;
+using employmently_be.Data.Entities;
+using employmently_be.Data.Models.ViewModels;
 
 namespace employmently_be.Controllers
 {
@@ -20,15 +24,19 @@ namespace employmently_be.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
-        public LoginController( UserManager<User> userManager, IConfiguration configuration)
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+
+        public LoginController( UserManager<User> userManager, IConfiguration configuration, IRefreshTokenRepository refreshTokenRepository)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _refreshTokenRepository = refreshTokenRepository;
+
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login(LoginDto input)
+        public async Task<ActionResult<AuthenticationViewModel>> Login(LoginDto input)
         {   
             var user = await _userManager.FindByEmailAsync(input.Email);
             if (user == null)
@@ -52,9 +60,42 @@ namespace employmently_be.Controllers
             }
             var role = await _userManager.GetRolesAsync(user);
             var token = GenerateJWTtoken(user, role);
-            return Ok(token);
+            var storedRefreshToken = await _refreshTokenRepository.GetRefreshToken(user.Id);
+
+            if (storedRefreshToken != null)
+            {
+                if (storedRefreshToken.ExpirationDate < DateTime.UtcNow)
+                {
+                    await _refreshTokenRepository.DeleteAsync(storedRefreshToken);
+                }
+                else
+                {
+                    return new AuthenticationViewModel()
+                    {
+                        accessToken = token,
+                        refreshToken = storedRefreshToken.Token
+                    };
+                }
+            }
+            var refreshToken = GenerateRefreshToken();
+
+            await _refreshTokenRepository.CreateAsync(new RefreshToken
+            {
+                Token = refreshToken,
+                UserId = user.Id,
+                ExpirationDate = DateTime.UtcNow.AddDays(1)
+            });
+
+            return new AuthenticationViewModel()
+            {
+                accessToken = token,
+                refreshToken = refreshToken
+            };
 
         }
+
+
+ 
 
         private string GenerateJWTtoken(User user, IList<string> role) 
         {
@@ -73,10 +114,20 @@ namespace employmently_be.Controllers
 
             var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"],
               claims,
-              expires: DateTime.Now.AddMinutes(15),
+              expires: DateTime.Now.AddSeconds(1),
               signingCredentials: credentials);
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
+        }
+            
+        public static string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
         }
     }
 }

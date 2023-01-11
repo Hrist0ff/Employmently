@@ -6,10 +6,11 @@ import jwt from 'jwt-decode';
 import ExpiredTokenCheck from '../components/ExpiredTokenCheck';
 
 function Home() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
 
     const logout = () => {
-        localStorage.removeItem("token");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
     }
 
@@ -66,22 +67,20 @@ function Home() {
 
 
     return (
-        <body>
-            <div class="nav">
-                <img src={Logo} className='log' alt='Employmently logo'></img>
-                {/* Aligned items to the right */}
-                <div class="justify-end">
-                    <label for="toggle">&#9776;</label>
-                    <input type="checkbox" id="toggle" />
-                    <div class="menu">
-                        {ExpiredTokenCheck()}
-                        {haveProfile()}
-                        {isCompany()}
-                        {isAdmin()}
-                    </div>
+        <div className="nav">
+            <img src={Logo} className='log' alt='Employmently logo'></img>
+            {/* Aligned items to the right */}
+            <div className="justify-end">
+                <label htmlFor="toggle">&#9776;</label>
+                <input type="checkbox" id="toggle" />
+                <div className="menu">
+                    {ExpiredTokenCheck()}
+                    {haveProfile()}
+                    {isCompany()}
+                    {isAdmin()}
                 </div>
             </div>
-        </body>
+        </div>
 
     );
 }

@@ -38,7 +38,7 @@ function AdminPanel() {
     }
 
     const acceptListing = (id) => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("accessToken");
 
         axios.post(`${process.env.REACT_APP_BACKEND}/Admin/AcceptListing/${id}`,
             {},
@@ -59,7 +59,7 @@ function AdminPanel() {
     }
 
     const rejectListing = (id) => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("accessToken");
 
         axios.post(`${process.env.REACT_APP_BACKEND}/Admin/RejectListing/${id}`,
             {},
@@ -84,7 +84,7 @@ function AdminPanel() {
 
     useEffect(() => {
         if (!getRequest) {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("accessToken");
             if (token) {
                 const decodedToken = jwt(token);
                 let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
@@ -105,7 +105,7 @@ function AdminPanel() {
 
                 })
                 .catch(error => {
-                    setErrorMessage(error.response.data.Error[0]);
+                    setErrorMessage(error.response.data);
                 })
             setGetRequest(true);
         }

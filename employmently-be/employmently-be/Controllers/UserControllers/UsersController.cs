@@ -29,6 +29,7 @@ namespace employmently_be.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult GetUser(string id)
         {
             var user = _dbContext.Users.FirstOrDefault(x => x.Id == id);

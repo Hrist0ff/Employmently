@@ -15,6 +15,7 @@ namespace employmently_be.Data.Entities
         public User Author { get; set; }
 
         public ListingStatus Status { get; set; } = ListingStatus.Pending;
+        
 
 
     }

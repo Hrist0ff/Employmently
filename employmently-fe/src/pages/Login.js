@@ -1,13 +1,16 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/login.css';
 import FormInput from '../components/FormInput';
+import { useEffect } from "react";
+import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
 
 
 function Login() {
     const [errorMessage, setErrorMessage] = React.useState("");
+
 
     const [values, setValues] = useState({
         email: "",
@@ -41,17 +44,26 @@ function Login() {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
 
+    useEffect(() => {
+        if (localStorage.getItem("accessToken") !== null) {
+            window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
+        }
+    })
+
+
     const loginAction = (event) => {
         event.preventDefault();
         const email = values.email;
         const password = values.password;
 
 
+
         axios.post(`${process.env.REACT_APP_BACKEND}/Login`, { email, password })
             .then(response => {
                 const token = response.data;
-                localStorage.setItem("token", token);
-                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                localStorage.setItem("accessToken", token["accessToken"]);
+                localStorage.setItem("refreshToken", token["refreshToken"]);
+                axios.defaults.headers.common["Authorization"] = `Bearer ${token["accessToken"]}`;
                 window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
             })
             .catch(error => {
@@ -62,6 +74,7 @@ function Login() {
     return (
         <div>
             <div className="container">
+                {ExpiredTokenCheck()}
                 <div className="log-container">
                     {errorMessage && <div className="err"> Error: {errorMessage} </div>}
                     <h1>Sign in</h1>

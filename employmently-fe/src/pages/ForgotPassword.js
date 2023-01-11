@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/forgotpassword.css';
 import FormInput from '../components/FormInput';
 import axios from 'axios';
+import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
 
 function ForgotPassword() {
 
@@ -26,6 +27,12 @@ function ForgotPassword() {
     const onChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
+
+    useEffect(() => {
+        if (ExpiredTokenCheck() === false) {
+            window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
+        }
+    })
 
     const ForgotPassAction = (event) => {
         event.preventDefault();

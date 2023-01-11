@@ -59,6 +59,9 @@ builder.Services.AddMvc().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 );
 
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(MyAllowSpecificOrigins,

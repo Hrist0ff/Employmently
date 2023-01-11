@@ -9,7 +9,7 @@ import { FileUploader } from "react-drag-drop-files";
 
 
 function MyCompany() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
 
     const [user, setUser] = React.useState({});
     const [getRequest, setGetRequest] = React.useState(false);
