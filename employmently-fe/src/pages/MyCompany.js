@@ -12,7 +12,7 @@ function MyCompany() {
     const token = localStorage.getItem("accessToken");
 
     const [user, setUser] = React.useState({});
-    const [getRequest, setGetRequest] = React.useState(false);
+    const [performed, setPerformed] = React.useState(false);
     const [selectedYear, setSelectedYear] = useState(null);
 
 
@@ -222,7 +222,7 @@ function MyCompany() {
     // Checking account and getting user data
     useEffect(() => {
         if (token) {
-            if (!getRequest) {
+            if (!performed) {
                 setEmployeeCount("1-5");
                 setSelectedYear("1970");
                 const decodedToken = jwt(token);
@@ -239,10 +239,10 @@ function MyCompany() {
                     .catch(error => {
                         setErrorMessage(error.response.data.Error[0]);
                     })
-                setGetRequest(true);
+                setPerformed(true);
             }
         }
-    }, [token, getRequest]);
+    }, [token, performed]);
 
     return (
         < div className={`my-profile-comp ${(descriptionInput || phoneInput) ? 'my-profile-comp--expanded' : ''}`}>

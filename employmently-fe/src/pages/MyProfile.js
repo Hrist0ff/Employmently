@@ -6,12 +6,13 @@ import '../styles/myprofile.css';
 import { FileUploader } from "react-drag-drop-files";
 import FormInput from '../components/FormInput';
 import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
+import Home from "../pages/Home"
 
 function MyProfile() {
     const token = localStorage.getItem("accessToken");
 
     const [user, setUser] = React.useState({});
-    const [getRequest, setGetRequest] = React.useState(false);
+    const [performed, setPerformed] = React.useState(false);
 
     const [photoInput, setPhotoInput] = React.useState(false);
     const [phoneInput, setPhoneInput] = React.useState(false);
@@ -134,7 +135,7 @@ function MyProfile() {
 
     useEffect(() => {
         if (token) {
-            if (!getRequest) {
+            if (!performed) {
                 const decodedToken = jwt(token);
                 const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
                 axios.get(`${process.env.REACT_APP_BACKEND}/User/${userId}`, {
@@ -152,7 +153,7 @@ function MyProfile() {
                             ExpiredTokenCheck()
                         }
                     })
-                setGetRequest(true);
+                setPerformed(true);
             }
         }
         else {
@@ -160,7 +161,7 @@ function MyProfile() {
                 window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/Login`;
             }, 1000);
         }
-    }, [token, getRequest]);
+    }, [token, performed]);
 
     const fileTypes = ["PNG"];
     const handleChange = (file) => {
@@ -168,9 +169,9 @@ function MyProfile() {
     };
 
     return (
+
         < div className="my-profile" >
             {ExpiredTokenCheck()}
-
             {errorMessage && <div className="err"> Error: {errorMessage} </div>}
             {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
 

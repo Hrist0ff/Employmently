@@ -14,6 +14,9 @@ namespace employmently_be.Data.Models
         public DateTime CreatedDate { get; set; }
         
         public IList<String> Categories { get; set; }
+        public string? Location { get; set; }
+        public string? Arrangement { get; set; }
+        public int? Salary { get; set; }
 
 
     }

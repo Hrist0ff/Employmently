@@ -4,6 +4,7 @@ namespace employmently_be.Data.Models
 {
     public class RegisterDto
     {
+        [Required]
         public string Username { get; set; }
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress]

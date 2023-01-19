@@ -55,11 +55,21 @@ form {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 50px;
+    padding: 0 85px 0 85px;
     text-align: center;
 }
 
 input {
+    background-color: #EDEDEE;
+    border: none;
+    padding: 12px 25px;
+    margin: 7px 0;
+    margin-left: 2px;
+}
+
+.formInput {}
+
+.input-login {
     background-color: #EDEDEE;
     border: none;
     padding: 12px 25px;

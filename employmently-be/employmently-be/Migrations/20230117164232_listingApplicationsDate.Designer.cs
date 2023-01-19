@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using employmently_be.DbContexts;
 
@@ -11,9 +12,11 @@ using employmently_be.DbContexts;
 namespace employmentlybe.Migrations
 {
     [DbContext(typeof(dbContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20230117164232_listingApplicationsDate")]
+    partial class listingApplicationsDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,21 +70,21 @@ namespace employmentlybe.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "b9603ea5-8dcd-4fab-a221-c46d6d7de77c",
+                            ConcurrencyStamp = "f5ccd785-4da2-4cc7-ba2b-1dc7147b898b",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "2dab0fec-62e0-4be5-8eae-3211a302e0a0",
+                            ConcurrencyStamp = "28f8ca6f-5749-4824-b15f-e56ff0f63e56",
                             Name = "Company",
                             NormalizedName = "COMPANY"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "bc702354-4586-42d7-9bae-6f4c90ee5f56",
+                            ConcurrencyStamp = "88dce622-9ba8-4578-a6ff-4155f2c5dcab",
                             Name = "Candidate",
                             NormalizedName = "CANDIDATE"
                         });
@@ -176,7 +179,7 @@ namespace employmentlybe.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "1id",
+                            UserId = "1",
                             RoleId = "1"
                         });
                 });
@@ -503,7 +506,7 @@ namespace employmentlybe.Migrations
                         {
                             Id = "1id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "efefde91-94d0-485f-bd8a-45cfd2d3aa28",
+                            ConcurrencyStamp = "982ade35-4933-4a74-9862-bf64da5c8110",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -512,7 +515,7 @@ namespace employmentlybe.Migrations
                             PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg==",
                             PhoneNumberConfirmed = false,
                             ProfilePicture = "https://employmentlystorage.blob.core.windows.net/fileupload/default_profilepic.png",
-                            SecurityStamp = "7085b04a-a94b-497a-b666-29f2d2ba23e2",
+                            SecurityStamp = "604bad2e-671c-485e-865b-6e55aa9f0b3a",
                             TwoFactorEnabled = false,
                             UserName = "adminuser"
                         });

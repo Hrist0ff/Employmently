@@ -5,6 +5,8 @@ namespace employmently_be.Data.Models
 {
     public class RegisterCompanyDto
     {
+        [Required]
+
         public string Username { get; set; }
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress]
@@ -15,7 +17,7 @@ namespace employmently_be.Data.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
+        [Required]
         public string CompanyId { get; set; }
     }
 }

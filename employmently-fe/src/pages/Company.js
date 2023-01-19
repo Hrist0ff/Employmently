@@ -23,7 +23,7 @@ function Company() {
     // Checking account and getting user data
     useEffect(() => {
         if (!getRequest) {
-            axios.get(`${process.env.REACT_APP_BACKEND}/Company/getCertainCompany/${id}`)
+            axios.get(`${process.env.REACT_APP_BACKEND}/Information/getCertainCompany/${id}`)
                 .then(response => {
                     setUser(response.data);
                     console.log(response.data);

@@ -35,13 +35,18 @@ namespace employmently_be.Controllers
                 {
                     return BadRequest();
                 }
+
+
                 var user = await _userManager.GetUserAsync(User);
                 var listingToAdd = new Listing()
                 {
                         Name = ldt.Name,
                         Description = ldt.Description,
                         CreatedDate = DateTime.Now,
-                        Author = user
+                        Author = user,
+                        Location = ldt.Location,
+                        Arrangement = ldt.Arrangement,
+                        Salary = ldt.Salary,
                 };
                 var flag = 0;
 

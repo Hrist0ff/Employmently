@@ -1,11 +1,15 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using employmently_be.Data.Entities;
 using employmently_be.Data.Models.ViewModels;
 using employmently_be.DbContexts;
 using employmently_be.Entities;
+using employmently_be.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace employmently_be.Controllers.Company
 {
@@ -16,10 +20,17 @@ namespace employmently_be.Controllers.Company
     {
         private readonly dbContext _dbContext;
         private readonly UserManager<User> _userManager;
-        public CompanyController(dbContext dbContext, UserManager<User> userManager)
+        private readonly IConfiguration _config;
+        private readonly ILogger<EmailSender> _logger;
+        private readonly IOptions<AuthMessageSenderOptions> optionsAccessor;
+        public CompanyController(dbContext dbContext, UserManager<User> userManager, IConfiguration config, ILogger<EmailSender> logger,
+            IOptions<AuthMessageSenderOptions> options)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _config = config;
+            _logger = logger;
+            optionsAccessor = options;
         }
 
         [HttpGet("{id}")]
@@ -62,31 +73,6 @@ namespace employmently_be.Controllers.Company
             return Ok(result);
         }
 
-        [HttpGet("getCertainCompany/{id}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetCertainCompany(int id)
-        {
-            
-            var company = _dbContext.Companies.FirstOrDefault(x => x.Id == id);
-
-            if (company == null)
-            {
-                return NotFound();
-            }
-
-            var result = new CompanyViewModel()
-            {
-                Name = company.Name,
-                UniqueIdentifier = company.UniqueIdentifier,
-                Description = company.Description,
-                YearCreated = company.YearCreated,
-                ProfilePicture = company.ProfilePicture,
-                Employees = company.Employees,
-                PhoneNumber = company.PhoneNumber,
-            };
-
-            return Ok(result);
-        }
 
 
         [HttpPut("changeDescription/{id}")]
@@ -250,6 +236,132 @@ namespace employmently_be.Controllers.Company
                 return Ok(blobClient.Uri.AbsoluteUri);
             }
             return BadRequest();
+        }
+
+        [HttpPost("acceptApplication/{id}")]
+        [Authorize(Roles ="Company")]
+        public async Task<IActionResult> acceptApplication([FromRoute]int id,[FromBody]DateTime DateForInterview)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("Error", "User does not exists.");
+                return BadRequest(ModelState);
+            }
+
+            var listingApplication = _dbContext.ListingApplications.Where(x => x.Id == id).FirstOrDefault();
+
+            if (listingApplication == null)
+            {
+                ModelState.AddModelError("Error","Listing does not exists.");
+                return BadRequest(ModelState);
+            }
+
+            var listing = _dbContext.Listings
+                .Include(x => x.Author)
+                .Include(x => x.Author.Company)
+                .Where(x => x.Id == listingApplication.listingId).FirstOrDefault();
+
+            if(listing == null)
+            {
+                return BadRequest();
+            }
+
+            if(listing.Author.UniqueIdentifierCompany != user.UniqueIdentifierCompany)
+            {
+                ModelState.AddModelError("Error", "You are trying to accept application to other company.");
+                return BadRequest(ModelState);
+
+            }
+
+            if(listingApplication.status != ListingStatus.Pending)
+            {
+                ModelState.AddModelError("Error", "You are trying to accept application which already has been accepted/rejected.");
+                return BadRequest(ModelState);
+            }
+
+
+            string dateString = DateForInterview.ToString("MM/dd/yyyy HH:mm");
+
+
+            var userEmail = await _dbContext.Users.Where(x => x.Id == listingApplication.userId).FirstOrDefaultAsync();
+            var subject = "Your application for " + listing.Name + " " + "in " + listing.Author.Company.Name + " has been accepted";
+            var email_body = "Employmently <br></br>" + subject + "<br></br>Suggested interview date: " + dateString  
+                + "<br></br>Company contact details:<br></br>Phone number: " + listing.Author.Company.PhoneNumber;
+
+
+
+            EmailSender emailHelper = new EmailSender(optionsAccessor, _logger, _config);
+
+
+            await emailHelper.SendEmailAsync(userEmail.Email, subject, email_body);
+
+
+            listingApplication.status = ListingStatus.Accepted;
+            _dbContext.SaveChanges();
+            return Ok("Listing application has been accepted.");
+
+        }
+
+        [HttpPost("rejectApplication/{id}")]
+        [Authorize(Roles = "Company")]
+        public async Task<IActionResult> rejectApplication([FromRoute] int id, [FromBody] string rejectionPurpose)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("Error", "User does not exists.");
+                return BadRequest(ModelState);
+            }
+
+            var listingApplication = _dbContext.ListingApplications.Where(x => x.Id == id).FirstOrDefault();
+
+            if (listingApplication == null)
+            {
+                ModelState.AddModelError("Error", "Listing does not exists.");
+                return BadRequest(ModelState);
+            }
+
+            var listing = _dbContext.Listings
+                .Include(x => x.Author)
+                .Include(x => x.Author.Company)
+                .Where(x => x.Id == listingApplication.listingId).FirstOrDefault();
+
+            if (listing == null)
+            {
+                return BadRequest();
+            }
+
+            if (listing.Author.UniqueIdentifierCompany != user.UniqueIdentifierCompany)
+            {
+                ModelState.AddModelError("Error", "You are trying to reject application to other company.");
+                return BadRequest(ModelState);
+
+            }
+
+            if (listingApplication.status != ListingStatus.Pending)
+            {
+                ModelState.AddModelError("Error", "You are trying to reject application which already has been accepted/rejected.");
+                return BadRequest(ModelState);
+            }
+
+
+            var userEmail = await _dbContext.Users.Where(x => x.Id == listingApplication.userId).FirstOrDefaultAsync();
+            var subject = "Your application for " + listing.Name + " in " + listing.Author.Company.Name + " has been rejected";
+            var email_body = "Employmently <br></br>" + subject + "<br></br> The reason is: " + rejectionPurpose;
+
+
+            EmailSender emailHelper = new EmailSender(optionsAccessor, _logger, _config);
+
+            await emailHelper.SendEmailAsync(userEmail.Email, subject, email_body);
+
+
+            listingApplication.status = ListingStatus.Rejected;
+            _dbContext.SaveChanges();
+            return Ok("Listing application has been rejected.");
+
         }
 
     }

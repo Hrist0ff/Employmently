@@ -80,7 +80,7 @@ function Login() {
                     <h1>Sign in</h1>
                     <form>
                         {inputs.map((input) => (
-                            <FormInput
+                            <FormInput className="input-login"
                                 key={input.id}
                                 {...input}
                                 value={values[input.name]}

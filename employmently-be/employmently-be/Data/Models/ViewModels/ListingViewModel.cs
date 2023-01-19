@@ -9,6 +9,13 @@
         // include other properties of the listing here
         public string AuthorId { get; set; }
         public string AuthorName { get; set; }
+        public string? AuthorPic { get; set; }
         public IEnumerable<string> CategoryNames { get; set; }
+        public string? Location { get; set; }
+        public string? Arrangement { get; set; }
+        public int? Salary { get; set; }
+
+
     }
+
 }

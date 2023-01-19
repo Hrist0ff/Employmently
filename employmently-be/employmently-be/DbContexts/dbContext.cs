@@ -13,7 +13,7 @@ namespace employmently_be.DbContexts
         public DbSet<Category> Categories { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-
+        public DbSet<ListingApplications> ListingApplications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
@@ -30,7 +30,7 @@ namespace employmently_be.DbContexts
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = "1", // primary key
+                    Id = "1id", // primary key
                     UserName = "adminuser",
                     Email = "admin@admin.com",
                     NormalizedEmail = "ADMIN@ADMIN.COM",
@@ -44,7 +44,7 @@ namespace employmently_be.DbContexts
                new IdentityUserRole<string>
                {
                    RoleId = "1",
-                   UserId = "1"
+                   UserId = "1id"
                }
             );
             modelBuilder.Entity<Category>().HasData(

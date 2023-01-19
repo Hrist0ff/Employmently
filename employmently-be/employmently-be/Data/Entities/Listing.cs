@@ -6,6 +6,7 @@ namespace employmently_be.Data.Entities
 {
     public class Listing
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -15,7 +16,9 @@ namespace employmently_be.Data.Entities
         public User Author { get; set; }
 
         public ListingStatus Status { get; set; } = ListingStatus.Pending;
-        
+        public string? Location { get; set; }
+        public string? Arrangement { get; set; }
+        public int? Salary { get; set; }
 
 
     }

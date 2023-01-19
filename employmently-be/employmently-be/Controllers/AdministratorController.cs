@@ -110,7 +110,10 @@ namespace employmently_be.Controllers
                                // include other properties (Authors and Categories) of the listing here
                                AuthorId = l.Author.Id,
                                AuthorName = l.Author.Company.Name,
-                               CategoryNames = l.Categories.Select(c => c.Name)
+                               CategoryNames = l.Categories.Select(c => c.Name),
+                               Location = l.Location,
+                               Arrangement = l.Arrangement,
+                               Salary = l.Salary,
                            });
             if (!listings.Any())
             {
