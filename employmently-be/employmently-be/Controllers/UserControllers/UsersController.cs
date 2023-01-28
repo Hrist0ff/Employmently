@@ -1,4 +1,6 @@
-﻿using employmently_be.Data.Entities;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using employmently_be.Data.Entities;
 using employmently_be.Data.Models;
 using employmently_be.Data.Models.DTOs;
 using employmently_be.Data.Models.ViewModels;
@@ -66,10 +68,16 @@ namespace employmently_be.Controllers
 
         [HttpPost("Applicateforjob/{listingid}")]
         [Authorize(Roles ="Candidate")]
-        public async Task<IActionResult> PostApplication([FromRoute]int listingid)
+        public async Task<IActionResult> PostApplication([FromRoute]int listingid, IFormFile cv, IFormFile motivationalLetter)
         {
             var user = await _userManager.GetUserAsync(User);
-            
+
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=employmentlystorage;AccountKey=tQbLLmAfixQIMKPgvlmporcKOUaJ4phqihnrdOlm0450u9bm5iQ/HZ7/+PQ3QKc4wI6xfdIHKxDt+ASthlVoeQ==;EndpointSuffix=core.windows.net";
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("fileupload");
+            await containerClient.CreateIfNotExistsAsync();
+
+
             if (user == null)
             {
                 ModelState.AddModelError("Error", "User does not exists.");
@@ -84,15 +92,32 @@ namespace employmently_be.Controllers
                 return BadRequest(ModelState);
             }
 
-            var listingApplication = _dbContext.ListingApplications.Where(x => x.Id == listingid && x.userId == user.Id);
+            var listingApplication = _dbContext.ListingApplications.Where(x => x.listingId == listingid && x.userId == user.Id);
 
             if(!listingApplication.Any())
             {
+                string cvName = user.Id + "_" + listingid + "_cv" + Path.GetExtension(cv.FileName);
+                BlobClient cvClient = containerClient.GetBlobClient(cvName);
+                using (var stream = cv.OpenReadStream())
+                {
+                    await cvClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = cv.ContentType });
+                }
+
+                string mlName = user.Id + "_" + listingid + "_ml" + Path.GetExtension(motivationalLetter.FileName);
+                BlobClient mlClient = containerClient.GetBlobClient(mlName);
+                using (var stream = motivationalLetter.OpenReadStream())
+                {
+                    await mlClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = motivationalLetter.ContentType });
+                }
+
+
                 var listingToAdd = new ListingApplications()
                 {
                     listingId = listingid,
                     userId = user.Id,
-                    applicationTime = DateTime.Now
+                    applicationTime = DateTime.Now,
+                    CV = cvClient.Uri.AbsoluteUri,
+                    motivationalLetter = mlClient.Uri.AbsoluteUri
                 };
                 _dbContext.ListingApplications.Add(listingToAdd);
                 _dbContext.SaveChanges();

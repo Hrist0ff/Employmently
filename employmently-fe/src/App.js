@@ -10,6 +10,9 @@ import MyCompany from "./pages/MyCompany";
 import Company from "./pages/Company";
 import AdminPanel from "./pages/AdminPanel";
 
+import "./fonts/rock.ttf";
+import "./fonts/rockb.ttf";
+
 function App() {
   return (
     /* <Route path="*" element={<NoPage />} /> */

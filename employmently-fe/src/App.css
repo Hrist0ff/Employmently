@@ -32,7 +32,21 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+@font-face {
+  font-family: "Rockwellbold";
+  /*Can be any text*/
+  src: local("rockb"),
+    url("./fonts/rockb.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Rockwell";
+  src: local("rock"),
+    url("./fonts/rock.ttf") format("truetype");
 }

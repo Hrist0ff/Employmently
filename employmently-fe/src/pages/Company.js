@@ -2,13 +2,15 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import React, { useEffect } from "react";
 import axios from 'axios';
-import { Nav } from "react-bootstrap";
+import Logo from "../images/employment.png";
 import ExpiredTokenCheck from '../components/ExpiredTokenCheck';
-
-
+import Navbar from "../components/Navbar";
+import '../styles/company.css';
+import CompanyListings from "../components/CompanyListings";
 
 
 function Company() {
+
     const [user, setUser] = React.useState({});
     const [getRequest, setGetRequest] = React.useState(false);
 
@@ -18,7 +20,7 @@ function Company() {
 
 
     let parameters = useParams();
-    var id = parameters.id;;
+    var id = parameters.id;
 
     // Checking account and getting user data
     useEffect(() => {
@@ -26,7 +28,6 @@ function Company() {
             axios.get(`${process.env.REACT_APP_BACKEND}/Information/getCertainCompany/${id}`)
                 .then(response => {
                     setUser(response.data);
-                    console.log(response.data);
                 })
                 .catch(error => {
                     setErrorMessage(error.response.data.Error[0]);
@@ -37,35 +38,62 @@ function Company() {
 
 
     return (
-        < div className={`my-profile-comp`}>
-            {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-            {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
-            {ExpiredTokenCheck()}
-            <h1 className="heading">Company     {user.name}</h1>
-
-            <br></br>
-            <div className="profile-header">
-                <img src={user.profilePicture} className="profile-picture" alt="Profile pic"></img>
-
-            </div>
-            <div className="profile-details">
-
-                <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '150px' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <p><strong>USERNAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>    {user.name}</p>
-                        <p><strong>YEAR CREATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>    {user.yearCreated}</p>
-
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <p><strong>EIK &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>    {user.uniqueIdentifier}</p>
-                        <p><strong>EMPLOYEES &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.employees ? user.employees : "0"} employees</p>
+        <div className="background">
+            <div>
+                <div className="nav">
+                    <img src={Logo} className='log' alt='Employmently logo'></img>
+                    {/* Aligned items to the right */}
+                    <div className="justify-end">
+                        <label htmlFor="toggle">&#9776;</label>
+                        <input type="checkbox" id="toggle" />
+                        <div className="menu">
+                            {ExpiredTokenCheck()}
+                            {Navbar()}
+                        </div>
                     </div>
                 </div>
 
-                <p><strong>DESCRIPTION &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.description}</p>
-
+                <div className="company-container">
+                    <div className="company-info">
+                        <img src={user.profilePicture} alt="User profile" className="company-pic"></img>
+                        <span className="company-divider" />
+                        <p className="company-heading">{user.name}</p>
+                    </div>
+                    <div className="company-for-and-technologies">
+                        <div className="company-for">
+                            <div className="company-for-heading">
+                                <p className="company-for-text">About the company</p>
+                            </div>
+                            <div>
+                                <p>{user.description}</p>
+                            </div>
+                            <div className="technologies-list">
+                                <p className="tag">Year created: {user.yearCreated}</p>
+                                <p className="tag">Number of employees: {user.employees}</p>
+                                <p className="tag">Unique Identifier: {user.uniqueIdentifier}</p>
+                                <p className="tag">Phone number: {user.phoneNumber}</p>
+                            </div>
+                        </div>
+                        <div className="company-technologies">
+                            <div className="company-for-heading">
+                                <p className="company-for-text">Technologies</p>
+                            </div>
+                            <p className="company-technologies-text">Technologies that we are using:</p>
+                            <div className="technologies-list">
+                                {user && user.technologies ? user.technologies.map((technology, index) => {
+                                    return <p key={index} className="tag">{technology}</p>;
+                                }) : null}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="company-listings">
+                        <div className="company-for-heading">
+                            <p className="company-for-text">Company listings</p>
+                        </div>
+                        {CompanyListings(id)}
+                    </div>
+                </div>
             </div>
-            <Nav.Link className="back-but-comp" href={`${process.env.REACT_APP_SERVER_PAGE}/`}>Back</Nav.Link>
         </div>
     )
 }

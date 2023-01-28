@@ -8,6 +8,6 @@
         public ListingStatus status { get; set; } = ListingStatus.Pending;
         public DateTime applicationTime { get; set; }
         public string CV { get; set; }
-        public string motivationalLetter { get; set; }
+        public string? motivationalLetter { get; set; }
     }
 }

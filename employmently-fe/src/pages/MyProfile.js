@@ -6,7 +6,6 @@ import '../styles/myprofile.css';
 import { FileUploader } from "react-drag-drop-files";
 import FormInput from '../components/FormInput';
 import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
-import Home from "../pages/Home"
 
 function MyProfile() {
     const token = localStorage.getItem("accessToken");
@@ -145,7 +144,7 @@ function MyProfile() {
                 })
                     .then(response => {
                         setUser(response.data);
-                        console.log(token);
+
                     })
                     .catch(error => {
                         setErrorMessage(error.response.data);

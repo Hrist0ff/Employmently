@@ -54,6 +54,27 @@ namespace employmently_be.Controllers.Company
 
             var company = _dbContext.Companies.FirstOrDefault(x => x.UniqueIdentifier == user.UniqueIdentifierCompany);
 
+
+            var technologies = _dbContext.Listings
+                         .Where(l => l.Status == ListingStatus.Accepted && l.Author.UniqueIdentifierCompany == company.UniqueIdentifier)
+                         .Select(l => new ListingViewModel()
+                         {
+                             Id = l.Id,
+                             Name = l.Name,
+                             Description = l.Description,
+                             CreatedDate = l.CreatedDate,
+                    // include other properties (Authors and Categories) of the listing here
+                    AuthorId = l.Author.Id,
+                             AuthorName = l.Author.Company.Name,
+                             CategoryNames = l.Categories.Select(c => c.Name),
+                             Location = l.Location,
+                             Arrangement = l.Arrangement,
+                             Salary = l.Salary,
+                             AuthorPic = l.Author.Company.ProfilePicture,
+                         }).SelectMany(c => c.CategoryNames).Distinct();
+
+
+
             if (company == null)
             {
                 return NotFound();
@@ -68,6 +89,8 @@ namespace employmently_be.Controllers.Company
                 ProfilePicture = company.ProfilePicture,
                 Employees = company.Employees,
                 PhoneNumber = company.PhoneNumber,
+                Technologies = technologies
+
             };
 
             return Ok(result);
@@ -362,6 +385,26 @@ namespace employmently_be.Controllers.Company
             _dbContext.SaveChanges();
             return Ok("Listing application has been rejected.");
 
+        }
+
+        [HttpGet("getApplicationsToCompany")]
+        [Authorize(Roles = "Company")]
+        public async Task<IActionResult> getApplicationsToCompany()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var listingsOfCompany = _dbContext.Listings
+                .Where(x => x.Author.UniqueIdentifierCompany == user.UniqueIdentifierCompany)
+                .Select(x => x.Id);
+
+            var applications = _dbContext.ListingApplications
+                .Where(x => listingsOfCompany.Contains(x.listingId));
+
+            if (applications == null)
+            {
+                return Ok("You don't have applications at the moment.");
+            }
+            return Ok(applications);
         }
 
     }

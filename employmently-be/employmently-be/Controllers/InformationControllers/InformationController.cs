@@ -44,6 +44,32 @@ namespace employmently_be.Controllers
         }
 
 
+        [HttpGet("getCompanyListings/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> getCompanyListings([FromRoute]int id)
+        {
+            var listings = _dbContext.Listings.Where(l => l.Status == ListingStatus.Accepted && l.Author.Company.Id == id)
+               .Select(l => new ListingViewModel()
+               {
+                   Id = l.Id,
+                   Name = l.Name,
+                   Description = l.Description,
+                   CreatedDate = l.CreatedDate,
+                   // include other properties (Authors and Categories) of the listing here
+                   AuthorId = l.Author.Id,
+                   AuthorName = l.Author.Company.Name,
+                   CategoryNames = l.Categories.Select(c => c.Name),
+                   Location = l.Location,
+                   Arrangement = l.Arrangement,
+                   Salary = l.Salary,
+                   AuthorPic = l.Author.Company.ProfilePicture,
+               }); ;
+            return Ok(listings);
+        }
+
+
+
+
         [HttpGet("getCertainCompany/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetCertainCompany(int id)
@@ -51,6 +77,27 @@ namespace employmently_be.Controllers
 
             var company = _dbContext.Companies.FirstOrDefault(x => x.Id == id);
 
+
+            var technologies = _dbContext.Listings
+                .Where(l => l.Status == ListingStatus.Accepted && l.Author.UniqueIdentifierCompany == company.UniqueIdentifier)
+                .Select(l => new ListingViewModel()
+                {
+                    Id = l.Id,
+                    Name = l.Name,
+                    Description = l.Description,
+                    CreatedDate = l.CreatedDate,
+        // include other properties (Authors and Categories) of the listing here
+        AuthorId = l.Author.Id,
+                    AuthorName = l.Author.Company.Name,
+                    CategoryNames = l.Categories.Select(c => c.Name),
+                    Location = l.Location,
+                    Arrangement = l.Arrangement,
+                    Salary = l.Salary,
+                    AuthorPic = l.Author.Company.ProfilePicture,
+                }).SelectMany(c => c.CategoryNames).Distinct();
+
+
+            
             if (company == null)
             {
                 return NotFound();
@@ -65,6 +112,8 @@ namespace employmently_be.Controllers
                 ProfilePicture = company.ProfilePicture,
                 Employees = company.Employees,
                 PhoneNumber = company.PhoneNumber,
+                Technologies = technologies
+
             };
 
             return Ok(result);

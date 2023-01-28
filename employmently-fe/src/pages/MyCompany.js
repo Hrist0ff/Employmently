@@ -234,6 +234,7 @@ function MyCompany() {
                 })
                     .then(response => {
                         setUser(response.data);
+                        console.log(response.data);
 
                     })
                     .catch(error => {

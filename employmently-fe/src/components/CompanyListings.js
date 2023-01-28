@@ -7,14 +7,14 @@ import ru from 'date-fns/locale/bg';
 import { isToday, isYesterday } from 'date-fns';
 
 
-function Listings() {
+function CompanyListings(props) {
     const [listings, setListings] = useState([]);
-
+    const id = props;
     const [performed, setPerformed] = useState(false);
 
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_BACKEND}/Information/getAcceptedListings`)
+        axios.get(`${process.env.REACT_APP_BACKEND}/Information/getCompanyListings/${id}`)
             .then(response => {
                 const listings = response.data.map(listing => {
                     listing.createdDate = new Date(listing.createdDate);
@@ -28,7 +28,6 @@ function Listings() {
                     return listing;
                 });
                 setListings(listings);
-                console.log(listings)
             })
             .catch(error => {
                 console.log(error);
@@ -41,7 +40,7 @@ function Listings() {
         <div>
             {listings.map((listing, idx) => {
                 return (
-                    <div className="listing-card" key={idx}>
+                    <div className="company-listing-card" key={idx}>
                         <div className="listing-company">
                             <img src={listing.authorPic} alt="Company" className="img-company"></img>
                             <p className="company-creator">{listing.authorName}</p>
@@ -69,4 +68,4 @@ function Listings() {
     );
 };
 
-export default Listings;
+export default CompanyListings;
