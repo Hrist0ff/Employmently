@@ -80,8 +80,9 @@ namespace employmently_be.Controllers.Company
                 return NotFound();
             }
 
-            var result = new CompanyViewModel()
+            var result = new MyCompanyViewModel()
             {
+                CompanyId = company.Id,
                 Name = company.Name,
                 UniqueIdentifier = company.UniqueIdentifier,
                 Description = company.Description,
@@ -239,7 +240,6 @@ namespace employmently_be.Controllers.Company
 
             if (currentUser == null || requestedUser == null)
             {
-                Console.WriteLine("notfound");
                 return NotFound();
             }
 

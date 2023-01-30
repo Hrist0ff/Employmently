@@ -55,7 +55,6 @@ namespace employmently_be.Controllers
         [Authorize(Roles = "Candidate,Company")]
         public async Task<IActionResult> changePhoneNumber(string id, [FromBody] string number)
         {
-            Console.WriteLine(number);
             var requestedUser = await _userManager.FindByIdAsync(id);
 
             var currentUser = await _userManager.GetUserAsync(User);
@@ -96,11 +95,9 @@ namespace employmently_be.Controllers
 
             var requestedUser = await _userManager.FindByIdAsync(id);
             var currentUser = await _userManager.GetUserAsync(User);
-            Console.WriteLine("curr" + currentUser);
             
             if (currentUser == null || requestedUser == null)
             {
-                Console.WriteLine("notfound");
                 return NotFound();
             }
 
@@ -108,7 +105,6 @@ namespace employmently_be.Controllers
             if (requestedUser.Id == currentUser.Id)
             {
                 string imageName = currentUser.Id + "_profilepic" + Path.GetExtension(image.FileName);
-                Console.WriteLine(imageName);
                 BlobClient blobClient = containerClient.GetBlobClient(imageName);
                 using (var stream = image.OpenReadStream())
                 {

@@ -50,10 +50,8 @@ namespace employmently_be.Controllers
             var email_body = "Employmently <br></br> You can change your password by clicking <a href=\"#URL#\"> here </a>";
 
             var confirmationLink = "http://localhost:3000/Changepassword/id=" + user.Id;
-            Console.WriteLine(confirmationLink);
             var body = email_body.Replace("#URL#", System.Text.Encodings.Web.HtmlEncoder.Default.Encode(confirmationLink));
             body.Replace("#username#", user.UserName);
-            Console.WriteLine(body);
             EmailSender emailHelper = new EmailSender(optionsAccessor, _logger, _config);
             await emailHelper.SendEmailAsync(user.Email, "Change your password - Employmently", body);
 

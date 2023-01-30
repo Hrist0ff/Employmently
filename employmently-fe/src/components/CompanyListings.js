@@ -7,14 +7,13 @@ import ru from 'date-fns/locale/bg';
 import { isToday, isYesterday } from 'date-fns';
 
 
-function CompanyListings(props) {
+function CompanyListings({ companyId }) {
     const [listings, setListings] = useState([]);
-    const id = props;
     const [performed, setPerformed] = useState(false);
 
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_BACKEND}/Information/getCompanyListings/${id}`)
+        axios.get(`${process.env.REACT_APP_BACKEND}/Information/getCompanyListings/${companyId}`)
             .then(response => {
                 const listings = response.data.map(listing => {
                     listing.createdDate = new Date(listing.createdDate);
@@ -33,8 +32,7 @@ function CompanyListings(props) {
                 console.log(error);
             })
         setPerformed(true);
-    }, [performed]);
-
+    }, [companyId,performed]);
 
     return (
         <div>
@@ -46,7 +44,7 @@ function CompanyListings(props) {
                             <p className="company-creator">{listing.authorName}</p>
                         </div>
                         <div className="listing-left-side" key={idx}>
-                            <a className="listing-name" href={`Listing/${listing.id}`}>{listing.name}
+                            <a className="listing-name" href={`${process.env.REACT_APP_SERVER_PAGE}/Listing/${listing.id}`}>{listing.name}
                                 {listing.location ? <p key={listing.location} className="paragraph-details">🏢{listing.location}</p> : null}
                                 {listing.salary ? <p key={listing.salary} className="paragraph-details">💰Заплата от {listing.salary} лв.</p> : null}
                                 {listing.categoryNames ? <p className="paragraph-details">📁{listing.categoryNames.map((category, index) => {

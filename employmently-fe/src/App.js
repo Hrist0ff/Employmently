@@ -9,6 +9,7 @@ import MyProfile from "./pages/MyProfile";
 import MyCompany from "./pages/MyCompany";
 import Company from "./pages/Company";
 import AdminPanel from "./pages/AdminPanel";
+import Listing from "./pages/Listing";
 
 import "./fonts/rock.ttf";
 import "./fonts/rockb.ttf";
@@ -27,7 +28,7 @@ function App() {
         <Route path="/MyCompany" element={<MyCompany />} />
         <Route path="Company/:id" element={<Company />} />
         <Route path="AdminPanel" element={<AdminPanel />} />
-        { /* <Route path="Company/id=:id" element={<Company />} /> */}
+        <Route path="Listing/:id" element={<Listing />} />
       </Routes>
     </BrowserRouter>
   );

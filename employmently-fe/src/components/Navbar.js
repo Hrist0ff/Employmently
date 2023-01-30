@@ -5,6 +5,8 @@ import Logo from "../images/employment.png";
 import jwt from 'jwt-decode';
 import ExpiredTokenCheck from '../components/ExpiredTokenCheck';
 import Listings from '../components/Listings';
+import { Link } from 'react-router-dom';
+
 
 function Navbar() {
     const token = localStorage.getItem("accessToken");
@@ -28,17 +30,17 @@ function Navbar() {
                 ]
             }
             return [
-                <Nav.Link key={0} disabled> Hello, {username}</Nav.Link>,
-                <Nav.Link key={1} href={`${process.env.REACT_APP_SERVER_PAGE}/MyProfile`}>My Profile</Nav.Link>,
-                <Nav.Link key={2} onClick={logout}>Log Out</Nav.Link>
+                <Nav.Link key={2} disabled> Hello, {username}</Nav.Link>,
+                <Nav.Link key={3} href={`${process.env.REACT_APP_SERVER_PAGE}/MyProfile`}>My Profile</Nav.Link>,
+                <Nav.Link key={4} onClick={logout}>Log Out</Nav.Link>
 
             ]
         }
         else {
-            return [<Nav.Link key={0} href={`${process.env.REACT_APP_SERVER_PAGE}/Login`}>Вход</Nav.Link>,
-                <Nav.Link key={1} href={`${process.env.REACT_APP_SERVER_PAGE}/Register`}>Създай акаунт</Nav.Link>,
+            return [<Nav.Link key={5} href={`${process.env.REACT_APP_SERVER_PAGE}/Login`}>Вход</Nav.Link>,
+            <Nav.Link key={6} href={`${process.env.REACT_APP_SERVER_PAGE}/Register`}>Създай акаунт</Nav.Link>,
             <span className="divider" />,
-                <Nav.Link key={2} href={`${process.env.REACT_APP_SERVER_PAGE}/Listings`}>Обяви</Nav.Link>]
+            <Nav.Link key={7} href={`${process.env.REACT_APP_SERVER_PAGE}/Listings`}>Обяви</Nav.Link>]
         }
 
 
@@ -49,7 +51,7 @@ function Navbar() {
             const decodedToken = jwt(token);
             let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
             if (role === 'Administrator') {
-                return <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/AdminPanel`}>Admin Panel</Nav.Link>;
+                return <Nav.Link key={4} href={`${process.env.REACT_APP_SERVER_PAGE}/AdminPanel`}>Admin Panel</Nav.Link>;
             }
         }
     }
@@ -60,9 +62,9 @@ function Navbar() {
             let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
             if (role === 'Company') {
                 return [
-                    <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/myCompany`}>My Company</Nav.Link>,
-                    <Nav.Link href={`${process.env.REACT_APP_SERVER_PAGE}/Listing`}>Create a listing</Nav.Link>,
-                    <Nav.Link onClick={logout}>Log Out</Nav.Link>
+                    <Nav.Link key={5} href={`${process.env.REACT_APP_SERVER_PAGE}/myCompany`}>My Company</Nav.Link>,
+                    <Nav.Link key={6} href={`${process.env.REACT_APP_SERVER_PAGE}/Listing`}>Create a listing</Nav.Link>,
+                    <Nav.Link key={7} onClick={logout}>Log Out</Nav.Link>
                 ]
 
             }

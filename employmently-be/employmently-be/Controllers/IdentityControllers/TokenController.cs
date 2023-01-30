@@ -34,7 +34,6 @@ namespace employmently_be.Controllers.IdentityControllers
         public async Task<IActionResult> CheckExpiredToken([FromRoute] string refreshToken)
         {
             refreshToken = HttpUtility.UrlDecode(refreshToken);
-            Console.WriteLine(refreshToken);
             var storedRefreshToken = await _refreshTokenRepository.GetAsync(refreshToken);
 
             if (storedRefreshToken == null)
@@ -68,7 +67,6 @@ namespace employmently_be.Controllers.IdentityControllers
             }
 
             var storedRefreshToken = await _refreshTokenRepository.GetRefreshToken(currentUser.Id);
-            Console.Write(storedRefreshToken);
 
             if (storedRefreshToken == null)
             {

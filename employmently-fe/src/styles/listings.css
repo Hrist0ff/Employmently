@@ -63,6 +63,7 @@
 
 .listing-date {
     margin-top: 0px;
+    margin-right: 2%;
 }
 
 
@@ -83,3 +84,15 @@
     margin-top: 20px;
 }
 
+.listing-a-div {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px 0 0 8px;
+    text-decoration: none;
+    text-align: center;
+}

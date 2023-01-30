@@ -193,7 +193,8 @@ a.btn:hover {
     padding: 3%;
     background-color: red;
     color: white;
-    width: 100%;
+    border-radius: 3%;
+    font-weight: 700;
 }
 
 .err-login {
@@ -207,6 +208,7 @@ a.btn:hover {
     background-color: red;
     color: white;
     margin-top: -10%;
+    font-weight: 700;
 
 }
 
@@ -218,6 +220,7 @@ a.btn:hover {
     font-family: 'Roboto', sans-serif;
     border: 1.7px solid rgb(64, 255, 0);
     padding: 3%;
+    font-weight: 700;
     margin-left: 5%;
     background-color: rgb(64, 255, 0);
     color: white;
@@ -331,7 +334,7 @@ input:invalid[focused="true"]~span {
     }
 
     .err-login {
-        margin-bottom: 5%;
+        margin-top: 5%;
     }
 
 

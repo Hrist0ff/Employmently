@@ -7,6 +7,8 @@ import ExpiredTokenCheck from '../components/ExpiredTokenCheck';
 import Navbar from "../components/Navbar";
 import '../styles/company.css';
 import CompanyListings from "../components/CompanyListings";
+import { Link } from 'react-router-dom';
+
 
 
 function Company() {
@@ -41,7 +43,9 @@ function Company() {
         <div className="background">
             <div>
                 <div className="nav">
-                    <img src={Logo} className='log' alt='Employmently logo'></img>
+                    <Link to="/">
+                        <img src={Logo} className='log' alt='Employmently logo'></img>
+                    </Link>
                     {/* Aligned items to the right */}
                     <div className="justify-end">
                         <label htmlFor="toggle">&#9776;</label>
@@ -90,7 +94,7 @@ function Company() {
                         <div className="company-for-heading">
                             <p className="company-for-text">Company listings</p>
                         </div>
-                        {CompanyListings(id)}
+                        {id ? <CompanyListings companyId={id} /> : null}
                     </div>
                 </div>
             </div>

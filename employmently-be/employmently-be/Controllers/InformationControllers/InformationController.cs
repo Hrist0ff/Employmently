@@ -34,6 +34,7 @@ namespace employmently_be.Controllers
                    // include other properties (Authors and Categories) of the listing here
                    AuthorId = l.Author.Id,
                    AuthorName = l.Author.Company.Name,
+                   CompanyId = l.Author.Company.Id,
                    CategoryNames = l.Categories.Select(c => c.Name),
                    Location = l.Location,
                    Arrangement = l.Arrangement,
@@ -64,6 +65,31 @@ namespace employmently_be.Controllers
                    Salary = l.Salary,
                    AuthorPic = l.Author.Company.ProfilePicture,
                }); ;
+            return Ok(listings);
+        }
+
+        [HttpGet("getCertainListing/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> getCertainListing([FromRoute] int id)
+        {
+            var listings = _dbContext.Listings.Where(l => l.Status == ListingStatus.Accepted && l.Id == id)
+               .Select(l => new ListingViewModel()
+               {
+                   Id = l.Id,
+                   Name = l.Name,
+                   Description = l.Description,
+                   CreatedDate = l.CreatedDate,
+                   // include other properties (Authors and Categories) of the listing here
+                   AuthorId = l.Author.Id,
+                   AuthorName = l.Author.Company.Name,
+                   CompanyId = l.Author.Company.Id,
+                   CategoryNames = l.Categories.Select(c => c.Name),
+                   Location = l.Location,
+                   Arrangement = l.Arrangement,
+                   Salary = l.Salary,
+                   AuthorPic = l.Author.Company.ProfilePicture,
+               }).FirstOrDefault(); ;
+
             return Ok(listings);
         }
 

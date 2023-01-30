@@ -70,7 +70,6 @@ namespace employmently_be.Controllers
 
             var confirmationLink = Request.Scheme + "://" + Request.Host + Url.Action("ConfirmEmail","Registration", new {code = code, userId = userToAdd.Id});
             var body = email_body.Replace("#URL#", System.Text.Encodings.Web.HtmlEncoder.Default.Encode(confirmationLink));
-            Console.WriteLine(body);
             EmailSender emailHelper = new EmailSender(optionsAccessor,_logger, _config);
             await emailHelper.SendEmailAsync(userToAdd.Email,"Confirm your email - Employmently",body);
 
@@ -161,7 +160,6 @@ namespace employmently_be.Controllers
 
             var confirmationLink = Request.Scheme + "://" + Request.Host + Url.Action("ConfirmEmail", "Registration", new { code = code, userId = userToAdd.Id });
             var body = email_body.Replace("#URL#", System.Text.Encodings.Web.HtmlEncoder.Default.Encode(confirmationLink));
-            Console.WriteLine(body);
             EmailSender emailHelper = new EmailSender(optionsAccessor, _logger, _config);
             await emailHelper.SendEmailAsync(userToAdd.Email, "Confirm your email - Employmently", body);
 
