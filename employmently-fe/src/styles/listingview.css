@@ -71,7 +71,7 @@
     font-weight: 500;
     color: #595959;
     margin-left: 3%;
-    margin-top: 3%;
+    margin-top: 1.5%;
     line-height: 1.2;
 }
 
@@ -108,7 +108,9 @@
     display: flex;
     flex-direction: row;
     margin-left: 2%;
+    margin-top: 5%;
 }
+
 
 .listing-category-view {
     display: inline-block;
@@ -143,6 +145,50 @@
     margin: 0 0 0 77%;
     cursor: pointer;
     margin-top: -20px;
+}
+
+.submit-button-listings {
+    width: 50%;
+    display: inline-block;
+    font-size: 16px;
+    background-color: #595959;
+    padding: 14px 25px 12px;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    margin: 0 0 0 35%;
+    cursor: pointer;
+}
+
+.cv-ml-div {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 0 50%;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: flex;
+    padding: 6px 12px;
+    cursor: pointer;
+    height: 20px;
+    background-color: #fff;
+    font-size: 18px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 25%;
+    margin-bottom: 1%;
+    min-width: 45%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: auto;
+}
+
+.file-preview {
+    margin: 0 10px;
 }
 
 .listing-description-div {
@@ -221,4 +267,36 @@
         width: 50%;
         margin: 0 0 0 45%;
     }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        display: flex;
+        padding: 6px 12px;
+        cursor: pointer;
+        width: 127%;
+        height: 20px;
+        background-color: #fff;
+        font-size: 18px;
+        justify-content: center;
+        align-items: center;
+        margin-left: -80%;
+        margin-bottom: 5%;
+    }
+
+    .submit-button-listings {
+        width: 79%;
+        display: inline-block;
+        font-size: 16px;
+        background-color: #595959;
+        padding: 14px 25px 12px;
+        color: #fff;
+        border-radius: 5px;
+        text-align: center;
+        border: none;
+        /* margin: 0 0 0 30%; */
+        margin-left: -42%;
+        cursor: pointer;
+    }
+
+
 }

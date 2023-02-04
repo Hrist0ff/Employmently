@@ -96,3 +96,12 @@
     text-decoration: none;
     text-align: center;
 }
+
+.listing-a {
+    display: flex;
+    background-color: #ddeeff;
+    width: 85%;
+    border-radius: 0 8px 8px 0;
+    flex-direction: column;
+    text-decoration: none;
+}

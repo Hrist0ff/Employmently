@@ -55,7 +55,7 @@ function Register() {
             required: true,
         },
         {
-            id: 4,
+            id: 3,
             name: "password",
             type: "password",
             placeholder: "Password",
@@ -66,7 +66,7 @@ function Register() {
             required: true,
         },
         {
-            id: 5,
+            id: 4,
             name: "confirmPassword",
             type: "password",
             placeholder: "Confirm Password",
@@ -99,7 +99,7 @@ function Register() {
             required: true,
         },
         {
-            id: 4,
+            id: 3,
             name: "password",
             type: "password",
             placeholder: "Password",
@@ -110,34 +110,48 @@ function Register() {
             required: true,
         },
         {
-            id: 5,
+            id: 4,
             name: "confirmPassword",
             type: "password",
             placeholder: "Confirm Password",
             errorMessage: "Passwords don't match!",
             label: "Confirm Password",
-            pattern: values.password,
+            pattern: companyValues.password,
             required: true,
         },
         {
-            id: 6,
+            id: 5,
             name: "companyId",
             type: "text",
             placeholder: "Company ID",
             errorMessage: "Company ID should be 9 characters!",
             label: "Company ID",
             pattern: "^[0-9]{9}$",
+            required: true,
         },
     ];
 
     useEffect(() => {
         if (selected) {
-            setValues([]);
+            setValues({
+                username: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+            });
         }
         else {
-            setCompanyValues([]);
+            setCompanyValues({
+                username: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+                companyId: "",
+            });
         }
     }, [selected]);
+
+
 
     const [errorMessage, setErrorMessage] = React.useState("");
     const [successMessage, setSuccessMessage] = React.useState("");
@@ -218,7 +232,6 @@ function Register() {
 
     }
 
-    console.log(errorMessage);
     return (
         <div className="background">
             <div className="container-register">
@@ -264,7 +277,16 @@ function Register() {
                                     onChange={onChange}
                                 />
                             ))}
-                        <button className="btn" type="submit" onClick={registerAction}>Sign up</button>
+                        {selected ?
+                            <button disabled={!companyValues.username || !companyValues.email || !companyValues.password || !companyValues.confirmPassword
+                                || companyValues.password !== companyValues.confirmPassword || !companyValues.companyId || companyValues.companyId.length !== 9}
+                                className="btn" type="submit" onClick={registerAction}>Sign up</button>
+
+                            :
+                            <button disabled={!values.username || !values.email || !values.password || !values.confirmPassword
+                                || values.password !== values.confirmPassword}
+                                className="btn" type="submit" onClick={registerAction}>Sign up</button>
+                        }
                     </form>
 
                 </div>

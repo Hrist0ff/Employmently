@@ -22,7 +22,8 @@ namespace employmently_be.Controllers
         public ActionResult<IEnumerable<Listing>> GetListingsByFilters([FromQuery] int minSalary, [FromQuery] int maxSalary, [FromQuery] bool salaryStated,
               [FromQuery] List<string> locations,[FromQuery] List<string> categories)
         {
-            var listings = _dbContext.Listings.Select(l => new ListingViewModel()
+            var listings = _dbContext.Listings.Where(l => l.Status == ListingStatus.Accepted)
+                .Select(l => new ListingViewModel()
             {
                 Id = l.Id,
                 Name = l.Name,

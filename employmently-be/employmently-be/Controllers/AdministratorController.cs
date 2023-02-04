@@ -114,6 +114,8 @@ namespace employmently_be.Controllers
                                Location = l.Location,
                                Arrangement = l.Arrangement,
                                Salary = l.Salary,
+                               AuthorPic = l.Author.Company.ProfilePicture,
+                               CompanyId = l.Author.Company.Id
                            });
             if (!listings.Any())
             {

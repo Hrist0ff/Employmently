@@ -5,7 +5,11 @@ import axios from 'axios';
 import { Nav } from "react-bootstrap";
 import ExpiredTokenCheck from '../components/ExpiredTokenCheck';
 import jwt from 'jwt-decode';
+import { Link } from 'react-router-dom';
 import '../styles/adminpanel.css';
+import Remote from '../images/remote.png';
+import Logo from "../images/employment.png";
+import Navbar from "../components/Navbar";
 
 
 
@@ -30,8 +34,7 @@ function AdminPanel() {
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
-            second: 'numeric',
-            timeZone: 'UTC'
+            hour12: false
         };
 
         return new Intl.DateTimeFormat('en-US', options).format(new Date(dateTimeString));
@@ -101,6 +104,7 @@ function AdminPanel() {
                 }
             })
                 .then(response => {
+                    console.log(response.data);
                     setListings(response.data);
 
                 })
@@ -118,37 +122,77 @@ function AdminPanel() {
 
 
     return (
-        <div className="admin-panel">
-            {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-            {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
-            {ExpiredTokenCheck()}
-            <h1 className="heading-p">Admin Panel</h1>
-
-            <div className="listing-headers">
-                <p>Name</p>
-                <p>Description</p>
-                <p>Created on</p>
-                <p>Author</p>
-                <p>Categories</p>
-                <p>Option</p>
-            </div>
-            {listingsArray.length > 0 ? listingsArray.map(listing => (
-                <div className="listing">
-                    <div key={listing.id}>{listing.name}</div>
-                    <div className="p-listing">{listing.description}</div>
-                    <div>{listing.createdDate ? formatDateTime(listing.createdDate) : ""}</div>
-                    <div>{listing.authorName}</div>
-                    <ul>
-                        {listing.categoryNames ? listing.categoryNames.map(category => (
-                            <li key={category}>{category}</li>
-                        )) : null}
-                    </ul>
-                    <div>
-                        <button className="accept-button" onClick={() => acceptListing(listing.id)}></button>
-                        <button className="reject-button" onClick={() => rejectListing(listing.id)}></button>
+        <div className="background">
+            <div className='home-page'>
+                <div className="nav">
+                    <Link to="/">
+                        <img src={Logo} className='log' alt='Employmently logo'></img>
+                    </Link>
+                    {/* Aligned items to the right */}
+                    <div className="justify-end">
+                        <label htmlFor="toggle">&#9776;</label>
+                        <input type="checkbox" id="toggle" />
+                        <div className="menu" >
+                            {ExpiredTokenCheck()}
+                            {Navbar()}
+                        </div>
                     </div>
                 </div>
-            )) : <p className="paragraph-center">There aren't any pending listings.</p>}
+            </div>
+            <div >
+                {listingsArray.map((listing, idx) => {
+                    return (
+                        <div style={{ paddingTop: '20px' }}>
+                            <div className="listing-section-home">
+                                <div className="listing-container">
+
+                                    <div className="listing-item">
+                                        <a href={`${process.env.REACT_APP_SERVER_PAGE}/Company/${listing.companyId}`} className="listing-a-div" >
+                                            <div>
+                                                <img className="listing-company-logo" src={listing.authorPic} alt="Company logo"></img>
+                                                <p className="listing-company-name-text">{listing.authorName}</p>
+                                            </div>
+                                        </a>
+                                        <div className="listing-a">
+                                            <div>
+                                                <div className="listing-header">
+                                                    <p className="listing-title-text">{listing.name}</p>
+                                                    <p className="listing-date">📅{formatDateTime(listing.createdDate)}</p>
+                                                </div>
+                                                <div className="listing-description-adminpanel">
+                                                    <p className="listing-description-text-adminpanel">Description</p>
+                                                    <br></br>
+                                                    <p className="listing-description-text-adminpanel">{listing.description}</p>
+                                                </div>
+                                                <div className="listing-categories-tags-div-ap">
+                                                    <div style={{ display: "flex", flexDirection: "row", width: "50%" }}>
+                                                        {listing.location ? <p className="listing-tag">📍{listing.location}</p> : null}
+                                                        {listing.arrangement && listing.arrangement === "Remote" ?
+                                                            <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} className="listing-tag-image"></img> &nbsp;{listing.arrangement}</p>
+                                                            : null}
+                                                        {listing.arrangement && listing.arrangement === "On-site" ?
+                                                            <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💼 {listing.arrangement}</p>
+                                                            : null}
+                                                        {listing.arrangement && listing.arrangement === "Hybrid" ?
+                                                            <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%', alignItems: 'center' }}><img src={Remote} className="listing-tag-image-hybrid"></img> &nbsp; / 💼 {listing.arrangement}</p>
+                                                            : null}
+                                                        {listing.salary ? <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💰 {listing.salary} lv.</p> : null}
+                                                    </div>
+                                                    <div className="admin-panel-buttons">
+                                                        <button className="listing-tag-accept">Accept</button>
+                                                        <button className="listing-tag-reject">Reject</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+                )}
+            </div >
         </div>
     )
 

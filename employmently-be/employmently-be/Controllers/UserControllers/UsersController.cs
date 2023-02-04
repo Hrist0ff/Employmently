@@ -71,7 +71,7 @@ namespace employmently_be.Controllers
         public async Task<IActionResult> PostApplication([FromRoute]int listingid, IFormFile cv, IFormFile motivationalLetter)
         {
             var user = await _userManager.GetUserAsync(User);
-
+            Console.WriteLine(cv);
             string connectionString = "DefaultEndpointsProtocol=https;AccountName=employmentlystorage;AccountKey=tQbLLmAfixQIMKPgvlmporcKOUaJ4phqihnrdOlm0450u9bm5iQ/HZ7/+PQ3QKc4wI6xfdIHKxDt+ASthlVoeQ==;EndpointSuffix=core.windows.net";
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
             BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("fileupload");
@@ -147,7 +147,17 @@ namespace employmently_be.Controllers
                        ListingName = x.Listing.Name,
                        ListingCompany = x.Listing.Author.Company.Name,
                        listingStatus = x.ListingApplication.status.ToString(),
-                       applicationTime = x.ListingApplication.applicationTime
+                       applicationTime = x.ListingApplication.applicationTime,
+                       listingLocation = x.Listing.Location,
+                       listingSalary = x.Listing.Salary,
+                       CV = x.ListingApplication.CV,
+                       ML = x.ListingApplication.motivationalLetter,
+                       rejectionPurpose = x.ListingApplication.rejectionPurpose,
+                       suggestedInterviewDate = x.ListingApplication.suggestedInterviewDate,
+                       arrangement = x.Listing.Arrangement,
+                       companyPic = x.Listing.Author.Company.ProfilePicture,
+                       listingId = x.Listing.Id,
+                       companyId = x.Listing.Author.Company.Id 
                    })
                    .ToList();
 

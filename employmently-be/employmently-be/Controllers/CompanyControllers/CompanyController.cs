@@ -322,6 +322,7 @@ namespace employmently_be.Controllers.Company
 
 
             listingApplication.status = ListingStatus.Accepted;
+            listingApplication.suggestedInterviewDate = DateForInterview;
             _dbContext.SaveChanges();
             return Ok("Listing application has been accepted.");
 
@@ -382,6 +383,7 @@ namespace employmently_be.Controllers.Company
 
 
             listingApplication.status = ListingStatus.Rejected;
+            listingApplication.rejectionPurpose = rejectionPurpose;
             _dbContext.SaveChanges();
             return Ok("Listing application has been rejected.");
 

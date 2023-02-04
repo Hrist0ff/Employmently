@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import jwt from 'jwt-decode';
 import axios from 'axios';
-import { Nav } from "react-bootstrap";
 import '../styles/myprofile.css';
 import { FileUploader } from "react-drag-drop-files";
 import FormInput from '../components/FormInput';
 import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
+import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
+import Logo from "../images/employment.png";
+import Remote from "../images/remote.png";
+import format from 'date-fns/format';
+import { isToday, isYesterday, isTomorrow } from 'date-fns';
 
 function MyProfile() {
     const token = localStorage.getItem("accessToken");
 
     const [user, setUser] = React.useState({});
+    const [applications, setApplications] = React.useState([]);
     const [performed, setPerformed] = React.useState(false);
 
     const [photoInput, setPhotoInput] = React.useState(false);
@@ -61,7 +67,6 @@ function MyProfile() {
         const formData = new FormData();
         formData.append('image', file);
 
-
         axios.post(`${process.env.REACT_APP_BACKEND}/Profile/uploadPic/${id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -71,7 +76,7 @@ function MyProfile() {
         })
             .then(response => {
                 setSuccessMessage("Profile picture changed successfully!");
-
+                setErrorMessage();
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyProfile`;
                 }, 4000);
@@ -143,8 +148,45 @@ function MyProfile() {
                     }
                 })
                     .then(response => {
+                        console.log(response.data);
                         setUser(response.data);
 
+                    })
+                    .catch(error => {
+                        setErrorMessage(error.response.data);
+                        if (error.response.status === 401) {
+                            ExpiredTokenCheck()
+                        }
+                    })
+                axios.get(`${process.env.REACT_APP_BACKEND}/User/getMyApplications`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then(response => {
+                        const applications = response.data.map(application => {
+                            application.applicationTime = new Date(application.applicationTime);
+                            application.suggestedInterviewDate = new Date(application.suggestedInterviewDate);
+
+                            if (isToday(application.suggestedInterviewDate)) {
+                                application.suggestedInterviewDate = 'Today at' + format(application.suggestedInterviewDate, " HH:mm");
+                            } else if (isTomorrow(application.suggestedInterviewDate)) {
+                                application.suggestedInterviewDate = 'Tommorow at' + format(application.suggestedInterviewDate, " HH:mm");
+                            } else {
+                                application.suggestedInterviewDate = format(application.suggestedInterviewDate, "dd/MM/yyyy HH:mm");
+                            }
+
+                            if (isToday(application.applicationTime)) {
+                                application.applicationTime = 'Today at' + format(application.applicationTime, " HH:mm");
+                            } else if (isYesterday(application.applicationTime)) {
+                                application.applicationTime = 'Yesterday at' + format(application.applicationTime, " HH:mm");
+                            } else {
+                                application.applicationTime = format(application.applicationTime, "dd/MM/yyyy HH:mm");
+                            }
+                            return application;
+                        });
+                        console.log(response.data);
+                        setApplications(applications);
                     })
                     .catch(error => {
                         setErrorMessage(error.response.data);
@@ -167,70 +209,252 @@ function MyProfile() {
         setFile(file);
     };
 
+    // return (
+
+    //     < div className="my-profile" >
+    //         {ExpiredTokenCheck()}
+    //         {errorMessage && <div className="err"> Error: {errorMessage} </div>}
+    //         {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
+
+    //         <h1 className="heading">My profile</h1>
+
+    //         <br></br>
+    //         <div className="profile-header">
+    //             <img src={user.profilePicture} className="profile-picture" alt="Profile pic"></img>
+    // {!photoInput && <button className="upload-btn" onClick={() => setPhotoInput(true)}>Edit Photo</button>}
+    // {photoInput && (
+    //     <div className="profile-header">
+    //         <FileUploader
+    //             handleChange={handleChange}
+    //             name="file"
+    //             types={fileTypes}
+    //         />
+    //         <button onClick={onPhotoUpload} className="upload-btn">Upload photo</button>
+    //     </div>
+    // )}
+    //         </div>
+    //         <div className="profile-details">
+    //             <p><strong>USERNAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>    {user.userName}</p>
+    //             <p><strong>EMAIL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>    {user.email}</p>
+    //             <div>
+    //                 <p><strong>PHONE NUMBER &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.phoneNumber}</p>
+    // {!phoneInput && <button className="edit-btn" onClick={() => setPhoneInput(true)}>Edit Phone</button>}
+    // {phoneInput && (
+    //     <div className="profile-header">
+    //         <form>
+    //             <FormInput
+    //                 key={inputs[0].id}
+    //                 {...inputs[0]}
+    //                 value={values[inputs[0].name]}
+    //                 onChange={onChange}
+    //             />
+    //             <button onClick={onPhoneUpload} className="upload-ph-btn">Update phone number</button>
+    //         </form>
+
+    //     </div>
+    // )}
+    //             </div>
+    //             <p><strong>DESCRIPTION &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.description}</p>
+    //             {!descriptionInput && <button className="edit-btn" onClick={() => setDescriptionInput(true)}>Edit Description</button>}
+    //             {descriptionInput && (
+    //                 <div className="profile-header">
+    //                     <form>
+    //                         <FormInput
+    //                             key={inputs[1].id}
+    //                             {...inputs[1]}
+    //                             value={values[inputs[1].name]}
+    //                             onChange={onChange}
+    //                         />
+
+    //                         <button onClick={onDescriptionUpload} className="upload-ph-btn">Update description</button>
+    //                     </form>
+
+    //                 </div>
+    //             )}
+    //         </div>
+    //         <Nav.Link className="back-but" href={`${process.env.REACT_APP_SERVER_PAGE}/`}>Back</Nav.Link>
+    //     </div>
+    // )
+
+    console.log(inputs[0].errorMessage);
+
     return (
-
-        < div className="my-profile" >
-            {ExpiredTokenCheck()}
-            {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-            {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
-
-            <h1 className="heading">My profile</h1>
-
-            <br></br>
-            <div className="profile-header">
-                <img src={user.profilePicture} className="profile-picture" alt="Profile pic"></img>
-                {!photoInput && <button className="upload-btn" onClick={() => setPhotoInput(true)}>Edit Photo</button>}
-                {photoInput && (
-                    <div className="profile-header">
-                        <FileUploader
-                            handleChange={handleChange}
-                            name="file"
-                            types={fileTypes}
-                        />
-                        <button onClick={onPhotoUpload} className="upload-btn">Upload photo</button>
-                    </div>
-                )}
-            </div>
-            <div className="profile-details">
-                <p><strong>USERNAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>    {user.userName}</p>
-                <p><strong>EMAIL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>    {user.email}</p>
-                <div>
-                    <p><strong>PHONE NUMBER &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.phoneNumber}</p>
-                    {!phoneInput && <button className="edit-btn" onClick={() => setPhoneInput(true)}>Edit Phone</button>}
-                    {phoneInput && (
-                        <div className="profile-header">
-                            <form>
-                                <FormInput
-                                    key={inputs[0].id}
-                                    {...inputs[0]}
-                                    value={values[inputs[0].name]}
-                                    onChange={onChange}
-                                />
-                                <button onClick={onPhoneUpload} className="upload-ph-btn">Update phone number</button>
-                            </form>
-
+        <div className="background">
+            <div>
+                <div className="nav">
+                    <Link to="/">
+                        <img src={Logo} className='log' alt='Employmently logo'></img>
+                    </Link>
+                    {/* Aligned items to the right */}
+                    <div className="justify-end">
+                        <label htmlFor="toggle">&#9776;</label>
+                        <input type="checkbox" id="toggle" />
+                        <div className="menu">
+                            {ExpiredTokenCheck()}
+                            {Navbar()}
                         </div>
-                    )}
-                </div>
-                <p><strong>DESCRIPTION &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.description}</p>
-                {!descriptionInput && <button className="edit-btn" onClick={() => setDescriptionInput(true)}>Edit Description</button>}
-                {descriptionInput && (
-                    <div className="profile-header">
-                        <form>
-                            <FormInput
-                                key={inputs[1].id}
-                                {...inputs[1]}
-                                value={values[inputs[1].name]}
-                                onChange={onChange}
-                            />
-
-                            <button onClick={onDescriptionUpload} className="upload-ph-btn">Update description</button>
-                        </form>
-
                     </div>
-                )}
+                </div>
             </div>
-            <Nav.Link className="back-but" href={`${process.env.REACT_APP_SERVER_PAGE}/`}>Back</Nav.Link>
+
+
+            <div className="company-container">
+                {errorMessage && <div className="err"> Error: {errorMessage} </div>}
+                {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
+                <div className="user-info">
+                    <img src={user.profilePicture} alt="User profile" className="user-pic"></img>
+                    <div className="user-main-info">
+                        <div className="user-name-and-divider">
+                            <span className="company-divider" />
+                            <p className="company-heading">{user.userName}</p>
+                        </div>
+
+                        {!photoInput && <button className="user-edit-btn" onClick={() => setPhotoInput(true)}>Edit Photo</button>}
+                        {photoInput && (
+                            <div className="profile-header">
+                                <FileUploader
+                                    handleChange={handleChange}
+                                    name="file"
+                                    types={fileTypes}
+                                />
+                                <button onClick={onPhotoUpload} className="user-upload-btn">Upload photo</button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className="company-for-and-technologies">
+                    <div className="user-for">
+                        <div className="company-for-heading">
+                            <p className="company-for-text">About me</p>
+                        </div>
+                        <div>
+                            <p>{user.description}</p>
+                            {!descriptionInput && <button className="company-edit-button" onClick={() => setDescriptionInput(true)}>Edit Description</button>}
+                            {descriptionInput && (
+                                <div className="profile-header">
+                                    <form className='company-form' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+
+                                        <textarea
+                                            rows={8}
+                                            cols={50}
+                                            key={inputs[1].id}
+                                            {...inputs[1]}
+                                            style={{
+                                                padding: "10px",
+                                            }}
+                                            value={values[inputs[1].name]}
+                                            onChange={onChange}
+                                            placeholder="Enter your description here..."
+                                        />
+
+                                        <button onClick={onDescriptionUpload} className="company-button">Update description</button>
+                                    </form>
+
+                                </div>
+                            )}
+                        </div>
+                        <div className="technologies-list-mycomp">
+
+                            <div className="company-row">
+                                <p className="tag">Phone number: {user.phoneNumber}</p>
+                                {!phoneInput && <button className="company-edit-button-emp" onClick={() => setPhoneInput(true)}>Edit Phone</button>}
+                                {phoneInput && (
+                                    <div className="profile-header">
+                                        <form className="phone-form" style={{ display: 'flex', alignItems: 'center' }}>
+                                            <FormInput
+                                                key={inputs[0].id}
+                                                {...inputs[0]}
+                                                value={values[inputs[0].name]}
+                                                onChange={onChange}
+                                            />
+                                            <button disabled={!values[inputs[0].name].match(inputs[0].pattern)} onClick={onPhoneUpload} className="user-button-ph">Update phone number</button>
+                                        </form>
+
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="company-listings">
+                    <div className="company-for-heading">
+                        <p className="company-for-text">My applications</p>
+                    </div>
+                    {user && applications ?
+                        <div>
+                            {applications.map((application) => {
+                                return (
+                                    <div style={{ paddingTop: '20px' }}>
+                                        <div className="listing-section-home">
+                                            <div className="listing-container">
+                                                <div className="listing-item-user">
+                                                    <a href={`${process.env.REACT_APP_SERVER_PAGE}/Company/${application.companyId}`} className="listing-a-div-myp" >
+                                                        <div>
+                                                            <img className="listing-company-logo" src={application.companyPic} alt="Company logo"></img>
+                                                            <p className="listing-company-name-text">{application.listingCompany}</p>
+                                                        </div>
+                                                    </a>
+                                                    <a href={`${process.env.REACT_APP_SERVER_PAGE}/Listing/${application.listingId}`} className="listing-a-application">
+                                                        <div>
+                                                            <div className="listing-header">
+                                                                <p className="listing-title-text">{application.listingName}</p>
+                                                                <p className="listing-date">📅{application.applicationTime}</p>
+                                                            </div>
+                                                            <div className="listing-categories-tags-div">
+                                                                <p className="listing-tag">📍{application.listingLocation}</p>
+                                                                {application.arrangement && application.arrangement === "Remote" ?
+                                                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} alt="Remote job" className="listing-tag-image"></img> &nbsp;{application.arrangement}</p>
+                                                                    : null}
+                                                                {application.arrangement && application.arrangement === "On-site" ?
+                                                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💼 {application.arrangement}</p>
+                                                                    : null}
+                                                                {application.arrangement && application.arrangement === "Hybrid" ?
+                                                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%', alignItems: 'center' }}><img src={Remote} alt="Remote job" className="listing-tag-image-hybrid"></img> &nbsp; / 💼 {application.arrangement}</p>
+                                                                    : null}
+                                                                {application.listingSalary ? <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💰 {application.listingSalary} lv.</p> : null}
+
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                    <div className="status-and-files" style={{
+                                                        background: (application.listingStatus === "Pending" ? '#FFFF99' :
+                                                            (application.listingStatus === "Accepted" ? 'aquamarine' :
+                                                                (application.listingStatus === "Rejected" ? '#FF9999' : 'inherit')))
+                                                    }}>
+                                                        {application.listingStatus === "Pending" ?
+                                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                <p className="listing-tag">Status: ⌛</p>
+                                                            </div> : null}
+                                                        {application.listingStatus === "Accepted" ?
+                                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                <p className="listing-tag">Status: ✅</p>
+                                                                <p className="listing-tag">Suggested date interview:<br></br> {application.suggestedInterviewDate}</p>
+                                                            </div>
+                                                            : null}
+                                                        {application.listingStatus === "Rejected" ?
+                                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                <p className="listing-tag">Status: ❌</p>
+                                                                <p className="listing-tag">Purpose: {application.rejectionPurpose}</p>
+                                                            </div>
+                                                            : null}
+                                                        <div>
+                                                            <a className="listing-tag-a" target="_blank" rel="noreferrer" href={application.cv}>See my CV</a>
+                                                            <a className="listing-tag-a" target="_blank" rel="noreferrer" href={application.ml}>See my motivational letter</a>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        : null}
+
+                </div>
+            </div>
         </div>
     )
 

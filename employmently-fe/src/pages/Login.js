@@ -43,6 +43,19 @@ function Login() {
         }
     ];
 
+    const isFormValid = inputs.every(input => {
+        if (input.required && !values[input.name]) {
+            return false;
+        }
+        if (input.type === "email" && !values[input.name].match(/^\S+@\S+$/)) {
+            return false;
+        }
+        if (input.type === "password" && (values[input.name].length < 6 || values[input.name].length > 20)) {
+            return false;
+        }
+        return true;
+    });
+
     const onChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
@@ -96,7 +109,7 @@ function Login() {
                             />
                         ))}
                         <Link to={'/ForgotPassword'} className="btn-frgtpass">Forgot your Password?</Link>
-                        <button className="btn" type="submit" onClick={loginAction}>Sign in</button>
+                        <button disabled={!isFormValid} className="btn" type="submit" onClick={loginAction}>Sign in</button>
                     </form>
                     <div className="div-or">
                         <p className="line-or">________</p>

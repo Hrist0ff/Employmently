@@ -52,26 +52,28 @@ function Listings() {
                                             <p className="listing-company-name-text">{listing.authorName}</p>
                                         </div>
                                     </a>
-                                    <div className="listing-title">
-                                        <div className="listing-header">
-                                            <p className="listing-title-text">{listing.name}</p>
-                                            <p className="listing-date">📅{listing.createdDate}</p>
-                                        </div>
-                                        <div className="listing-categories-tags-div">
-                                            <p className="listing-tag">📍{listing.location}</p>
-                                            {listing.arrangement && listing.arrangement === "Remote" ?
-                                                <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} className="listing-tag-image"></img> &nbsp;{listing.arrangement}</p>
-                                                : null}
-                                            {listing.arrangement && listing.arrangement === "On-site" ?
-                                                <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💼 {listing.arrangement}</p>
-                                                : null}
-                                            {listing.arrangement && listing.arrangement === "Hybrid" ?
-                                                <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%', alignItems: 'center' }}><img src={Remote} className="listing-tag-image-hybrid"></img> &nbsp; / 💼 {listing.arrangement}</p>
-                                                : null}
-                                            {listing.salary ? <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💰 {listing.salary} lv.</p> : null}
+                                    <a href={`${process.env.REACT_APP_SERVER_PAGE}/Listing/${listing.id}`} className="listing-a">
+                                        <div>
+                                            <div className="listing-header">
+                                                <p className="listing-title-text">{listing.name}</p>
+                                                <p className="listing-date">📅{listing.createdDate}</p>
+                                            </div>
+                                            <div className="listing-categories-tags-div">
+                                                <p className="listing-tag">📍{listing.location}</p>
+                                                {listing.arrangement && listing.arrangement === "Remote" ?
+                                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} className="listing-tag-image"></img> &nbsp;{listing.arrangement}</p>
+                                                    : null}
+                                                {listing.arrangement && listing.arrangement === "On-site" ?
+                                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💼 {listing.arrangement}</p>
+                                                    : null}
+                                                {listing.arrangement && listing.arrangement === "Hybrid" ?
+                                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%', alignItems: 'center' }}><img src={Remote} className="listing-tag-image-hybrid"></img> &nbsp; / 💼 {listing.arrangement}</p>
+                                                    : null}
+                                                {listing.salary ? <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💰 {listing.salary} lv.</p> : null}
 
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

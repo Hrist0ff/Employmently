@@ -253,110 +253,6 @@ function MyCompany() {
         }
     }, [token, performed]);
 
-    // return (
-    //     < div className={`my-profile-comp ${(descriptionInput || phoneInput) ? 'my-profile-comp--expanded' : ''}`}>
-    //         {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-    //         {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
-    //         {ExpiredTokenCheck()}
-    //         <h1 className="heading">My company</h1>
-
-    //         <br></br>
-    //         <div className="profile-header">
-    //             <img src={user.profilePicture} className="profile-picture" alt="Profile pic"></img>
-    //             {!photoInput && <button className="upload-btn" onClick={() => setPhotoInput(true)}>Edit Photo</button>}
-    //             {photoInput && (
-    //                 <div className="profile-header">
-    //                     <FileUploader
-    //                         handleChange={handleChange}
-    //                         name="file"
-    //                         types={fileTypes}
-    //                     />
-    //                     <button onClick={onPhotoUpload} className="upload-btn">Upload photo</button>
-    //                 </div>
-    //             )}
-    //         </div>
-    //         <div className="profile-details">
-
-    //             <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '150px' }}>
-    //                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-    //                     <p><strong>USERNAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>    {user.name}</p>
-    //                     <p><strong>YEAR CREATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>    {user.yearCreated}</p>
-
-    //                 </div>
-    //                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-    //                     <p><strong>EIK &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>    {user.uniqueIdentifier}</p>
-    //                     <p><strong>EMPLOYEES &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.employees ? user.employees : "0"} employees</p>
-    //                 </div>
-    //             </div>
-    //             <div style={{ display: 'flex', gap: '370px' }}>
-    // {!yearInput && <button className="edit-btn" onClick={() => setYearInput(true)}>Edit year of creation</button>}
-    // {yearInput &&
-    //     (
-    //         <div className="profile-header">
-    //             <select id="year-dropdown" onChange={handleChangeYear} value={selectedYear} style={{ width: 200, height: 20 }}>
-    //                 {yearOptions}
-    //             </select>
-    //             <button onClick={onYearUpload} className="upload-ph-btn">Update year</button>
-    //         </div>)
-    // }
-    // {!employeesInput && <button className="edit-btn" onClick={() => setEmployeesInput(true)}>Edit employees</button>}
-    // {employeesInput &&
-    //     (
-    //         <div className="profile-header">
-    //             <select style={{ width: 200 }} value={employeeCount} onChange={handleChangeEmployees}>
-    //                 <option value="1-5">1-5</option>
-    //                 <option value="5-15">5-15</option>
-    //                 <option value="15-30">15-30</option>
-    //                 <option value="30-50">30-50</option>
-    //                 <option value="50-100">50-100</option>
-    //                 <option value="100-300">100-300</option>
-    //                 <option value="300+">300+</option>
-    //             </select>
-    //             <button onClick={onEmployeesUpload} className="upload-ph-btn">Update employees</button>
-    //         </div>)
-    // }
-    //             </div>
-
-    //             <div>
-    //                 <p><strong>PHONE NUMBER &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.phoneNumber}</p>
-    // {!phoneInput && <button className="edit-btn" onClick={() => setPhoneInput(true)}>Edit Phone</button>}
-    // {phoneInput && (
-    //     <div className="profile-header">
-    //         <form>
-    //             <FormInput
-    //                 key={inputs[0].id}
-    //                 {...inputs[0]}
-    //                 value={values[inputs[0].name]}
-    //                 onChange={onChange}
-    //             />
-    //             <button onClick={onPhoneUpload} className="upload-ph-btn">Update phone number</button>
-    //         </form>
-
-    //     </div>
-    // )}
-    //             </div>
-    //             <p><strong>DESCRIPTION &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.description}</p>
-    // {!descriptionInput && <button className="edit-btn" onClick={() => setDescriptionInput(true)}>Edit Description</button>}
-    // {descriptionInput && (
-    //     <div className="profile-header">
-    //         <form>
-    //             <FormInput
-    //                 key={inputs[1].id}
-    //                 {...inputs[1]}
-    //                 value={values[inputs[1].name]}
-    //                 onChange={onChange}
-    //             />
-
-    //             <button onClick={onDescriptionUpload} className="upload-ph-btn-right">Update description</button>
-    //         </form>
-
-    //     </div>
-    // )}
-    //         </div>
-    //         <Nav.Link className="back-but-comp" href={`${process.env.REACT_APP_SERVER_PAGE}/`}>Back</Nav.Link>
-    //     </div>
-    // )
-    console.log(user.companyId)
 
     return (
         <div className="background">
@@ -461,7 +357,7 @@ function MyCompany() {
                                                 />
 
                                             </form>
-                                            <button onClick={onPhoneUpload} className="company-button-ph">Update phone number</button>
+                                            <button disabled={!values[inputs[0].name].match(inputs[0].pattern)} onClick={onPhoneUpload} className="company-button-ph">Update phone number</button>
                                         </div>
                                     )}
                                 </div>

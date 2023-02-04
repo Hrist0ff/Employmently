@@ -10,9 +10,12 @@ import MyCompany from "./pages/MyCompany";
 import Company from "./pages/Company";
 import AdminPanel from "./pages/AdminPanel";
 import Listing from "./pages/Listing";
+import CreateListing from "./pages/CreateListing";
+import Applications from "./pages/Applications";
 
 import "./fonts/rock.ttf";
 import "./fonts/rockb.ttf";
+
 
 function App() {
   return (
@@ -29,6 +32,8 @@ function App() {
         <Route path="Company/:id" element={<Company />} />
         <Route path="AdminPanel" element={<AdminPanel />} />
         <Route path="Listing/:id" element={<Listing />} />
+        <Route path="CreateListing" element={<CreateListing />} />
+        <Route path="Applications" element={<Applications />} />
       </Routes>
     </BrowserRouter>
   );
