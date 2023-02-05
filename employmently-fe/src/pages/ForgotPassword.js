@@ -56,8 +56,8 @@ function ForgotPassword() {
     return (
         <div className="background">
             <div className="fp-container">
-                {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-                {successMessage && <div className="suc"> Success: {successMessage} </div>}
+                {errorMessage && <div className="err" style={{ width: '93%', marginLeft: '0%' }}> Error: {errorMessage} </div>}
+                {successMessage && <div className="suc" style={{ width: '93%', marginLeft: '0%' }}> Success: {successMessage} </div>}
                 <img src={Logo} className="employmently-logo-letters" alt="Employment.ly logo"></img>
                 <br></br>
                 <br></br>

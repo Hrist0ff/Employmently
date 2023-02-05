@@ -179,8 +179,8 @@ function AdminPanel() {
                                                         {listing.salary ? <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💰 {listing.salary} lv.</p> : null}
                                                     </div>
                                                     <div className="admin-panel-buttons">
-                                                        <button className="listing-tag-accept">Accept</button>
-                                                        <button className="listing-tag-reject">Reject</button>
+                                                        <button className="listing-tag-accept" onClick={() => acceptListing(listing.id)}>Accept</button>
+                                                        <button className="listing-tag-reject" onClick={() => rejectListing(listing.id)}>Reject</button>
                                                     </div>
                                                 </div>
                                             </div>

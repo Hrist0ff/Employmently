@@ -14,6 +14,7 @@ namespace employmently_be.DbContexts
         public DbSet<Company> Companies { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<ListingApplications> ListingApplications { get; set; }
+        public DbSet<ForgotPassword> ForgotPasswords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 

@@ -1,0 +1,48 @@
+.applications-listing-a {
+    display: flex;
+    background-color: #ddeeff;
+    width: 50%;
+    /* border-radius: 0 8px 8px 0; */
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.applications-buttons-and-info {
+    display: flex;
+    background-color: #ebf5ff;
+    width: 35%;
+    border-radius: 0 8px 8px 0;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.applications-half {
+    display: flex;
+    flex-direction: column;
+}
+
+.sucMessage-app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    padding: 3%;
+    background-color: rgb(127, 255, 163);
+    color: black;
+}
+
+.applications-listing-date {
+    margin-top: 0px;
+    /* margin-right: 2%; */
+    margin-left: 3%;
+}
+
+.applications-listing-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 2%;
+    align-items: flex-start;
+}

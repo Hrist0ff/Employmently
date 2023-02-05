@@ -7,10 +7,10 @@ import axios from 'axios';
 function ChangePassword() {
     let parameters = useParams();
     var id = parameters.id;
+    var token = parameters.token;
 
 
     const [values, setValues] = useState({
-        oldPassword: "",
         newPassword: "",
         confirmPassword: "",
     });
@@ -20,11 +20,12 @@ function ChangePassword() {
 
     const forgotPassAction = (event) => {
         event.preventDefault();
-        const oldPassword = values.oldPassword;
+        const userId = id;
         const newPassword = values.newPassword;
 
 
-        axios.post(`${process.env.REACT_APP_BACKEND}/ForgotPassword/Changepassword?id=${id}`, { oldPassword, newPassword })
+
+        axios.post(`${process.env.REACT_APP_BACKEND}/ForgotPassword/Changepassword`, { userId, token, newPassword })
             .then(response => {
                 const token = response.data;
                 localStorage.setItem("token", token);
@@ -48,15 +49,6 @@ function ChangePassword() {
     const inputs = [
         {
             id: 1,
-            name: "oldPassword",
-            type: "password",
-            placeholder: "Old Password",
-            label: "Password",
-            errorMessage: "Password is required.",
-            required: true,
-        },
-        {
-            id: 2,
             name: "newPassword",
             type: "password",
             placeholder: "New Password",
@@ -67,7 +59,7 @@ function ChangePassword() {
             required: true,
         },
         {
-            id: 3,
+            id: 2,
             name: "confirmPassword",
             type: "password",
             placeholder: "Confirm New Password",
@@ -80,10 +72,10 @@ function ChangePassword() {
 
     return (
         <div className="fp-container">
-            {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-            {successMessage && <div className="suc"> Success: {successMessage} </div>}
+            {errorMessage && <div className="err" style={{ width: '93%', marginLeft: '0%' }}> Error: {errorMessage} </div>}
+            {successMessage && <div className="suc" style={{ width: '93%', marginLeft: '0%' }}> Success: {successMessage} </div>}
             <h1>Forgot password</h1>
-            <p>Enter your Old and new Passwords</p>
+            <p>Enter your new Password</p>
             <form className='fp-form'>
                 {inputs.map((input) => (
                     <FormInput

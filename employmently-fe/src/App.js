@@ -12,6 +12,7 @@ import AdminPanel from "./pages/AdminPanel";
 import Listing from "./pages/Listing";
 import CreateListing from "./pages/CreateListing";
 import Applications from "./pages/Applications";
+import Profile from "./pages/Profile";
 
 import "./fonts/rock.ttf";
 import "./fonts/rockb.ttf";
@@ -26,7 +27,7 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/Register" element={<Register />} />
-        <Route path="Changepassword/id=:id" element={<ChangePassword />} />
+        <Route path="Changepassword/id=:id/token=:token" element={<ChangePassword />} />
         <Route path="/MyProfile" element={<MyProfile />} />
         <Route path="/MyCompany" element={<MyCompany />} />
         <Route path="Company/:id" element={<Company />} />
@@ -34,6 +35,7 @@ function App() {
         <Route path="Listing/:id" element={<Listing />} />
         <Route path="CreateListing" element={<CreateListing />} />
         <Route path="Applications" element={<Applications />} />
+        <Route path="Profile/:id" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );

@@ -65,6 +65,7 @@ function Listing() {
                 setErrorMessage(error.response.data.Error[0]);
             })
     }
+
     const userCheck = () => {
         if (token) {
             const decodedToken = jwt(token);
@@ -157,13 +158,13 @@ function Listing() {
                             <div className="listing-categories-tags-div">
                                 <p className="listing-tag">📍{listing.location}</p>
                                 {listing.arrangement && listing.arrangement === "Remote" ?
-                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} className="listing-tag-image"></img> &nbsp;{listing.arrangement}</p>
+                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} alt="Remote" className="listing-tag-image"></img> &nbsp;{listing.arrangement}</p>
                                     : null}
                                 {listing.arrangement && listing.arrangement === "On-site" ?
                                     <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💼 {listing.arrangement}</p>
                                     : null}
                                 {listing.arrangement && listing.arrangement === "Hybrid" ?
-                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%', alignItems: 'center' }}><img src={Remote} className="listing-tag-image-hybrid"></img> &nbsp; / 💼 {listing.arrangement}</p>
+                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%', alignItems: 'center' }}><img src={Remote} alt="Remote" className="listing-tag-image-hybrid"></img> &nbsp; / 💼 {listing.arrangement}</p>
                                     : null}
                                 {listing.salary ? <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💰 {listing.salary} lv.</p> : null}
                             </div>
@@ -187,7 +188,7 @@ function Listing() {
                 <div className="listing-container">
                     <div className="listing-description-div">
                         <div className="published-info">
-                            <img src={Calendar} className="calendar-photo"></img>
+                            <img src={Calendar} alt="Calendar" className="calendar-photo"></img>
                             {listing.createdDate === "today" || listing.createdDate === "yesterday" ? <p className="listing-date-text">Published {listing.createdDate}</p> : <p className="listing-date-text">Published on {listing.createdDate}</p>}
                         </div>
                         <div className="listing-description" style={{ marginTop: "15px" }}><pre className="pre-text">{listing.description}</pre></div>

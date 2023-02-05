@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Globalization;
 
 namespace employmently_be.Controllers.Company
 {
@@ -263,8 +264,9 @@ namespace employmently_be.Controllers.Company
 
         [HttpPost("acceptApplication/{id}")]
         [Authorize(Roles ="Company")]
-        public async Task<IActionResult> acceptApplication([FromRoute]int id,[FromBody]DateTime DateForInterview)
+        public async Task<IActionResult> acceptApplication([FromRoute]int id,[FromBody]string DateForInterview)
         {
+            DateTime date = DateTime.Parse(DateForInterview, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
             var user = await _userManager.GetUserAsync(User);
 
             if (user == null)
@@ -305,12 +307,12 @@ namespace employmently_be.Controllers.Company
             }
 
 
-            string dateString = DateForInterview.ToString("MM/dd/yyyy HH:mm");
+            string dateString = date.ToString("dd/MM/yyyy HH:mm");
 
 
             var userEmail = await _dbContext.Users.Where(x => x.Id == listingApplication.userId).FirstOrDefaultAsync();
             var subject = "Your application for " + listing.Name + " " + "in " + listing.Author.Company.Name + " has been accepted";
-            var email_body = "Employmently <br></br>" + subject + "<br></br>Suggested interview date: " + dateString  
+            var email_body = "Employmently <br></br>" + subject + "<br></br>Suggested interview date: " + dateString
                 + "<br></br>Company contact details:<br></br>Phone number: " + listing.Author.Company.PhoneNumber;
 
 
@@ -322,7 +324,7 @@ namespace employmently_be.Controllers.Company
 
 
             listingApplication.status = ListingStatus.Accepted;
-            listingApplication.suggestedInterviewDate = DateForInterview;
+            listingApplication.suggestedInterviewDate = date;
             _dbContext.SaveChanges();
             return Ok("Listing application has been accepted.");
 
@@ -396,17 +398,47 @@ namespace employmently_be.Controllers.Company
             var user = await _userManager.GetUserAsync(User);
 
             var listingsOfCompany = _dbContext.Listings
-                .Where(x => x.Author.UniqueIdentifierCompany == user.UniqueIdentifierCompany)
+                .Where(x => x.Author.UniqueIdentifierCompany == user.UniqueIdentifierCompany && x.Status == ListingStatus.Accepted)
                 .Select(x => x.Id);
 
             var applications = _dbContext.ListingApplications
-                .Where(x => listingsOfCompany.Contains(x.listingId));
+             .Join(_dbContext.Users,
+                 app => app.userId,
+                 usr => usr.Id,
+                 (app, usr) => new { Application = app, User = usr })
+              .Join(_dbContext.Listings,
+                 app => app.Application.listingId,
+                 lst => lst.Id,
+                 (app, lst) => new { Application = app.Application, User = app.User, Listing = lst })
+             .Where(x => listingsOfCompany.Contains(x.Application.listingId) && x.Application.status == ListingStatus.Pending)
+             .Select(x => new
+             {
+                 id = x.Application.Id,
+                 cv = x.Application.CV,
+                 motivationalLetter = x.Application.motivationalLetter,
+                 listingId = x.Application.listingId,
+                 rejectionPurpose = x.Application.rejectionPurpose,
+                 status = x.Application.status,
+                 suggestedInterviewDate = x.Application.suggestedInterviewDate,
+                 userId = x.User.Id,
+                 userName = x.User.UserName,
+                 userDescription = x.User.Description,
+                 userPic = x.User.ProfilePicture,
+                 applicationTime = x.Application.applicationTime,
+                 listingName = x.Listing.Name,
+                 listingCategories = x.Listing.Categories.Select(c => c.Name),
+                 listingArrangement = x.Listing.Arrangement,
+             });
 
             if (applications == null)
             {
                 return Ok("You don't have applications at the moment.");
             }
             return Ok(applications);
+
+
+
+
         }
 
     }

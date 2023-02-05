@@ -282,7 +282,7 @@
         width: 43.5%;
     }
 
-    .tag-ui{
+    .tag-ui {
         width: 55%;
     }
 }
@@ -309,7 +309,7 @@
         flex-direction: column;
     }
 
-    .tag-ui{
+    .tag-ui {
         width: 60%;
         margin-left: 15%;
     }
@@ -338,4 +338,13 @@ select {
 option {
     color: inherit;
     background-color: #f5f5f5;
+}
+
+.listing-right-side-company {
+    display: flex;
+    float: right;
+    flex-direction: column;
+    width: 40%;
+    align-items: flex-end;
+    justify-content: space-between;
 }

@@ -1,10 +1,12 @@
-﻿using employmently_be.Data.Models;
+﻿using employmently_be.Data.Entities;
+using employmently_be.Data.Models;
 using employmently_be.DbContexts;
 using employmently_be.Entities;
 using employmently_be.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace employmently_be.Controllers
@@ -47,9 +49,23 @@ namespace employmently_be.Controllers
                 return BadRequest();
             }
 
+            var forgotPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var forgotPassword = new ForgotPassword
+            {
+                UserId = user.Id,
+                Token = forgotPasswordToken
+            };
+
+            var encodedToken = System.Web.HttpUtility.UrlEncode(forgotPasswordToken);
+
+
+            _dbContext.ForgotPasswords.Add(forgotPassword);
+            await _dbContext.SaveChangesAsync();
+
             var email_body = "Employmently <br></br> You can change your password by clicking <a href=\"#URL#\"> here </a>";
 
-            var confirmationLink = "http://localhost:3000/Changepassword/id=" + user.Id;
+            var confirmationLink = "http://localhost:3000/Changepassword/id=" + user.Id + "/token=" + encodedToken;
             var body = email_body.Replace("#URL#", System.Text.Encodings.Web.HtmlEncoder.Default.Encode(confirmationLink));
             body.Replace("#username#", user.UserName);
             EmailSender emailHelper = new EmailSender(optionsAccessor, _logger, _config);
@@ -58,26 +74,34 @@ namespace employmently_be.Controllers
             return Ok();
         }
 
+
         [HttpPost]
         [Route("Changepassword")]
-        public async Task<ActionResult> ChangePassword(ChangePasswordDto cpd,string id)
+        public async Task<ActionResult> ChangePassword(ChangePasswordDto cpd)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(cpd.userId);
 
             if (user == null)
             {
-                ModelState.AddModelError("Error", "There is no such a user.");
-                return BadRequest();
+                return NotFound();
             }
 
-            var resetPassResult = await _userManager.ChangePasswordAsync(user,cpd.OldPassword,cpd.NewPassword);
-            if (!resetPassResult.Succeeded)
+            var result = await _userManager.ResetPasswordAsync(user, cpd.token, cpd.NewPassword);
+
+            if (result.Succeeded)
             {
-                ModelState.AddModelError("Error", "Couldn't change password.");
-                return BadRequest();
+                var token = _dbContext.ForgotPasswords.Where(t => t.Token == cpd.token).FirstOrDefault();
+                if(token != null)
+                {
+                    _dbContext.ForgotPasswords.Remove(token);
+                    await _dbContext.SaveChangesAsync();
+                }
+                return Ok();
             }
 
-            return Ok();
+            ModelState.AddModelError("Error", "Couldn't change password");
+            return BadRequest(ModelState);
+
         }
     }
 }

@@ -47,7 +47,7 @@ namespace employmently_be.Controllers
 
         [HttpGet("getCompanyListings/{id}")]
         [AllowAnonymous]
-        public async Task<IActionResult> getCompanyListings([FromRoute]int id)
+        public async Task<IActionResult> getCompanyListings([FromRoute] int id)
         {
             var listings = _dbContext.Listings.Where(l => l.Status == ListingStatus.Accepted && l.Author.Company.Id == id)
                .Select(l => new ListingViewModel()
@@ -112,8 +112,8 @@ namespace employmently_be.Controllers
                     Name = l.Name,
                     Description = l.Description,
                     CreatedDate = l.CreatedDate,
-        // include other properties (Authors and Categories) of the listing here
-        AuthorId = l.Author.Id,
+                    // include other properties (Authors and Categories) of the listing here
+                    AuthorId = l.Author.Id,
                     AuthorName = l.Author.Company.Name,
                     CategoryNames = l.Categories.Select(c => c.Name),
                     Location = l.Location,
@@ -123,7 +123,7 @@ namespace employmently_be.Controllers
                 }).SelectMany(c => c.CategoryNames).Distinct();
 
 
-            
+
             if (company == null)
             {
                 return NotFound();
@@ -156,5 +156,32 @@ namespace employmently_be.Controllers
 
             return Ok(categories);
         }
+
+
+        [HttpGet("getProfile/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUser([FromRoute] string id)
+        {
+            var user = await _dbContext.Users.FindAsync(id);
+
+            if(user == null)
+            {
+                ModelState.AddModelError("Error", "There is no such user.");
+                return BadRequest(ModelState);
+
+            }
+
+            var result = new ProfileViewModel()
+            {
+                name = user.UserName,
+                description = user.Description,
+                profilePicture = user.ProfilePicture,
+                phoneNumber = user.PhoneNumber
+
+            };
+
+            return Ok(result);
+
         }
+    }
 }
