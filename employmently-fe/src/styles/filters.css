@@ -102,3 +102,22 @@ input[type="checkbox"]::before {
 input[type="checkbox"]:checked::before {
     transform: scale(1);
 }
+
+.listingspage-div {
+    display: flex;
+}
+
+@media only screen and (max-width:500px) {
+    .listingspage-div {
+        flex-direction: column;
+    }
+
+    .box {
+        width: 80%;
+    }
+
+    .filters-listings-div {
+        width: 100%;
+    }
+    
+}

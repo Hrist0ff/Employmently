@@ -94,7 +94,7 @@ function Company() {
                         <div className="company-for-heading">
                             <p className="company-for-text">Company listings</p>
                         </div>
-                        {id ? <CompanyListings companyId={id} /> : null}
+                        {id ? <CompanyListings companyId={id} isMyCompany={false} /> : null}
                     </div>
                 </div>
             </div>

@@ -379,7 +379,7 @@ function MyCompany() {
                         <div className="company-for-heading">
                             <p className="company-for-text">Company listings</p>
                         </div>
-                        {user && user.companyId ? <CompanyListings companyId={user.companyId} /> : null}
+                        {user && user.companyId ? <CompanyListings companyId={user.companyId} isMyCompany={true} /> : null}
 
                     </div>
                 </div>

@@ -5,6 +5,7 @@ using employmently_be.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace employmently_be.Controllers
 {
@@ -168,6 +169,29 @@ namespace employmently_be.Controllers
             return Ok(locations);
         }
 
+        [HttpGet("GetUserCompanyId/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUserCompanyId([FromRoute]string id)
+        {
+            var user = await _dbContext.Users
+             .Include(u => u.Company)
+             .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            
+
+            if (user.Company != null)
+            {
+                return Ok(user.Company.Id);
+            }
+
+            return BadRequest();
+
+
+        }
 
         [HttpGet("getProfile/{id}")]
         [AllowAnonymous]
@@ -187,8 +211,7 @@ namespace employmently_be.Controllers
                 name = user.UserName,
                 description = user.Description,
                 profilePicture = user.ProfilePicture,
-                phoneNumber = user.PhoneNumber
-
+                phoneNumber = user.PhoneNumber,
             };
 
             return Ok(result);

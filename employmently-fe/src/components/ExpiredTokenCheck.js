@@ -24,7 +24,6 @@ function ExpiredTokenCheck() {
             })
                 .then(response => {
                     localStorage.setItem("accessToken", response.data.accessToken);
-                    console.log(response.data)
                     return false;
                 })
                 .catch(error => {

@@ -229,7 +229,7 @@ function ListingsPage() {
                     </div>
                 </div>
             </div>
-            <div style={{ display: "flex" }}>
+            <div className="listingspage-div">
                 <div className="filters-div">
                     <div className="box">
                         <div className="filters-categories">

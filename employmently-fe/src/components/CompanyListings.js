@@ -6,15 +6,18 @@ import format from 'date-fns/format';
 import ru from 'date-fns/locale/bg';
 import { isToday, isYesterday } from 'date-fns';
 import React from "react";
+import jwt from 'jwt-decode';
 
 
-function CompanyListings({ companyId }) {
+function CompanyListings({ companyId, isMyCompany }) {
     const token = localStorage.getItem("accessToken");
     const [listings, setListings] = useState([]);
     const [performed, setPerformed] = useState(false);
 
     const [errorMessage, setErrorMessage] = React.useState("");
     const [successMessage, setSuccessMessage] = React.useState("");
+
+    const [isThisCompany, setIsThisCompany] = useState(false);
 
     const [deleteListing, setDeleteListing] = useState(0);
 
@@ -32,7 +35,6 @@ function CompanyListings({ companyId }) {
                 setErrorMessage(error.response.data);
             })
     }
-
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_BACKEND}/Information/getCompanyListings/${companyId}`)
@@ -79,16 +81,18 @@ function CompanyListings({ companyId }) {
                         </div>
                         <div className="listing-right-side-company">
                             <p className="listing-date">📅{listing.createdDate}</p>
-                            {!(deleteListing === listing.id) ? <button className="listing-tag-reject" onClick={() => setDeleteListing(listing.id)}>Delete listing</button>
-                                :
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                    <p className="listing-date">Are you sure you <br></br>want to delete this <br></br>listing?</p>
-                                    <div style={{ display: "flex", flexDirection: "row" }}>
-                                        <button className="listing-tag-accept" onClick={() => deleteAlisting(listing.id)}>Yes</button>
-                                        <button className="listing-tag-reject" onClick={() => setDeleteListing(0)}>No</button>
+                            {isMyCompany ?
+                                !(deleteListing === listing.id) ?
+                                    <button className="listing-tag-reject" onClick={() => setDeleteListing(listing.id)}>Delete listing</button>
+                                    :
+                                    <div style={{ display: "flex", flexDirection: "column" }}>
+                                        <p className="listing-date">Are you sure you <br></br>want to delete this <br></br>listing?</p>
+                                        <div style={{ display: "flex", flexDirection: "row" }}>
+                                            <button className="listing-tag-accept" onClick={() => deleteAlisting(listing.id)}>Yes</button>
+                                            <button className="listing-tag-reject" onClick={() => setDeleteListing(0)}>No</button>
+                                        </div>
                                     </div>
-                                </div>
-                            }
+                                : null}
                         </div>
                     </div>
                 )
