@@ -20,7 +20,7 @@ namespace employmently_be.Controllers
 
         [HttpGet()]
         public ActionResult<IEnumerable<Listing>> GetListingsByFilters([FromQuery] int minSalary, [FromQuery] int maxSalary, [FromQuery] bool salaryStated,
-              [FromQuery] List<string> locations,[FromQuery] List<string> categories)
+              [FromQuery] List<string> locations,[FromQuery] List<string> categories,[FromQuery] string? arrangement)
         {
             var listings = _dbContext.Listings.Where(l => l.Status == ListingStatus.Accepted)
                 .Select(l => new ListingViewModel()
@@ -30,6 +30,7 @@ namespace employmently_be.Controllers
                 Description = l.Description,
                 CreatedDate = l.CreatedDate,
                 AuthorId = l.Author.Id,
+                CompanyId = l.Author.Company.Id,
                 AuthorName = l.Author.Company.Name,
                 CategoryNames = l.Categories.Select(c => c.Name),
                 Location = l.Location,
@@ -42,7 +43,7 @@ namespace employmently_be.Controllers
 
             if (minSalary > 0)
             {
-                listings = listings.Where(l => l.Salary >= minSalary);
+                listings = listings.Where(l => l.Salary > minSalary);
             }
             
             if (maxSalary > 0)
@@ -60,11 +61,14 @@ namespace employmently_be.Controllers
                 listings = listings.Where(l => l.Location == location);
             }
 
-           
-
             if (salaryStated == true)
             {
                 listings = listings.Where(l => l.Salary > 0);
+            }
+
+            if (arrangement != null)
+            {
+                listings = listings.Where(l=> l.Arrangement == arrangement);
             }
 
            

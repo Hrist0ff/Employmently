@@ -151,10 +151,21 @@ namespace employmently_be.Controllers
         public async Task<IActionResult> GetCategories()
         {
 
-            var categories = _dbContext.Categories
+            var categories = _dbContext.Categories.Where(c => c.Listings.Count > 0)
                 .Select(c => c.Name);
 
             return Ok(categories);
+        }
+
+        [HttpGet("getLocations")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLocations()
+        {
+
+            var locations = _dbContext.Listings.Where(c => c.Location != "" && c.Status == ListingStatus.Accepted)
+                .Select(c => c.Location).Distinct();
+
+            return Ok(locations);
         }
 
 

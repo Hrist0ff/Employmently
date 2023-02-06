@@ -26,7 +26,7 @@ function CompanyListings({ companyId }) {
             }
         })
             .then(response => {
-                console.log(response.data)
+                console.log(response.data);
             })
             .catch(error => {
                 setErrorMessage(error.response.data);

@@ -98,7 +98,44 @@ namespace employmently_be.Controllers.Company
             return Ok(result);
         }
 
+        [HttpDelete("deleteListing/{id}")]
+        [Authorize(Roles = "Company" )]
+        public async Task<IActionResult> Delete([FromRoute]int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                ModelState.AddModelError("Error", "There's no such a user");
+                return BadRequest(ModelState);
+            }
 
+            var listing = _dbContext.Listings.Where(l => l.Id == id).FirstOrDefault();
+
+            var applications = _dbContext.ListingApplications.Where(a => a.listingId == id);
+
+
+            if (listing == null)
+            {
+                ModelState.AddModelError("Error", "There's no such listing");
+                return BadRequest(ModelState);
+            }
+
+            if(listing.Author.Id != user.Id)
+            {
+                ModelState.AddModelError("Error", "You are trying to delete a listing, which is not yours");
+                return BadRequest(ModelState);
+            }
+
+            _dbContext.Listings.Remove(listing);
+            if(applications != null)
+            {
+                _dbContext.ListingApplications.RemoveRange(applications);
+            }
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+
+
+        }
 
         [HttpPut("changeDescription/{id}")]
         [Authorize(Roles = "Company")]

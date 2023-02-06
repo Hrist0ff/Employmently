@@ -35,7 +35,7 @@ function Navbar() {
             return [<Nav.Link key={5} href={`${process.env.REACT_APP_SERVER_PAGE}/Login`}>Login</Nav.Link>,
             <Nav.Link key={6} href={`${process.env.REACT_APP_SERVER_PAGE}/Register`}>Register</Nav.Link>,
             <span className="divider" />,
-            <Nav.Link key={7} href={`${process.env.REACT_APP_SERVER_PAGE}/Listings`}>Обяви</Nav.Link>]
+            <Nav.Link key={7} href={`${process.env.REACT_APP_SERVER_PAGE}/ListingsPage`}>Listings</Nav.Link>]
         }
 
 

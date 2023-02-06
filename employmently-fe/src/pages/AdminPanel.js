@@ -53,7 +53,7 @@ function AdminPanel() {
             .then(response => {
                 setSuccessMessage("Listing accepted!");
                 setTimeout(() => {
-                    window.location.href(`${process.env.REACT_APP_SERVER_PAGE}/AdminPanel`);
+                    window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/AdminPanel`;
                 }, 3000);
             })
             .catch(error => {
@@ -74,7 +74,7 @@ function AdminPanel() {
             .then(response => {
                 setSuccessMessage("Listing rejected!");
                 setTimeout(() => {
-                    window.location.href(`${process.env.REACT_APP_SERVER_PAGE}/AdminPanel`);
+                    window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/AdminPanel`;
                 }, 3000);
             })
             .catch(error => {
@@ -94,7 +94,7 @@ function AdminPanel() {
                 if (role !== 'Administrator') {
                     setErrorMessage("You don't have permission to view this page!");
                     setTimeout(() => {
-                        window.location.href = `${process.env.REACT_APP_SERVER_PAGE} / `;
+                        window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
                     }, 3000);
                 }
             }
@@ -104,7 +104,6 @@ function AdminPanel() {
                 }
             })
                 .then(response => {
-                    console.log(response.data);
                     setListings(response.data);
 
                 })
@@ -140,6 +139,8 @@ function AdminPanel() {
                 </div>
             </div>
             <div >
+                {errorMessage && <div className="err" style={{ width: '93%', marginLeft: '0%' }}> Error: {errorMessage} </div>}
+                {successMessage && <div className="suc" style={{ width: '93%', marginLeft: '0%' }}> Success: {successMessage} </div>}
                 {listingsArray.map((listing, idx) => {
                     return (
                         <div style={{ paddingTop: '20px' }}>

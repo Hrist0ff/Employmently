@@ -13,6 +13,7 @@ import Listing from "./pages/Listing";
 import CreateListing from "./pages/CreateListing";
 import Applications from "./pages/Applications";
 import Profile from "./pages/Profile";
+import ListingsPage from "./pages/ListingsPage"
 
 import "./fonts/rock.ttf";
 import "./fonts/rockb.ttf";
@@ -36,6 +37,7 @@ function App() {
         <Route path="CreateListing" element={<CreateListing />} />
         <Route path="Applications" element={<Applications />} />
         <Route path="Profile/:id" element={<Profile />} />
+        <Route path="ListingsPage" element={<ListingsPage />} />
       </Routes>
     </BrowserRouter>
   );
