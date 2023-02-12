@@ -19,6 +19,8 @@ namespace employmently_be.Data.Entities
         public string? Location { get; set; }
         public string? Arrangement { get; set; }
         public int? Salary { get; set; }
+        public DateTime ExpirationDate { get; set; }
+        public Boolean Expired { get; set; } = false;
 
 
     }

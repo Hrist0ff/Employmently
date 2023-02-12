@@ -15,6 +15,7 @@
         public string? Arrangement { get; set; }
         public int? Salary { get; set; }
         public int? CompanyId { get; set; }
+        public DateTime ExpirationDate { get; set; }
 
 
     }

@@ -65,6 +65,7 @@ namespace employmently_be.Controllers
                    Arrangement = l.Arrangement,
                    Salary = l.Salary,
                    AuthorPic = l.Author.Company.ProfilePicture,
+                   ExpirationDate = l.ExpirationDate,
                }); ;
             return Ok(listings);
         }
@@ -188,7 +189,7 @@ namespace employmently_be.Controllers
                 return Ok(user.Company.Id);
             }
 
-            return BadRequest();
+                return BadRequest();
 
 
         }

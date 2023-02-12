@@ -137,7 +137,7 @@ function Listing() {
                                 <button onClick={() => {
                                     setClickedButton(!clickedButton);
                                     userCheck();
-                                }} className="applicate-button">Applicate for this job</button>
+                                }} className="applicate-button">Apply for this job</button>
                                 : null}
                             {clickedButton && userCheck() ?
                                 <div className="cv-ml-div">

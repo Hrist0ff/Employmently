@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import jwt from 'jwt-decode';
 import axios from 'axios';
 import FormInput from '../components/FormInput';
-import { Nav } from "react-bootstrap";
 import ExpiredTokenCheck from '../components/ExpiredTokenCheck';
 import { FileUploader } from "react-drag-drop-files";
 import Navbar from '../components/Navbar';
 import CompanyListings from '../components/CompanyListings';
 import Logo from "../images/employment.png";
 import { Link } from 'react-router-dom';
+import ExpiredListings from '../components/ExpiredListings';
 
 
 
@@ -279,6 +279,18 @@ function MyCompany() {
                         <img src={user.profilePicture} alt="User profile" className="company-pic"></img>
                         <span className="company-divider" />
                         <p className="company-heading">{user.name}</p>
+
+                        {!photoInput && <button className="user-edit-btn" onClick={() => setPhotoInput(true)}>Edit Photo</button>}
+                        {photoInput && (
+                            <div className="profile-header">
+                                <FileUploader
+                                    handleChange={handleChange}
+                                    name="file"
+                                    types={fileTypes}
+                                />
+                                <button onClick={onPhotoUpload} className="user-upload-btn">Upload photo</button>
+                            </div>
+                        )}
                     </div>
                     <div className="company-for-and-technologies">
                         <div className="company-for">
@@ -380,7 +392,12 @@ function MyCompany() {
                             <p className="company-for-text">Company listings</p>
                         </div>
                         {user && user.companyId ? <CompanyListings companyId={user.companyId} isMyCompany={true} /> : null}
-
+                    </div>
+                    <div className="company-listings">
+                        <div className="company-for-heading">
+                            <p className="company-for-text">Expired listings</p>
+                        </div>
+                        {user && user.companyId ? <ExpiredListings companyId={user.companyId} isMyCompany={true} /> : null}
                     </div>
                 </div>
             </div>

@@ -38,7 +38,6 @@ namespace employmently_be.DbContexts
                     NormalizedUserName = "ADMINUSER",
                     PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg==",
                     EmailConfirmed = true
-                    // Admin123@
                 }
             ); ;
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(

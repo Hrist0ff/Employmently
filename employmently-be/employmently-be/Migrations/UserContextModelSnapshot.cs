@@ -67,21 +67,21 @@ namespace employmentlybe.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "9586d74f-6e04-495a-92dc-90081315c6f5",
+                            ConcurrencyStamp = "f27d47e8-e97a-4286-9e12-2f016c7a878e",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "2ba659a5-01b5-406b-ab4c-53bffd304511",
+                            ConcurrencyStamp = "5c5f5601-7444-4d13-947c-3b40829c0bd0",
                             Name = "Company",
                             NormalizedName = "COMPANY"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "7c9529eb-0e40-40ec-be91-d84a0f5d96c2",
+                            ConcurrencyStamp = "64491c97-fb85-4cd0-9fa2-991fb3cdb54a",
                             Name = "Candidate",
                             NormalizedName = "CANDIDATE"
                         });
@@ -377,6 +377,12 @@ namespace employmentlybe.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Expired")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
@@ -537,7 +543,7 @@ namespace employmentlybe.Migrations
                         {
                             Id = "1id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "75f91ea4-c24e-4afb-9e26-a442bcd0cd03",
+                            ConcurrencyStamp = "9e1a968d-9ee2-42b2-9573-6157088bf04a",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -546,7 +552,7 @@ namespace employmentlybe.Migrations
                             PasswordHash = "AQAAAAEAACcQAAAAEDH4ryHkFVgvxLG8qcv5M79tg/UHQu2BbbVzQu92kgdh0lRMHHOuO1ywdDDDldRJHg==",
                             PhoneNumberConfirmed = false,
                             ProfilePicture = "https://employmentlystorage.blob.core.windows.net/fileupload/default_profilepic.png",
-                            SecurityStamp = "2d3fe249-ee0c-473c-90c5-020de6ea6936",
+                            SecurityStamp = "0997f36c-f827-4fe4-8c94-a000023966b3",
                             TwoFactorEnabled = false,
                             UserName = "adminuser"
                         });

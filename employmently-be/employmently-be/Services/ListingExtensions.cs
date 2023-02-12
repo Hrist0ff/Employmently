@@ -8,5 +8,7 @@ namespace employmently_be.Services
         {
             return listings.Where(l => l.Status == 0);
         }
+
+
     }
 }

@@ -44,6 +44,10 @@
               "target": "Package",
               "version": "[12.14.1, )"
             },
+            "Hangfire": {
+              "target": "Package",
+              "version": "[1.7.33, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[3.4.3, )"

@@ -98,6 +98,36 @@ namespace employmently_be.Controllers.Company
             return Ok(result);
         }
 
+        [HttpGet("getExpiredListings")]
+        [Authorize(Roles = "Company")]
+        public async Task<IActionResult> GetExpiredListings()
+        {
+
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            var company = _dbContext.Companies.FirstOrDefault(x => x.UniqueIdentifier == currentUser.UniqueIdentifierCompany);
+
+
+            var listings = _dbContext.Listings.Where(l => l.Status == ListingStatus.Expired && l.Author.Company.Id == company.Id)
+               .Select(l => new ListingViewModel()
+               {
+                   Id = l.Id,
+                   Name = l.Name,
+                   Description = l.Description,
+                   CreatedDate = l.CreatedDate,
+                   // include other properties (Authors and Categories) of the listing here
+                   AuthorId = l.Author.Id,
+                   AuthorName = l.Author.Company.Name,
+                   CategoryNames = l.Categories.Select(c => c.Name),
+                   Location = l.Location,
+                   Arrangement = l.Arrangement,
+                   Salary = l.Salary,
+                   AuthorPic = l.Author.Company.ProfilePicture,
+                   ExpirationDate = l.ExpirationDate,
+               }); ;
+            return Ok(listings);
+        }
+
         [HttpDelete("deleteListing/{id}")]
         [Authorize(Roles = "Company" )]
         public async Task<IActionResult> Delete([FromRoute]int id)
@@ -133,9 +163,31 @@ namespace employmently_be.Controllers.Company
             }
             await _dbContext.SaveChangesAsync();
             return Ok();
-
-
         }
+
+        [HttpPost("reactivateListing/{id}")]
+        [Authorize(Roles = "Company")]
+
+        public async Task<IActionResult> Reactivate([FromRoute] int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            
+            if (user == null)
+            {
+                ModelState.AddModelError("Error", "There's no such a user");
+                return BadRequest(ModelState);
+            }
+
+            var listing = _dbContext.Listings.Where(l => l.Id == id).FirstOrDefault();
+
+            listing.ExpirationDate = DateTime.Now.AddMonths(1);
+            listing.Expired = false;
+            listing.Status = ListingStatus.Accepted;
+
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+        }
+
 
         [HttpPut("changeDescription/{id}")]
         [Authorize(Roles = "Company")]

@@ -12,6 +12,7 @@ import jwt from 'jwt-decode';
 function CompanyListings({ companyId, isMyCompany }) {
     const token = localStorage.getItem("accessToken");
     const [listings, setListings] = useState([]);
+
     const [performed, setPerformed] = useState(false);
 
     const [errorMessage, setErrorMessage] = React.useState("");
@@ -22,14 +23,15 @@ function CompanyListings({ companyId, isMyCompany }) {
     const [deleteListing, setDeleteListing] = useState(0);
 
     const deleteAlisting = (id) => {
-
         axios.delete(`${process.env.REACT_APP_BACKEND}/Company/DeleteListing/${id}`, {
             headers: {
-                "Authorization": `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             }
         })
             .then(response => {
-                console.log(response.data);
+                setTimeout(() => {
+                    window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
+                }, 1000);
             })
             .catch(error => {
                 setErrorMessage(error.response.data);
@@ -40,6 +42,7 @@ function CompanyListings({ companyId, isMyCompany }) {
         axios.get(`${process.env.REACT_APP_BACKEND}/Information/getCompanyListings/${companyId}`)
             .then(response => {
                 const listings = response.data.map(listing => {
+                    listing.expirationDate = new Date(listing.expirationDate);
                     listing.createdDate = new Date(listing.createdDate);
                     if (isToday(listing.createdDate)) {
                         listing.createdDate = 'Днес';
@@ -48,6 +51,8 @@ function CompanyListings({ companyId, isMyCompany }) {
                     } else {
                         listing.createdDate = format(listing.createdDate, "dd MMMM", { locale: ru });
                     }
+                    listing.expirationDate = format(listing.expirationDate, "dd MMMM HH:mm", { locale: ru });
+
                     return listing;
                 });
                 setListings(listings);
@@ -55,6 +60,7 @@ function CompanyListings({ companyId, isMyCompany }) {
             .catch(error => {
                 console.log(error);
             })
+
         setPerformed(true);
     }, [companyId, performed]);
 
@@ -81,6 +87,7 @@ function CompanyListings({ companyId, isMyCompany }) {
                         </div>
                         <div className="listing-right-side-company">
                             <p className="listing-date">📅{listing.createdDate}</p>
+                            <p className="listing-date">❌{listing.expirationDate}</p>
                             {isMyCompany ?
                                 !(deleteListing === listing.id) ?
                                     <button className="listing-tag-reject" onClick={() => setDeleteListing(listing.id)}>Delete listing</button>
@@ -94,6 +101,7 @@ function CompanyListings({ companyId, isMyCompany }) {
                                     </div>
                                 : null}
                         </div>
+
                     </div>
                 )
             }

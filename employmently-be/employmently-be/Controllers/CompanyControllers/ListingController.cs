@@ -47,6 +47,7 @@ namespace employmently_be.Controllers
                         Location = ldt.Location,
                         Arrangement = ldt.Arrangement,
                         Salary = ldt.Salary,
+                        ExpirationDate = DateTime.Now.AddMonths(1),
                 };
                 var flag = 0;
 
@@ -72,7 +73,7 @@ namespace employmently_be.Controllers
                         _dbContext.Categories.Add(newCategory);
                 }
             }
-           
+                
                 _dbContext.Listings.Add(listingToAdd);
                 
                 _dbContext.SaveChanges();

@@ -12,5 +12,6 @@
         public string CV { get; set; }
 
         public string? motivationalLetter { get; set; }
+
     }
 }

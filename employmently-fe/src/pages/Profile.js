@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
-import jwt from 'jwt-decode';
+import React, { useEffect } from "react";
 import axios from 'axios';
 import '../styles/myprofile.css';
-import { FileUploader } from "react-drag-drop-files";
-import FormInput from '../components/FormInput';
 import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
 import Navbar from "../components/Navbar";
 import { Link, useParams } from "react-router-dom";
 import Logo from "../images/employment.png";
-import Remote from "../images/remote.png";
-import format from 'date-fns/format';
-import { isToday, isYesterday, isTomorrow } from 'date-fns';
 
 function Profile() {
     const [performed, setPerformed] = React.useState(false);
@@ -20,15 +14,12 @@ function Profile() {
 
 
     const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
 
     useEffect(() => {
         if (!performed) {
             axios.get(`${process.env.REACT_APP_BACKEND}/Information/getProfile/${userId}`)
                 .then(response => {
-                    console.log(response.data);
                     setUser(response.data);
-
                 })
                 .catch(error => {
                     setErrorMessage(error.response.data);
@@ -64,7 +55,6 @@ function Profile() {
 
             <div className="company-container">
                 {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-                {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
                 <div className="user-info">
                     <img src={user.profilePicture} alt="User profile" className="user-pic"></img>
                     <div className="user-main-info">

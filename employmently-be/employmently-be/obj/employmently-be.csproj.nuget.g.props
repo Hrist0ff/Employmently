@@ -27,5 +27,6 @@
     <PkgNSwag_MSBuild Condition=" '$(PkgNSwag_MSBuild)' == '' ">C:\Users\hrist\.nuget\packages\nswag.msbuild\13.0.5</PkgNSwag_MSBuild>
     <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\hrist\.nuget\packages\microsoft.entityframeworkcore.tools\7.0.0</PkgMicrosoft_EntityFrameworkCore_Tools>
     <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\hrist\.nuget\packages\microsoft.codeanalysis.analyzers\2.9.4</PkgMicrosoft_CodeAnalysis_Analyzers>
+    <PkgHangfire_SqlServer Condition=" '$(PkgHangfire_SqlServer)' == '' ">C:\Users\hrist\.nuget\packages\hangfire.sqlserver\1.7.33</PkgHangfire_SqlServer>
   </PropertyGroup>
 </Project>

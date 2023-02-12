@@ -2,7 +2,6 @@ using employmently_be.Data;
 using employmently_be.DbContexts;
 using employmently_be.Entities;
 using employmently_be.Services;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -15,10 +14,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 using System.Text;
 using Newtonsoft.Json;
+using Hangfire;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 var emailPass = builder.Configuration["emailPassword"];
+
+
 
 // Add services to the container.
 builder.Services.AddControllers(options =>
@@ -49,6 +51,11 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
+
+builder.Services.AddHangfire(config =>
+    {
+    config.UseSqlServerStorage("Data Source= (localdb)\\mssqllocaldb; Initial Catalog=Employmently;TrustServerCertificate=True");
+});
 builder.Services.AddDbContext<dbContext>();
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddRoles<IdentityRole>()
@@ -61,6 +68,7 @@ builder.Services.AddMvc().AddNewtonsoftJson(options =>
 
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
+builder.Services.AddScoped<IListingService, ListingService>();
 
 builder.Services.AddCors(options =>
 {
@@ -122,6 +130,12 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+
+app.UseHangfireServer();
+app.UseHangfireDashboard();
+
+RecurringJob.AddOrUpdate<IListingService>(listingService => listingService.UpdateAllListingExpiredStatuses(), Cron.Minutely);
+
 
 
 app.UseEndpoints(endpoints =>
