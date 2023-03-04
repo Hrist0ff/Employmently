@@ -77,8 +77,12 @@ namespace employmently_be_test
                 .Setup(x => x.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()))
                 .ReturnsAsync("confirmation_token");
 
-            _mockMailer.Setup(x => x.Value).Returns(new AuthMessageSenderOptions { SendGridKey = "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" });
+            var builder = new ConfigurationBuilder()
+                .AddUserSecrets<RegistrationTests>();
+            var configuration = builder.Build();
 
+            var sendGridKey = configuration["SendGridKey"];
+            _mockMailer.Setup(x => x.Value).Returns(new AuthMessageSenderOptions { SendGridKey = sendGridKey });
 
 
             // Arrange
@@ -147,8 +151,12 @@ namespace employmently_be_test
                 .Setup(x => x.GenerateEmailConfirmationTokenAsync(It.IsAny<User>()))
                 .ReturnsAsync("confirmation_token");
 
-            _mockMailer.Setup(x => x.Value).Returns(new AuthMessageSenderOptions { SendGridKey = "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" });
+            var builder = new ConfigurationBuilder()
+                .AddUserSecrets<RegistrationTests>();
+            var configuration = builder.Build();
 
+            var sendGridKey = configuration["SendGridKey"];
+            _mockMailer.Setup(x => x.Value).Returns(new AuthMessageSenderOptions { SendGridKey = sendGridKey });
 
 
             // Arrange

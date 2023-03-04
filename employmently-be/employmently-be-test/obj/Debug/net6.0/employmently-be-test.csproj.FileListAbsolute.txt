@@ -334,3 +334,4 @@ C:\Employmently\Employmently\employmently-be\employmently-be-test\bin\Debug\net6
 C:\Employmently\Employmently\employmently-be\employmently-be-test\bin\Debug\net6.0\xunit.assert.dll
 C:\Employmently\Employmently\employmently-be\employmently-be-test\bin\Debug\net6.0\xunit.core.dll
 C:\Employmently\Employmently\employmently-be\employmently-be-test\bin\Debug\net6.0\xunit.execution.dotnet.dll
+C:\Employmently\Employmently\employmently-be\employmently-be-test\bin\Debug\net6.0\Microsoft.Extensions.Configuration.UserSecrets.dll
