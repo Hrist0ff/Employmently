@@ -4,7 +4,6 @@ C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\em
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\employmently-be.deps.json
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\employmently-be.runtimeconfig.json
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\employmently-be.dll
-C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\ref\employmently-be.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\employmently-be.pdb
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Microsoft.OpenApi.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
@@ -236,3 +235,9 @@ C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\ru
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\runtimes\unix\lib\netstandard2.0\System.Data.SqlClient.dll
 C:\Employmently\Employmently\employmently-be\employmently-be\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Data.SqlClient.dll
+C:\Employmently\Employmently\employmently-be\employmently-be\obj\Debug\net6.0\staticwebassets\msbuild.employmently-be.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Employmently\Employmently\employmently-be\employmently-be\obj\Debug\net6.0\staticwebassets\msbuild.build.employmently-be.props
+C:\Employmently\Employmently\employmently-be\employmently-be\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.employmently-be.props
+C:\Employmently\Employmently\employmently-be\employmently-be\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.employmently-be.props
+C:\Employmently\Employmently\employmently-be\employmently-be\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Employmently\Employmently\employmently-be\employmently-be\obj\Debug\net6.0\refint\employmently-be.dll

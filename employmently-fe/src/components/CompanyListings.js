@@ -75,7 +75,7 @@ function CompanyListings({ companyId, isMyCompany }) {
                         </div>
                         <div className="listing-left-side" key={idx}>
                             <a className="listing-name" href={`${process.env.REACT_APP_SERVER_PAGE}/Listing/${listing.id}`}>{listing.name}
-                                {listing.location ? <p key={listing.location} className="paragraph-details">🏢{listing.location}</p> : null}
+                                {listing.location ? <p key={listing.location} className="paragraph-details">📍{listing.location}</p> : null}
                                 {listing.salary ? <p key={listing.salary} className="paragraph-details">💰Salary from {listing.salary} lv.</p> : null}
                                 {listing.categoryNames ? <p className="paragraph-details">📁{listing.categoryNames.map((category, index) => {
                                     return (

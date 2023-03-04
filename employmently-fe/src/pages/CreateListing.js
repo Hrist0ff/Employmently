@@ -91,9 +91,9 @@ function CreateListing() {
             .then(response => {
                 setSuccessMessage(response.data);
 
-                // setTimeout(() => {
-                //     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
-                // }, 4000);
+                setTimeout(() => {
+                    window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
+                }, 4000);
             })
             .catch(error => {
                 setErrorMessage(error.response.data.Error[0]);

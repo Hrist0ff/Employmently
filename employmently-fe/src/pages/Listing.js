@@ -34,7 +34,6 @@ function Listing() {
 
 
     const cvChange = (file) => {
-        console.log(file);
         setCv(file);
     };
 

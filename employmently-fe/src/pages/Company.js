@@ -80,9 +80,9 @@ function Company() {
                         </div>
                         <div className="company-technologies">
                             <div className="company-for-heading">
-                                <p className="company-for-text">Technologies</p>
+                                <p className="company-for-text">Categories</p>
                             </div>
-                            <p className="company-technologies-text">Technologies that we are using:</p>
+                            <p className="company-technologies-text">Categories that we are working with:</p>
                             <div className="technologies-list">
                                 {user && user.technologies ? user.technologies.map((technology, index) => {
                                     return <p key={index} className="tag">{technology}</p>;

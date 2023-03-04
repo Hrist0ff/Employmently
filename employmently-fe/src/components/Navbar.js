@@ -27,6 +27,7 @@ function Navbar() {
             return [
                 <Nav.Link key={2} disabled> Hello, {username}</Nav.Link>,
                 <Nav.Link key={3} href={`${process.env.REACT_APP_SERVER_PAGE}/MyProfile`}>My Profile</Nav.Link>,
+                <Nav.Link key={10} href={`${process.env.REACT_APP_SERVER_PAGE}/ListingsPage`}>Listings</Nav.Link>,
                 <Nav.Link key={4} onClick={logout}>Log Out</Nav.Link>
 
             ]

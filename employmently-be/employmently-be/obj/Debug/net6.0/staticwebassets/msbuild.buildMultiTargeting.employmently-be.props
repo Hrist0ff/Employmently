@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\employmently-be.props" />
+</Project>

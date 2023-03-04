@@ -71,13 +71,7 @@ namespace employmently_be.Controllers
                 listings = listings.Where(l=> l.Arrangement == arrangement);
             }
 
-           
-
-
-
-
             return Ok(listings);
-
         }
     }
 }

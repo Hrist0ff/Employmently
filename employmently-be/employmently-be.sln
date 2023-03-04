@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.33027.175
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "employmently-be", "employmently-be\employmently-be.csproj", "{61002A72-939F-4698-9212-82EABCC5C9EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "employmently-be-test", "employmently-be-test\employmently-be-test.csproj", "{4C418B51-4972-4925-8AD4-84075BD91DF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{61002A72-939F-4698-9212-82EABCC5C9EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61002A72-939F-4698-9212-82EABCC5C9EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61002A72-939F-4698-9212-82EABCC5C9EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C418B51-4972-4925-8AD4-84075BD91DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C418B51-4972-4925-8AD4-84075BD91DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C418B51-4972-4925-8AD4-84075BD91DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C418B51-4972-4925-8AD4-84075BD91DF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

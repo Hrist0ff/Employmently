@@ -57,7 +57,6 @@ namespace employmently_be.Controllers
                 return BadRequest(ModelState);
             }
 
-
             var result = await _userManager.CreateAsync(userToAdd, rdt.Password);
             if (!result.Succeeded)
             {
@@ -81,7 +80,7 @@ namespace employmently_be.Controllers
         }
 
         [HttpPost]
-        [Route("Company")]
+        [Route("Company")] 
         public async Task<IActionResult> RegisterCompany(RegisterCompanyDto rdt)
         {
             if (!ModelState.IsValid)
@@ -95,12 +94,18 @@ namespace employmently_be.Controllers
             userToAdd.UserName = rdt.Username;
             userToAdd.UniqueIdentifierCompany = rdt.CompanyId;
 
+            // Check if email exists
+            bool emailExists = await _dbContext.Users.AnyAsync(u => u.Email == userToAdd.Email);
+            if (emailExists)
+            {
+                ModelState.AddModelError("Error", "Email is already used.");
+                return BadRequest(ModelState);
+            }
 
             // Check if UIC exists in a company, if so we add the user to the company
             // if not we make the new company and add the user in it
             var UIC = userToAdd.UniqueIdentifierCompany;
             var flag = 0;
-            //var userFromDb = await _userManager.FindByEmailAsync(userToAdd.Email);
 
             // Here i use external web service which is provided by European Commission for getting the name of a company by given Vat number
             var vat = new ServiceReference1.checkVatPortTypeClient();
@@ -137,13 +142,6 @@ namespace employmently_be.Controllers
                 }
             }
 
-            // Check if email exists
-            bool emailExists = await _dbContext.Users.AnyAsync(u => u.Email == userToAdd.Email);
-            if (emailExists)
-            {
-                ModelState.AddModelError("Error", "Email is already used.");
-                return BadRequest(ModelState);
-            }
 
             // Create a user if we can
             var result = await _userManager.CreateAsync(userToAdd, rdt.Password);

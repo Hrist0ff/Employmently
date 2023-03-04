@@ -44,7 +44,7 @@ function MyProfile() {
             type: "text",
             placeholder: "Enter your phone number",
             errorMessage: "It should be a valid phone number!",
-            label: "Email",
+            label: "Phone number",
             pattern: "^[0-9]{10}$",
             required: true,
         },
@@ -185,7 +185,6 @@ function MyProfile() {
                             }
                             return application;
                         });
-                        console.log(response.data);
                         setApplications(applications);
                     })
                     .catch(error => {
@@ -209,74 +208,6 @@ function MyProfile() {
         setFile(file);
     };
 
-    // return (
-
-    //     < div className="my-profile" >
-    //         {ExpiredTokenCheck()}
-    //         {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-    //         {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
-
-    //         <h1 className="heading">My profile</h1>
-
-    //         <br></br>
-    //         <div className="profile-header">
-    //             <img src={user.profilePicture} className="profile-picture" alt="Profile pic"></img>
-    // {!photoInput && <button className="upload-btn" onClick={() => setPhotoInput(true)}>Edit Photo</button>}
-    // {photoInput && (
-    //     <div className="profile-header">
-    //         <FileUploader
-    //             handleChange={handleChange}
-    //             name="file"
-    //             types={fileTypes}
-    //         />
-    //         <button onClick={onPhotoUpload} className="upload-btn">Upload photo</button>
-    //     </div>
-    // )}
-    //         </div>
-    //         <div className="profile-details">
-    //             <p><strong>USERNAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>    {user.userName}</p>
-    //             <p><strong>EMAIL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>    {user.email}</p>
-    //             <div>
-    //                 <p><strong>PHONE NUMBER &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.phoneNumber}</p>
-    // {!phoneInput && <button className="edit-btn" onClick={() => setPhoneInput(true)}>Edit Phone</button>}
-    // {phoneInput && (
-    //     <div className="profile-header">
-    //         <form>
-    //             <FormInput
-    //                 key={inputs[0].id}
-    //                 {...inputs[0]}
-    //                 value={values[inputs[0].name]}
-    //                 onChange={onChange}
-    //             />
-    //             <button onClick={onPhoneUpload} className="upload-ph-btn">Update phone number</button>
-    //         </form>
-
-    //     </div>
-    // )}
-    //             </div>
-    //             <p><strong>DESCRIPTION &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong>{user.description}</p>
-    //             {!descriptionInput && <button className="edit-btn" onClick={() => setDescriptionInput(true)}>Edit Description</button>}
-    //             {descriptionInput && (
-    //                 <div className="profile-header">
-    //                     <form>
-    //                         <FormInput
-    //                             key={inputs[1].id}
-    //                             {...inputs[1]}
-    //                             value={values[inputs[1].name]}
-    //                             onChange={onChange}
-    //                         />
-
-    //                         <button onClick={onDescriptionUpload} className="upload-ph-btn">Update description</button>
-    //                     </form>
-
-    //                 </div>
-    //             )}
-    //         </div>
-    //         <Nav.Link className="back-but" href={`${process.env.REACT_APP_SERVER_PAGE}/`}>Back</Nav.Link>
-    //     </div>
-    // )
-
-    console.log(inputs[0].errorMessage);
 
     return (
         <div className="background">

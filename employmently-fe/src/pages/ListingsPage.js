@@ -187,7 +187,6 @@ function ListingsPage() {
                     return listing;
                 });
                 setListings(listings);
-                console.log(listings)
             })
             .catch(error => {
                 console.log(error);
@@ -196,7 +195,6 @@ function ListingsPage() {
         axios.get(`${process.env.REACT_APP_BACKEND}/Information/getCategories`)
             .then(response => {
                 setCategories(response.data);
-                console.log(response.data)
             })
             .catch(error => {
                 console.log(error);
@@ -205,7 +203,6 @@ function ListingsPage() {
         axios.get(`${process.env.REACT_APP_BACKEND}/Information/getLocations`)
             .then(response => {
                 setLocations(response.data);
-                console.log(response.data)
             })
             .catch(error => {
                 console.log(error);
@@ -253,7 +250,7 @@ function ListingsPage() {
                                     <img src={Location} className="icon" alt="Icon for the 'Seniority'" style={{ width: "20px", height: "23px" }}></img>
                                     <p style={{ fontSize: '16px', color: '#5cadff', fontWeight: '400' }}>Locations</p>
                                 </div>
-                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                                     {locations ? locations.map((location) => (
                                         <div className="filter-one-category" >
                                             <input type="checkbox" name={location} value={location} label={location} onClick={handleCheckboxChangeLocation} />
@@ -336,7 +333,7 @@ function ListingsPage() {
                                                     <p className="listing-date">📅{listing.createdDate}</p>
                                                 </div>
                                                 <div className="listing-categories-tags-div">
-                                                    <p className="listing-tag">📍{listing.location}</p>
+                                                    {listing.location ? <p className="listing-tag">📍{listing.location}</p> : null}
                                                     {listing.arrangement && listing.arrangement === "Remote" ?
                                                         <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} alt="Remote" className="listing-tag-image"></img> &nbsp;{listing.arrangement}</p>
                                                         : null}

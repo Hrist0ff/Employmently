@@ -1,0 +1,15 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2fb82cd6_002Dac2a_002D42f1_002Da6b8_002D70330c1ae87f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Register_WithValidInput_SendsConfirmationEmail #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::4C418B51-4972-4925-8AD4-84075BD91DF0::net6.0::employmently_be_test.RegistrationTests.Register_WithValidInput_SendsConfirmationEmail&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::4C418B51-4972-4925-8AD4-84075BD91DF0::net6.0::employmently_be_test.RegistrationCompanyTests.Register_WithValidInput_SendsConfirmationEmail&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::4C418B51-4972-4925-8AD4-84075BD91DF0::net6.0::employmently_be_test.RegistrationTests.Register_WithDifferentPassword_ReturnsBadRequest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a22d7866_002Da1e7_002D4555_002D90fd_002D4383d9e81d9f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Register_WithValidInput_SendsConfirmationEmail" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::4C418B51-4972-4925-8AD4-84075BD91DF0::net6.0::employmently_be_test.RegistrationCompanyTests.Register_WithValidInput_SendsConfirmationEmail&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::4C418B51-4972-4925-8AD4-84075BD91DF0::net6.0::employmently_be_test.RegistrationCompanyTests.Register_WithInvalidCompanyID_ThrowsBadRequest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::4C418B51-4972-4925-8AD4-84075BD91DF0::net6.0::employmently_be_test.RegistrationTests.Register_WithValidInput_SendsConfirmationEmail&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

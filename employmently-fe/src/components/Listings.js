@@ -59,7 +59,7 @@ function Listings() {
                                                 <p className="listing-date">📅{listing.createdDate}</p>
                                             </div>
                                             <div className="listing-categories-tags-div">
-                                                <p className="listing-tag">📍{listing.location}</p>
+                                                {listing.location ? <p className="listing-tag">📍{listing.location}</p> : null}
                                                 {listing.arrangement && listing.arrangement === "Remote" ?
                                                     <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} className="listing-tag-image"></img> &nbsp;{listing.arrangement}</p>
                                                     : null}

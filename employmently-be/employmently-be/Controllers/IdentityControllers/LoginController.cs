@@ -114,7 +114,7 @@ namespace employmently_be.Controllers
 
             var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"],
               claims,
-              expires: DateTime.Now.AddSeconds(1200),
+              expires: DateTime.Now.AddMinutes(20),
               signingCredentials: credentials);
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;

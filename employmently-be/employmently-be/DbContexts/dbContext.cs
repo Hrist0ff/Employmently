@@ -16,6 +16,13 @@ namespace employmently_be.DbContexts
         public DbSet<ListingApplications> ListingApplications { get; set; }
         public DbSet<ForgotPassword> ForgotPasswords { get; set; }
 
+        public dbContext(DbContextOptions<dbContext> options) : base(options)
+        {
+        }
+
+        public dbContext(){}
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
         {

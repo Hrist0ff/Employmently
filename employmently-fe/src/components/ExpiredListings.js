@@ -29,7 +29,6 @@ function ExpiredListings({ companyId, isMyCompany }) {
             }
         })
             .then(response => {
-                console.log(response.data)
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
                 }, 1000);
