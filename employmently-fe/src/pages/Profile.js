@@ -5,6 +5,7 @@ import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
 import Navbar from "../components/Navbar";
 import { Link, useParams } from "react-router-dom";
 import Logo from "../images/employment.png";
+import { NotificationManager } from 'react-notifications';
 
 function Profile() {
     const [performed, setPerformed] = React.useState(false);
@@ -13,7 +14,10 @@ function Profile() {
     const [user, setUser] = React.useState({});
 
 
-    const [errorMessage, setErrorMessage] = React.useState("");
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
+
 
     useEffect(() => {
         if (!performed) {
@@ -22,7 +26,7 @@ function Profile() {
                     setUser(response.data);
                 })
                 .catch(error => {
-                    setErrorMessage(error.response.data);
+                    showErrorMessage(error.response.data.Error[0]);
                     if (error.response.status === 401) {
                         ExpiredTokenCheck()
                     }
@@ -54,7 +58,6 @@ function Profile() {
 
 
             <div className="company-container">
-                {errorMessage && <div className="err"> Error: {errorMessage} </div>}
                 <div className="user-info">
                     <img src={user.profilePicture} alt="User profile" className="user-pic"></img>
                     <div className="user-main-info">

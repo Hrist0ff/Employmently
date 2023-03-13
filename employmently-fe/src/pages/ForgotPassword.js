@@ -4,15 +4,21 @@ import FormInput from '../components/FormInput';
 import axios from 'axios';
 import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
 import Logo from "../images/employmently_letters.png";
-
+import { NotificationManager } from 'react-notifications';
 
 function ForgotPassword() {
 
     const [values, setValues] = useState({
         email: "",
     });
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
+
+    const showSuccessMessage = (message) => {
+        NotificationManager.success(message, 'Success');
+    }
+
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
 
     const inputs = [
         {
@@ -46,18 +52,15 @@ function ForgotPassword() {
                 const token = response.data;
                 localStorage.setItem("token", token);
                 axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-                setSuccessMessage("Check your email for a link to reset your password. If it doesn’t appear within a few minutes, check your spam folder.");
-
+                showSuccessMessage("Check your email for a link to reset your password. If it doesn’t appear within a few minutes, check your spam folder.");
             })
             .catch(error => {
-                setErrorMessage(error.response.data.Error[0]);
+                showErrorMessage("There is no account associated with this email address.");
             })
     }
     return (
         <div className="background">
             <div className="fp-container">
-                {errorMessage && <div className="err" style={{ width: '93%', marginLeft: '0%' }}> Error: {errorMessage} </div>}
-                {successMessage && <div className="suc" style={{ width: '93%', marginLeft: '0%' }}> Success: {successMessage} </div>}
                 <img src={Logo} className="employmently-logo-letters" alt="Employment.ly logo"></img>
                 <br></br>
                 <br></br>

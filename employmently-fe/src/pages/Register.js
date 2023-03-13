@@ -9,6 +9,8 @@ import Candidate from "../images/candidate.png";
 import Company from "../images/company.png";
 import Checkmark from "../images/checkmark.png";
 import Handshake from "../images/handshake.png";
+import { NotificationManager } from 'react-notifications';
+
 
 
 
@@ -151,11 +153,13 @@ function Register() {
         }
     }, [selected]);
 
+    const showSuccessMessage = (message) => {
+        NotificationManager.success(message, 'Success');
+    }
 
-
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
-
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
 
 
     const onChange = (e) => {
@@ -179,7 +183,7 @@ function Register() {
 
             for (let key in values) {
                 if (values[key] === "") {
-                    setErrorMessage("Please fill in all the fields!");
+                    showErrorMessage("Please fill in all the fields!");
                     return;
                 }
             }
@@ -195,14 +199,12 @@ function Register() {
                     const token = response.data;
                     localStorage.setItem("token", token);
                     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-                    setSuccessMessage("Account created successfully, check your email to confirm it.");
-                    setErrorMessage();
-
+                    showSuccessMessage("Account created successfully, check your email to confirm it.");
                     setTimeout(() => { window.location.href = "/Login" }, 3000);
 
                 })
                 .catch(error => {
-                    setErrorMessage(error.response.data.Error[0]);
+                    showErrorMessage(error.response.data.Error[0]);
                 })
 
 
@@ -219,13 +221,12 @@ function Register() {
                     const token = response.data;
                     localStorage.setItem("token", token);
                     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-                    setSuccessMessage("Account created successfully, check your email to confirm it.");
-                    setErrorMessage();
+                    showSuccessMessage("Account created successfully, check your email to confirm it.");
                     setTimeout(() => { window.location.href = "/Login" }, 3000);
 
                 })
                 .catch(error => {
-                    setErrorMessage(error.response.data.Error[0]);
+                    showErrorMessage(error.response.data.Error[0]);
                 })
         }
 
@@ -236,8 +237,6 @@ function Register() {
         <div className="background">
             <div className="container-register">
                 <div className="log-container">
-                    {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-                    {successMessage && <div className="suc"> Success: {successMessage} </div>}
                     <p className="acc-type">Choose account type</p>
                     <div className="acc-type-div">
                         <div className="candidate-div">

@@ -49,7 +49,20 @@ namespace employmently_be.Controllers
                         Salary = ldt.Salary,
                         ExpirationDate = DateTime.Now.AddMonths(1),
                 };
-                var flag = 0;
+
+                if (ldt.Name == null)
+                {
+                    ModelState.AddModelError("Error","Listing name is required");
+                    return BadRequest(ModelState);
+                }
+
+
+                if (ldt.Categories == null)
+                {
+                    ModelState.AddModelError("Error", "Listing categories are required");
+                    return BadRequest(ModelState);
+                }
+            var flag = 0;
 
                 
                 foreach (string categoryToAdd in ldt.Categories)

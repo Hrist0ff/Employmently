@@ -13,7 +13,9 @@ import Listing from "./pages/Listing";
 import CreateListing from "./pages/CreateListing";
 import Applications from "./pages/Applications";
 import Profile from "./pages/Profile";
-import ListingsPage from "./pages/ListingsPage"
+import ListingsPage from "./pages/ListingsPage";
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer } from 'react-notifications';
 
 import "./fonts/rock.ttf";
 import "./fonts/rockb.ttf";
@@ -39,6 +41,8 @@ function App() {
         <Route path="Profile/:id" element={<Profile />} />
         <Route path="ListingsPage" element={<ListingsPage />} />
       </Routes>
+      <NotificationContainer />
+
     </BrowserRouter>
   );
 }

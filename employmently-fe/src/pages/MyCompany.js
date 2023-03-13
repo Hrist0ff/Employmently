@@ -9,10 +9,7 @@ import CompanyListings from '../components/CompanyListings';
 import Logo from "../images/employment.png";
 import { Link } from 'react-router-dom';
 import ExpiredListings from '../components/ExpiredListings';
-
-
-
-
+import { NotificationManager } from 'react-notifications';
 
 function MyCompany() {
     const token = localStorage.getItem("accessToken");
@@ -22,8 +19,14 @@ function MyCompany() {
     const [selectedYear, setSelectedYear] = useState(null);
 
 
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
+    const showSuccessMessage = (message) => {
+        NotificationManager.success(message, 'Success');
+    }
+
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
+
 
     // Inputs for company info
     const [photoInput, setPhotoInput] = React.useState(false);
@@ -106,14 +109,13 @@ function MyCompany() {
             }
         })
             .then(response => {
-                setSuccessMessage("Year of creation changed successfully!");
-
+                showSuccessMessage("Year of creation changed successfully!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
                 }, 4000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't change year. ");
+                showErrorMessage("Couldn't change year. ");
             })
 
     }
@@ -125,8 +127,6 @@ function MyCompany() {
 
         const formData = new FormData();
         formData.append('image', file);
-        console.log(file);
-
 
         axios.post(`${process.env.REACT_APP_BACKEND}/Company/uploadPic/${id}`, formData, {
             headers: {
@@ -136,14 +136,14 @@ function MyCompany() {
             }
         })
             .then(response => {
-                setSuccessMessage("Profile picture changed successfully!");
+                showSuccessMessage("Profile picture changed successfully!");
 
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
                 }, 4000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't change picture. ");
+                showErrorMessage("Couldn't change picture. ");
             })
     }
 
@@ -162,13 +162,13 @@ function MyCompany() {
         })
             .then(response => {
                 setEmployeesInput(false);
-                setSuccessMessage("Employees quantity changed successfully!");
+                showSuccessMessage("Employees quantity changed successfully!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't change employees quantity. ");
+                showErrorMessage("Couldn't change employees quantity. ");
             })
     }
 
@@ -188,13 +188,13 @@ function MyCompany() {
         })
             .then(response => {
                 setPhoneInput(false);
-                setSuccessMessage("Phone number changed successfully!");
+                showSuccessMessage("Phone number changed successfully!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't change phone number. ");
+                showErrorMessage("Couldn't change phone number. ");
             })
     }
 
@@ -214,13 +214,13 @@ function MyCompany() {
         })
             .then(response => {
                 setDescriptionInput(false);
-                setSuccessMessage("Description changed successfully!");
+                showSuccessMessage("Description changed successfully!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't change description. ");
+                showErrorMessage("Couldn't change description. ");
             })
     }
 
@@ -241,12 +241,9 @@ function MyCompany() {
                 })
                     .then(response => {
                         setUser(response.data);
-
-                        console.log(response.data);
-
                     })
                     .catch(error => {
-                        setErrorMessage(error.response.data.Error[0]);
+                        showErrorMessage(error.response.data.Error[0]);
                     })
                 setPerformed(true);
             }
@@ -273,8 +270,6 @@ function MyCompany() {
                 </div>
 
                 <div className="company-container">
-                    {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-                    {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
                     <div className="company-info">
                         <img src={user.profilePicture} alt="User profile" className="company-pic"></img>
                         <span className="company-divider" />

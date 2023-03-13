@@ -10,17 +10,20 @@ import '../styles/adminpanel.css';
 import Remote from '../images/remote.png';
 import Logo from "../images/employment.png";
 import Navbar from "../components/Navbar";
-
-
-
+import { NotificationManager } from 'react-notifications';
 
 function AdminPanel() {
 
     const [listings, setListings] = React.useState({});
     const [getRequest, setGetRequest] = React.useState(false);
 
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
+    const showSuccessMessage = (message) => {
+        NotificationManager.success(message, 'Success');
+    }
+
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
 
     function objectToArray(obj) {
         return Object.values(obj)
@@ -51,13 +54,13 @@ function AdminPanel() {
                 }
             })
             .then(response => {
-                setSuccessMessage("Listing accepted!");
+                showSuccessMessage("Listing accepted!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/AdminPanel`;
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't accept listing.");
+                showErrorMessage("Couldn't accept listing.");
             })
     }
 
@@ -72,13 +75,13 @@ function AdminPanel() {
                 }
             })
             .then(response => {
-                setSuccessMessage("Listing rejected!");
+                showSuccessMessage("Listing rejected!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/AdminPanel`;
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't reject listing.");
+                showErrorMessage("Couldn't reject listing.");
             })
     }
 
@@ -92,7 +95,7 @@ function AdminPanel() {
                 const decodedToken = jwt(token);
                 let role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
                 if (role !== 'Administrator') {
-                    setErrorMessage("You don't have permission to view this page!");
+                    showErrorMessage("You don't have permission to view this page!");
                     setTimeout(() => {
                         window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
                     }, 3000);
@@ -105,10 +108,9 @@ function AdminPanel() {
             })
                 .then(response => {
                     setListings(response.data);
-
                 })
                 .catch(error => {
-                    setErrorMessage(error.response.data);
+                    showErrorMessage("Couldn't get listings.");
                 })
             setGetRequest(true);
         }
@@ -139,8 +141,6 @@ function AdminPanel() {
                 </div>
             </div>
             <div >
-                {errorMessage && <div className="err" style={{ width: '93%', marginLeft: '0%' }}> Error: {errorMessage} </div>}
-                {successMessage && <div className="suc" style={{ width: '93%', marginLeft: '0%' }}> Success: {successMessage} </div>}
                 {listingsArray.map((listing, idx) => {
                     return (
                         <div style={{ paddingTop: '20px' }}>

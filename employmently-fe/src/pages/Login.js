@@ -8,10 +8,12 @@ import { useEffect } from "react";
 import ExpiredTokenCheck from "../components/ExpiredTokenCheck";
 import Logo from "../images/employmently_letters.png";
 import JobPhoto from "../images/login_jobphoto.png";
-
+import { NotificationManager } from 'react-notifications';
 
 function Login() {
-    const [errorMessage, setErrorMessage] = React.useState("");
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
 
 
     const [values, setValues] = useState({
@@ -83,7 +85,7 @@ function Login() {
                 window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
             })
             .catch(error => {
-                setErrorMessage(error.response.data.Error[0]);
+                showErrorMessage(error.response.data.Error[0]);
             })
     }
 
@@ -92,7 +94,6 @@ function Login() {
             <div className="container">
                 {ExpiredTokenCheck()}
                 <div className="log-container">
-                    {errorMessage && <div className="err-login"> Error: {errorMessage} </div>}
                     <img src={Logo} className="employmently-logo-letters" alt="Employment.ly logo"></img>
                     <br></br>
                     <br></br>

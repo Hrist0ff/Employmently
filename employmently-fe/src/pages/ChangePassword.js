@@ -3,6 +3,7 @@ import { useState } from "react";
 import React from "react";
 import FormInput from "../components/FormInput";
 import axios from 'axios';
+import { NotificationManager } from 'react-notifications';
 
 function ChangePassword() {
     let parameters = useParams();
@@ -15,8 +16,13 @@ function ChangePassword() {
         confirmPassword: "",
     });
 
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
+    const showSuccessMessage = (message) => {
+        NotificationManager.success(message, 'Success');
+    }
+
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
 
     const forgotPassAction = (event) => {
         event.preventDefault();
@@ -30,13 +36,13 @@ function ChangePassword() {
                 const token = response.data;
                 localStorage.setItem("token", token);
                 axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-                setSuccessMessage("Password changed successfully, you can now login.");
+                showSuccessMessage("Password changed successfully, you can now login.");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/Login`;
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't change password.");
+                showErrorMessage("Couldn't change password.");
             })
     }
 
@@ -72,8 +78,6 @@ function ChangePassword() {
 
     return (
         <div className="fp-container">
-            {errorMessage && <div className="err" style={{ width: '93%', marginLeft: '0%' }}> Error: {errorMessage} </div>}
-            {successMessage && <div className="suc" style={{ width: '93%', marginLeft: '0%' }}> Success: {successMessage} </div>}
             <h1>Forgot password</h1>
             <p>Enter your new Password</p>
             <form className='fp-form'>

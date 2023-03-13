@@ -11,16 +11,20 @@ import { isToday, isYesterday } from 'date-fns';
 import "../styles/listingview.css";
 import jwt from 'jwt-decode';
 import UploadCloud from "../images/upload-cloud.png";
-
-
+import { NotificationManager } from 'react-notifications';
 
 function Listing() {
     const token = localStorage.getItem("accessToken");
 
     const [listing, setListing] = useState([]);
 
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
+
+    const showSuccessMessage = (message) => {
+        NotificationManager.success(message, 'Success');
+    }
 
     const [performed, setPerformed] = useState(false);
 
@@ -54,14 +58,14 @@ function Listing() {
                 'Content-Type': 'multipart/form-data'
             }
         }).then(response => {
-            setSuccessMessage(response.data);
+            showSuccessMessage(response.data);
             setTimeout(() => {
                 window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyProfile`;
             }, 3000);
 
         })
             .catch(error => {
-                setErrorMessage(error.response.data.Error[0]);
+                showErrorMessage(error.response.data.Error[0]);
             })
     }
 
@@ -97,6 +101,7 @@ function Listing() {
                 console.log(listing)
             })
             .catch(error => {
+
                 console.log(error);
             })
         setPerformed(true);
@@ -123,8 +128,6 @@ function Listing() {
             <div className="listing-section">
 
                 <div className="listing-container">
-                    {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-                    {successMessage && <div className="sucMessage-cl"> Success: {successMessage} </div>}
                     <div className="listing-item">
                         <div className="listing-company-name">
                             <img className="listing-company-logo" src={listing.authorPic} alt="Company logo"></img>

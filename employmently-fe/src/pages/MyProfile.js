@@ -11,6 +11,8 @@ import Logo from "../images/employment.png";
 import Remote from "../images/remote.png";
 import format from 'date-fns/format';
 import { isToday, isYesterday, isTomorrow } from 'date-fns';
+import "react-notifications/lib/notifications.css";
+import { NotificationManager } from 'react-notifications';
 
 function MyProfile() {
     const token = localStorage.getItem("accessToken");
@@ -23,9 +25,15 @@ function MyProfile() {
     const [phoneInput, setPhoneInput] = React.useState(false);
     const [descriptionInput, setDescriptionInput] = React.useState(false);
 
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
     const [file, setFile] = useState(null);
+
+    const showSuccessMessage = (message) => {
+        NotificationManager.success(message, 'Success');
+    }
+
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
 
 
     const [values, setValues] = useState({
@@ -37,6 +45,10 @@ function MyProfile() {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
 
+    const isCandidate = () => {
+        const decodedToken = jwt(token);
+        return decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "Candidate";
+    }
     const inputs = [
         {
             id: 1,
@@ -75,14 +87,13 @@ function MyProfile() {
             }
         })
             .then(response => {
-                setSuccessMessage("Profile picture changed successfully!");
-                setErrorMessage();
+                showSuccessMessage("Profile picture changed successfully!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyProfile`;
                 }, 4000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't change picture. ");
+                showErrorMessage("Couldn't change picture. ");
             })
     }
 
@@ -101,13 +112,13 @@ function MyProfile() {
         })
             .then(response => {
                 setPhoneInput(false);
-                setSuccessMessage("Phone number changed successfully!");
+                showSuccessMessage("Phone number changed successfully!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyProfile`;
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't change phone number. ");
+                showErrorMessage("Couldn't change phone number. ");
             })
     }
 
@@ -126,13 +137,13 @@ function MyProfile() {
         })
             .then(response => {
                 setDescriptionInput(false);
-                setSuccessMessage("Description changed successfully!");
+                showSuccessMessage("Description changed successfully!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyProfile`;
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't change description. ");
+                showErrorMessage("Couldn't change description. ");
             })
     }
 
@@ -142,57 +153,58 @@ function MyProfile() {
             if (!performed) {
                 const decodedToken = jwt(token);
                 const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+                const role = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
                 axios.get(`${process.env.REACT_APP_BACKEND}/User/${userId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 })
                     .then(response => {
-                        console.log(response.data);
                         setUser(response.data);
-
                     })
                     .catch(error => {
-                        setErrorMessage(error.response.data);
+                        showErrorMessage(error.response.data);
                         if (error.response.status === 401) {
                             ExpiredTokenCheck()
                         }
                     })
-                axios.get(`${process.env.REACT_APP_BACKEND}/User/getMyApplications`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                    .then(response => {
-                        const applications = response.data.map(application => {
-                            application.applicationTime = new Date(application.applicationTime);
-                            application.suggestedInterviewDate = new Date(application.suggestedInterviewDate);
-
-                            if (isToday(application.suggestedInterviewDate)) {
-                                application.suggestedInterviewDate = 'Today at' + format(application.suggestedInterviewDate, " HH:mm");
-                            } else if (isTomorrow(application.suggestedInterviewDate)) {
-                                application.suggestedInterviewDate = 'Tommorow at' + format(application.suggestedInterviewDate, " HH:mm");
-                            } else {
-                                application.suggestedInterviewDate = format(application.suggestedInterviewDate, "dd/MM/yyyy HH:mm");
-                            }
-
-                            if (isToday(application.applicationTime)) {
-                                application.applicationTime = 'Today at' + format(application.applicationTime, " HH:mm");
-                            } else if (isYesterday(application.applicationTime)) {
-                                application.applicationTime = 'Yesterday at' + format(application.applicationTime, " HH:mm");
-                            } else {
-                                application.applicationTime = format(application.applicationTime, "dd/MM/yyyy HH:mm");
-                            }
-                            return application;
-                        });
-                        setApplications(applications);
-                    })
-                    .catch(error => {
-                        setErrorMessage(error.response.data);
-                        if (error.response.status === 401) {
-                            ExpiredTokenCheck()
+                if (role === "Candidate") {
+                    axios.get(`${process.env.REACT_APP_BACKEND}/User/getMyApplications`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
                         }
                     })
+                        .then(response => {
+                            const applications = response.data.map(application => {
+                                application.applicationTime = new Date(application.applicationTime);
+                                application.suggestedInterviewDate = new Date(application.suggestedInterviewDate);
+
+                                if (isToday(application.suggestedInterviewDate)) {
+                                    application.suggestedInterviewDate = 'Today at' + format(application.suggestedInterviewDate, " HH:mm");
+                                } else if (isTomorrow(application.suggestedInterviewDate)) {
+                                    application.suggestedInterviewDate = 'Tommorow at' + format(application.suggestedInterviewDate, " HH:mm");
+                                } else {
+                                    application.suggestedInterviewDate = format(application.suggestedInterviewDate, "dd/MM/yyyy HH:mm");
+                                }
+
+                                if (isToday(application.applicationTime)) {
+                                    application.applicationTime = 'Today at' + format(application.applicationTime, " HH:mm");
+                                } else if (isYesterday(application.applicationTime)) {
+                                    application.applicationTime = 'Yesterday at' + format(application.applicationTime, " HH:mm");
+                                } else {
+                                    application.applicationTime = format(application.applicationTime, "dd/MM/yyyy HH:mm");
+                                }
+                                return application;
+                            });
+                            setApplications(applications);
+                        })
+                        .catch(error => {
+                            showErrorMessage(error.response.data);
+                            if (error.response.status === 401) {
+                                ExpiredTokenCheck()
+                            }
+                        })
+                }
                 setPerformed(true);
             }
         }
@@ -230,8 +242,6 @@ function MyProfile() {
 
 
             <div className="company-container">
-                {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-                {successMessage && <div className="sucMessage"> Success: {successMessage} </div>}
                 <div className="user-info">
                     <img src={user.profilePicture} alt="User profile" className="user-pic"></img>
                     <div className="user-main-info">
@@ -307,84 +317,85 @@ function MyProfile() {
                         </div>
                     </div>
                 </div>
-                <div className="company-listings">
-                    <div className="company-for-heading">
-                        <p className="company-for-text">My applications</p>
-                    </div>
-                    {user && applications ?
-                        <div>
-                            {applications.map((application) => {
-                                return (
-                                    <div style={{ paddingTop: '20px' }}>
-                                        <div className="listing-section-home">
-                                            <div className="listing-container">
-                                                <div className="listing-item-user">
-                                                    <a href={`${process.env.REACT_APP_SERVER_PAGE}/Company/${application.companyId}`} className="listing-a-div-myp" >
-                                                        <div>
-                                                            <img className="listing-company-logo" src={application.companyPic} alt="Company logo"></img>
-                                                            <p className="listing-company-name-text">{application.listingCompany}</p>
-                                                        </div>
-                                                    </a>
-                                                    <a href={`${process.env.REACT_APP_SERVER_PAGE}/Listing/${application.listingId}`} className="listing-a-application">
-                                                        <div>
-                                                            <div className="listing-header">
-                                                                <p className="listing-title-text">{application.listingName}</p>
-                                                                <p className="listing-date">📅{application.applicationTime}</p>
+                {isCandidate() ?
+                    <div className="company-listings">
+                        <div className="company-for-heading">
+                            <p className="company-for-text">My applications</p>
+                        </div>
+                        {user && applications ?
+                            <div>
+                                {applications.map((application) => {
+                                    return (
+                                        <div style={{ paddingTop: '20px' }}>
+                                            <div className="listing-section-home">
+                                                <div className="listing-container">
+                                                    <div className="listing-item-user">
+                                                        <a href={`${process.env.REACT_APP_SERVER_PAGE}/Company/${application.companyId}`} className="listing-a-div-myp" >
+                                                            <div>
+                                                                <img className="listing-company-logo" src={application.companyPic} alt="Company logo"></img>
+                                                                <p className="listing-company-name-text">{application.listingCompany}</p>
                                                             </div>
-                                                            <div className="listing-categories-tags-div">
-                                                                <p className="listing-tag">📍{application.listingLocation}</p>
-                                                                {application.arrangement && application.arrangement === "Remote" ?
-                                                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} alt="Remote job" className="listing-tag-image"></img> &nbsp;{application.arrangement}</p>
-                                                                    : null}
-                                                                {application.arrangement && application.arrangement === "On-site" ?
-                                                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💼 {application.arrangement}</p>
-                                                                    : null}
-                                                                {application.arrangement && application.arrangement === "Hybrid" ?
-                                                                    <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%', alignItems: 'center' }}><img src={Remote} alt="Remote job" className="listing-tag-image-hybrid"></img> &nbsp; / 💼 {application.arrangement}</p>
-                                                                    : null}
-                                                                {application.listingSalary ? <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💰 {application.listingSalary} lv.</p> : null}
+                                                        </a>
+                                                        <a href={`${process.env.REACT_APP_SERVER_PAGE}/Listing/${application.listingId}`} className="listing-a-application">
+                                                            <div>
+                                                                <div className="listing-header">
+                                                                    <p className="listing-title-text">{application.listingName}</p>
+                                                                    <p className="listing-date">📅{application.applicationTime}</p>
+                                                                </div>
+                                                                <div className="listing-categories-tags-div">
+                                                                    <p className="listing-tag">📍{application.listingLocation}</p>
+                                                                    {application.arrangement && application.arrangement === "Remote" ?
+                                                                        <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}><img src={Remote} alt="Remote job" className="listing-tag-image"></img> &nbsp;{application.arrangement}</p>
+                                                                        : null}
+                                                                    {application.arrangement && application.arrangement === "On-site" ?
+                                                                        <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💼 {application.arrangement}</p>
+                                                                        : null}
+                                                                    {application.arrangement && application.arrangement === "Hybrid" ?
+                                                                        <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%', alignItems: 'center' }}><img src={Remote} alt="Remote job" className="listing-tag-image-hybrid"></img> &nbsp; / 💼 {application.arrangement}</p>
+                                                                        : null}
+                                                                    {application.listingSalary ? <p className="listing-tag" style={{ display: 'flex', justifyContent: 'center', marginLeft: '1%' }}>💰 {application.listingSalary} lv.</p> : null}
 
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </a>
-                                                    <div className="status-and-files" style={{
-                                                        background: (application.listingStatus === "Pending" ? '#FFFF99' :
-                                                            (application.listingStatus === "Accepted" ? 'aquamarine' :
-                                                                (application.listingStatus === "Rejected" ? '#FF9999' : 'inherit')))
-                                                    }}>
-                                                        {application.listingStatus === "Pending" ?
-                                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                                <p className="listing-tag">Status: ⌛</p>
-                                                            </div> : null}
-                                                        {application.listingStatus === "Accepted" ?
-                                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                                <p className="listing-tag">Status: ✅</p>
-                                                                <p className="listing-tag">Suggested date interview:<br></br> {application.suggestedInterviewDate}</p>
+                                                        </a>
+                                                        <div className="status-and-files" style={{
+                                                            background: (application.listingStatus === "Pending" ? '#FFFF99' :
+                                                                (application.listingStatus === "Accepted" ? 'aquamarine' :
+                                                                    (application.listingStatus === "Rejected" ? '#FF9999' : 'inherit')))
+                                                        }}>
+                                                            {application.listingStatus === "Pending" ?
+                                                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                    <p className="listing-tag">Status: ⌛</p>
+                                                                </div> : null}
+                                                            {application.listingStatus === "Accepted" ?
+                                                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                    <p className="listing-tag">Status: ✅</p>
+                                                                    <p className="listing-tag">Suggested date interview:<br></br> {application.suggestedInterviewDate}</p>
+                                                                </div>
+                                                                : null}
+                                                            {application.listingStatus === "Rejected" ?
+                                                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                    <p className="listing-tag">Status: ❌</p>
+                                                                    <p className="listing-tag">Purpose: {application.rejectionPurpose}</p>
+                                                                </div>
+                                                                : null}
+                                                            <div>
+                                                                <a className="listing-tag-a" target="_blank" rel="noreferrer" href={application.cv}>See my CV</a>
+                                                                <a className="listing-tag-a" target="_blank" rel="noreferrer" href={application.ml}>See my motivational letter</a>
                                                             </div>
-                                                            : null}
-                                                        {application.listingStatus === "Rejected" ?
-                                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                                <p className="listing-tag">Status: ❌</p>
-                                                                <p className="listing-tag">Purpose: {application.rejectionPurpose}</p>
-                                                            </div>
-                                                            : null}
-                                                        <div>
-                                                            <a className="listing-tag-a" target="_blank" rel="noreferrer" href={application.cv}>See my CV</a>
-                                                            <a className="listing-tag-a" target="_blank" rel="noreferrer" href={application.ml}>See my motivational letter</a>
-                                                        </div>
 
 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        : null}
+                                    )
+                                })}
+                            </div>
+                            : null}
 
-                </div>
+                    </div> : null}
             </div>
         </div>
     )

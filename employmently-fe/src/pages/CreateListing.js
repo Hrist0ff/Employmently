@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import Logo from "../images/employment.png";
 import { Link } from "react-router-dom";
 import '../styles/createlisting.css';
+import { NotificationManager } from 'react-notifications';
 
 function CreateListing() {
     const token = localStorage.getItem("accessToken");
@@ -13,8 +14,13 @@ function CreateListing() {
 
     const [company, setCompany] = React.useState({});
 
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
+    const showSuccessMessage = (message) => {
+        NotificationManager.success(message, 'Success');
+    }
+
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
 
     const [values, setValues] = useState({
         title: "",
@@ -89,14 +95,13 @@ function CreateListing() {
         }
         )
             .then(response => {
-                setSuccessMessage(response.data);
-
+                showSuccessMessage(response.data);
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/MyCompany`;
                 }, 4000);
             })
             .catch(error => {
-                setErrorMessage(error.response.data.Error[0]);
+                showErrorMessage(error.response.data.Error[0]);
             })
     }
 
@@ -109,7 +114,7 @@ function CreateListing() {
                 const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
                 ExpiredTokenCheck();
                 if (role !== "Company") {
-                    setErrorMessage("You do not have permission to create a listing!");
+                    showErrorMessage("You do not have permission to create a listing!");
                     setTimeout(() => {
                         window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
                     }, 0);
@@ -123,7 +128,7 @@ function CreateListing() {
                         setCompany(response.data);
                     })
                     .catch(error => {
-                        setErrorMessage(error.response.data.Error[0]);
+                        showErrorMessage(error.response.data.Error[0]);
                     })
                 setPerformed(true);
             }
@@ -158,8 +163,6 @@ function CreateListing() {
                 <div className="create-listing-div">
 
                     <div className="create-listing">
-                        {errorMessage && <div className="err"> Error: {errorMessage} </div>}
-                        {successMessage && <div className="sucMessage-cl"> Success: {successMessage} </div>}
                         <div className="create-listing-for-heading">
                             <p className="company-for-text-cl">Create a listing</p>
                         </div>

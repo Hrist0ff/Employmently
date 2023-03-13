@@ -11,8 +11,9 @@ import { isToday, isYesterday } from 'date-fns';
 import "../styles/filters.css"
 import Briefcase from "../images/briefcase.png"
 import React from "react";
-import Location from "../images/location.png"
-import Money from "../images/money.png"
+import Location from "../images/location.png";
+import Money from "../images/money.png";
+import { NotificationManager } from 'react-notifications';
 
 
 
@@ -22,7 +23,9 @@ function ListingsPage() {
     const [locations, setLocations] = useState([]);
 
 
-    const [errorMessage, setErrorMessage] = React.useState("");
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
 
 
     const [performed, setPerformed] = useState(false);
@@ -167,7 +170,7 @@ function ListingsPage() {
 
             })
             .catch(error => {
-                setErrorMessage(error.response.data.Error[0]);
+                showErrorMessage(error.response.data.Error[0]);
             })
 
     }

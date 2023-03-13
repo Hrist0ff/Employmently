@@ -9,6 +9,7 @@ import Remote from "../images/remote.png";
 import format from 'date-fns/format';
 import { isToday, isYesterday } from 'date-fns';
 import "../styles/applications.css";
+import { NotificationManager } from 'react-notifications';
 
 function Applications() {
     const token = localStorage.getItem("accessToken");
@@ -17,8 +18,14 @@ function Applications() {
 
     const [applications, setApplications] = React.useState([]);
 
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
+    const showSuccessMessage = (message) => {
+        NotificationManager.success(message, 'Success');
+    }
+
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
+
 
     const [isAccepted, setIsAccepted] = React.useState(0);
     const [isRejected, setIsRejected] = React.useState(0);
@@ -41,7 +48,7 @@ function Applications() {
                 const role = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
                 ExpiredTokenCheck();
                 if (role !== "Company") {
-                    setErrorMessage("You do not have permission to watch the applications!");
+                    showErrorMessage("You do not have permission to watch the applications!");
                     setTimeout(() => {
                         window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/`;
                     }, 0);
@@ -66,11 +73,10 @@ function Applications() {
                         }
                         return application;
                     });
-                    console.log(response.data);
                     setApplications(applications);
                 })
                     .catch(error => {
-                        setErrorMessage(error.response.data.Error[0]);
+                        showErrorMessage(error.response.data.Error[0]);
                     });
 
 
@@ -84,8 +90,6 @@ function Applications() {
             }, 0);
         }
     }, [token, performed]);
-
-    console.log(values);
 
     const rejectListing = (id) => {
         const token = localStorage.getItem("accessToken");
@@ -101,7 +105,7 @@ function Applications() {
                 }
             })
             .then(response => {
-                setSuccessMessage("Listing rejected!");
+                showSuccessMessage("Listing rejected!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/Applications`;
                 }, 2000);
@@ -109,7 +113,7 @@ function Applications() {
 
             })
             .catch(error => {
-                setErrorMessage("Couldn't reject listing.");
+                showErrorMessage("Couldn't reject listing.");
             })
     }
 
@@ -129,16 +133,15 @@ function Applications() {
                 }
             })
             .then(response => {
-                setSuccessMessage("Listing accepted!");
+                showSuccessMessage("Listing accepted!");
                 setTimeout(() => {
                     window.location.href = `${process.env.REACT_APP_SERVER_PAGE}/Applications`;
                 }, 3000);
             })
             .catch(error => {
-                setErrorMessage("Couldn't accept listing.");
+                showErrorMessage("Couldn't accept listing.");
             })
     }
-    console.log(isAccepted);
 
     return (
         <div className="background">
@@ -164,12 +167,6 @@ function Applications() {
                         <div style={{ paddingTop: '20px' }}>
                             <div className="listing-section-home">
                                 <div className="listing-container">
-                                    {successMessage && ((isAccepted === listing.id) || (isRejected === listing.id)) ?
-                                        <div className="sucMessage-app"> Success: {successMessage} </div>
-                                        : null}
-                                    {errorMessage && ((isAccepted === listing.id) || (isRejected === listing.id)) ?
-                                        <div className="err"> Error: {errorMessage} </div> : null}
-
                                     <div className="listing-item">
                                         <a className="listing-a-div" href={`${process.env.REACT_APP_SERVER_PAGE}/Profile/${listing.userId}`}>
                                             <div>

@@ -8,18 +8,16 @@ import Navbar from "../components/Navbar";
 import '../styles/company.css';
 import CompanyListings from "../components/CompanyListings";
 import { Link } from 'react-router-dom';
-
-
+import { NotificationManager } from 'react-notifications';
 
 function Company() {
 
     const [user, setUser] = React.useState({});
     const [getRequest, setGetRequest] = React.useState(false);
 
-
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
-
+    const showErrorMessage = (message) => {
+        NotificationManager.error(message, 'Error');
+    }
 
     let parameters = useParams();
     var id = parameters.id;
@@ -32,7 +30,7 @@ function Company() {
                     setUser(response.data);
                 })
                 .catch(error => {
-                    setErrorMessage(error.response.data.Error[0]);
+                    showErrorMessage("Cannot provide information about this company");
                 })
             setGetRequest(true);
         }

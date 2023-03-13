@@ -17,7 +17,5 @@ namespace employmently_be.Data.Models
         public string? Location { get; set; }
         public string? Arrangement { get; set; }
         public int? Salary { get; set; }
-
-
     }
 }
