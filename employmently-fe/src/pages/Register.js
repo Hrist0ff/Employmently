@@ -179,7 +179,7 @@ function Register() {
     const registerAction = (event) => {
         event.preventDefault();
 
-        if (values.length !== 0) {
+        if (values.username !== '') {
 
             for (let key in values) {
                 if (values[key] === "") {
@@ -210,6 +210,7 @@ function Register() {
 
         }
         else {
+
             const username = companyValues.username;
             const email = companyValues.email;
             const password = companyValues.password;
